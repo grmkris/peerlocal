@@ -19,6 +19,7 @@ dataSources:
         - OfferAccepted
         - OfferCreated
         - OwnershipTransferred
+        - PeerLocal
       abis:
         - name: PeerLocal
           file: ./abis/PeerLocal.json
@@ -34,4 +35,6 @@ dataSources:
           handler: handleOfferCreated
         - event: OwnershipTransferred(indexed address,indexed address)
           handler: handleOwnershipTransferred
+        - event: PeerLocalInitalized(indexed address)
+          handler: handlePeerLocal
       file: ./src/peer-local.ts
