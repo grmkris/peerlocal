@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "description": "",
   "devDependencies": {
+    "@pinata/sdk": "^2.1.0",
     "peerlocal/subgraph-client": "workspace:*",
     "@nomicfoundation/hardhat-chai-matchers": "^1.0.6",
     "@nomiclabs/hardhat-ethers": "^2.2.3",
@@ -55,6 +56,8 @@
     "fork:node": "node ./_scripts.js fork:node",
     "fork:test": "node ./_scripts.js fork:test",
     "tenderly:push": "node ./_scripts.js tenderly:push",
-    "swap:native": "hardhat swap:native"
+    "swap:native": "hardhat swap:native",
+
+    "create-community": "pnpm run hardhat pinata-create-community"
   }
 }

@@ -1,7 +1,7 @@
 this is `pnpm` monorepo...
 
 ```shell
-npm -g pnpm 
+npm -g i pnpm 
 pnpm i
 pnpm run dev:peerlocal
 ```

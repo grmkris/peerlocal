@@ -7,8 +7,8 @@
   },
   "goerli": {
     "PeerLocal": {
-      "address": "0x9A90f394b6de7E462669413fEf6D3e644B7Dd0E5",
-      "startBlock": 9149165
+      "address": "0x9b55074AE5163dAf76EEF3afA1BE62fBA6c60fF1",
+      "startBlock": 9149400
     }
   }
 }

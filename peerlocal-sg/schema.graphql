@@ -49,3 +49,9 @@ type OwnershipTransferred @entity(immutable: true) {
   blockTimestamp: BigInt!
   transactionHash: Bytes!
 }
+
+
+type PeerLocal @entity(immutable: true) {
+  id: Bytes!
+  erc20: Bytes! # address
+}
