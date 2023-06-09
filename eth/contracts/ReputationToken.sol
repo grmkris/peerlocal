@@ -7,4 +7,11 @@ contract ReputationToken is ERC20 {
     constructor() ERC20("ReputationToken", "RPT") {
         _mint(msg.sender, 1000000 * 10**decimals());
     }
+
+     function mint(address recipient, uint256 amount) external {
+        _mint(recipient, amount);
+    }
+    function burn(uint256 amount) external {
+        _burn(msg.sender, amount);
+    }
 }
