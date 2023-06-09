@@ -11,7 +11,6 @@ export const ConnectWallet = () => {
     if (isConnected)
         return (
             <div>
-                Connected to {address}
                 <button className={"btn btn-accent"} onClick={() => disconnect()}>Disconnect</button>
             </div>
         )
