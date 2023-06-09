@@ -66,7 +66,7 @@ contract PeerLocal is Ownable {
         communities[communitiesCounter] = Community({ipfsMetadata: _ipfsMetadata, owner: msg.sender, stakingToken: _stakingToken , stakingRequirement: _stakingRequirement});
         communitiesCounter++;
         communityMembers[communitiesCounter].push(msg.sender);
-        emit CommunityCreated(communitiesCounter - 1, _ipfsMetadata, msg.sender, _stakingToken);
+        emit CommunityCreated(communitiesCounter - 1, _ipfsMetadata, msg.sender, _stakingToken, _stakingRequirement);
     }
 
     function joinCommunity(uint256 _communityId, bytes memory _signature) public {

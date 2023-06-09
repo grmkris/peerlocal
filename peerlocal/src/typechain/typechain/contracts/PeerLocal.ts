@@ -186,7 +186,7 @@ export interface PeerLocalInterface extends utils.Interface {
   ): Result;
 
   events: {
-    "CommunityCreated(uint256,string,address,address)": EventFragment;
+    "CommunityCreated(uint256,string,address,address,uint256)": EventFragment;
     "MemberJoinedCommunity(uint256,address)": EventFragment;
     "OfferAccepted(uint256,uint256,address)": EventFragment;
     "OfferClosed(uint256,uint256,address)": EventFragment;
@@ -221,9 +221,10 @@ export interface CommunityCreatedEventObject {
   ipfsMetadata: string;
   owner: string;
   stakingToken: string;
+  stakingRequirement: BigNumber;
 }
 export type CommunityCreatedEvent = TypedEvent<
-  [BigNumber, string, string, string],
+  [BigNumber, string, string, string, BigNumber],
   CommunityCreatedEventObject
 >;
 
@@ -636,17 +637,19 @@ export interface PeerLocal extends BaseContract {
   };
 
   filters: {
-    "CommunityCreated(uint256,string,address,address)"(
+    "CommunityCreated(uint256,string,address,address,uint256)"(
       communityId?: PromiseOrValue<BigNumberish> | null,
       ipfsMetadata?: null,
       owner?: PromiseOrValue<string> | null,
-      stakingToken?: null
+      stakingToken?: null,
+      stakingRequirement?: null
     ): CommunityCreatedEventFilter;
     CommunityCreated(
       communityId?: PromiseOrValue<BigNumberish> | null,
       ipfsMetadata?: null,
       owner?: PromiseOrValue<string> | null,
-      stakingToken?: null
+      stakingToken?: null,
+      stakingRequirement?: null
     ): CommunityCreatedEventFilter;
 
     "MemberJoinedCommunity(uint256,address)"(
