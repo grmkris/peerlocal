@@ -3,10 +3,14 @@ pragma solidity >=0.8.0 <0.9.0;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 
 contract PeerLocal is Ownable {
+
+    bytes32 MESSAGE_TO_BE_SIGNED_BY_COMMUNIT_OWNER = "I am the owner of this community";
+
     struct Community {
-        string name;
+        string ipfsMetadata;
         uint256 stakingRequirement;
         address owner;
     }
@@ -19,37 +23,51 @@ contract PeerLocal is Ownable {
         uint256 stakingRequirement;
     }
 
-    IERC20 public token;
-    Community[] public communities;
-    Offer[] public offers;
+    IERC20 public token; // GHO
+    mapping(uint256 => Community) public communities;
+    uint256 communityCounter = 0;
+    // communityId => offerId => Offer
+    mapping(uint256 => Offer[]) public offers;
 
     mapping(uint256 => address[]) public communityMembers;
     mapping(address => uint256) public reputation;
+
 
     constructor(IERC20 _token) {
         token = _token;
     }
 
-    function createCommunity(string memory name, uint256 stakingRequirement) public {
-        communities.push(Community({name: name, stakingRequirement: stakingRequirement, owner: msg.sender}));
+    function createCommunity(string memory ipfsMetadata, uint256 stakingRequirement) public {
+        communities[communityCounter] = Community({ipfsMetadata: ipfsMetadata, stakingRequirement: stakingRequirement, owner: msg.sender});
+        communityCounter++;
     }
 
-    function joinCommunity(uint256 communityId) public {
+    function joinCommunity(uint256 communityId, bytes memory signature) public {
+        // signature has to be from the owner of the community
+        require(_recoverSigner(signature) == communities[communityId].owner, "Invalid signature");
         require(token.balanceOf(msg.sender) >= communities[communityId].stakingRequirement, "Insufficient balance to join community");
+
+        // transfer from msg.sender to this contract
+        token.transferFrom(msg.sender, address(this), communities[communityId].stakingRequirement);
+        // add msg.sender to communityMembers
         communityMembers[communityId].push(msg.sender);
     }
 
     function createOffer(uint256 communityId, string memory metadata, uint256 reputationRequirement, uint256 stakingRequirement) public {
         require(reputation[msg.sender] >= reputationRequirement, "Insufficient reputation to create offer");
-        offers.push(Offer({owner: msg.sender, communityId: communityId, metadata: metadata, reputationRequirement: reputationRequirement, stakingRequirement: stakingRequirement}));
+        offers[communityId].push(Offer({owner: msg.sender, communityId: communityId, metadata: metadata, reputationRequirement: reputationRequirement, stakingRequirement: stakingRequirement}));
     }
 
-    function acceptOffer(uint256 offerId) public {
-        require(token.balanceOf(msg.sender) >= offers[offerId].stakingRequirement, "Insufficient balance to accept offer");
-        require(reputation[msg.sender] >= offers[offerId].reputationRequirement, "Insufficient reputation to accept offer");
+    function acceptOffer(uint256 communityId, uint256 offerId) public {
+        require(token.balanceOf(msg.sender) >= offers[communityId][offerId].stakingRequirement, "Insufficient balance to accept offer");
+        require(reputation[msg.sender] >= offers[communityId][offerId].reputationRequirement, "Insufficient reputation to accept offer");
         // Transfer staked tokens
-        token.transferFrom(msg.sender, address(this), offers[offerId].stakingRequirement);
+        token.transferFrom(msg.sender, address(this), offers[communityId][offerId].stakingRequirement);
     }
 
-    // Rest of your functions...
+    function _recoverSigner(
+        bytes memory signature
+    ) private view returns (address) {
+        return ECDSA.recover(ECDSA.toEthSignedMessageHash(MESSAGE_TO_BE_SIGNED_BY_COMMUNIT_OWNER), signature);
+    }
 }
