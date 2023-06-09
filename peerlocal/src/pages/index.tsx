@@ -1,12 +1,8 @@
 import { type NextPage } from "next";
 import Head from "next/head";
-
-import { ConnectWallet } from "../features/ConnectWallet";
 import { Layout } from "../features/Layout";
-import { useModalStore } from "../features/modals/useModalStore";
 
 const Home: NextPage = () => {
-  const openModal = useModalStore((s) => s.openModal);
   return (
     <>
       <Head>
@@ -17,33 +13,16 @@ const Home: NextPage = () => {
       <Layout>
         <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
           <h1 className="text-5xl font-extrabold tracking-tight text-white sm:text-[5rem]">
-            Hackathon<span className="text-accent">Starter</span> Kit
+            Welcome to 
+            <span className="text-accent">community</span>
           </h1>
+          <h2>
+            <span className="text-accent">100 </span> GHO
+          </h2>
+          <h3>
+            H3 Ja
+          </h3>
         </div>
-        <ConnectWallet />
-        <button
-          className={"btn-primary btn"}
-          onClick={() =>
-            openModal({
-              view: "HelloWorldView1",
-              data: { HelloWorldView1: { name: "Kris" } },
-            })
-          }
-        >
-          Open modal 1
-        </button>
-
-        <button
-          className={"btn-primary btn"}
-          onClick={() =>
-            openModal({
-              view: "HelloWorldView2",
-              data: { HelloWorldView2: { name: "Kris2" } },
-            })
-          }
-        >
-          Open modal 2
-        </button>
       </Layout>
     </>
   );

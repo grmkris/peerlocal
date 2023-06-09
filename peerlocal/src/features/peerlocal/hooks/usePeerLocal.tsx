@@ -10,7 +10,7 @@ export const useCommunites = () => {
   });
 };
 
-export const useCommunityMembers = (props: { communityId?: BigInt }) => {
+export const useCommunityMembers = (props: { communityId?: bigint }) => {
   return useQuery({
     queryKey: ["useCommunityMembers", props.communityId],
     queryFn: () => {
@@ -20,7 +20,7 @@ export const useCommunityMembers = (props: { communityId?: BigInt }) => {
   });
 };
 
-export const useOffers = (props: { communityId?: BigInt }) => {
+export const useOffers = (props: { communityId?: bigint }) => {
   return useQuery({
     queryKey: ["useOffers", props.communityId],
     queryFn: () => {
@@ -30,7 +30,7 @@ export const useOffers = (props: { communityId?: BigInt }) => {
   });
 };
 
-export const useOffersAccepted = (props: { communityId?: BigInt }) => {
+export const useOffersAccepted = (props: { communityId?: bigint }) => {
   return useQuery({
     queryKey: ["useOffers", props.communityId],
     queryFn: () => {
