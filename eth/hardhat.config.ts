@@ -1,6 +1,6 @@
 import "dotenv/config";
 import { type HardhatUserConfig } from "hardhat/types";
-
+import "@matterlabs/hardhat-zksync-solc";
 import "hardhat-deploy";
 import "@nomiclabs/hardhat-ethers";
 import "hardhat-deploy-ethers";
@@ -13,6 +13,20 @@ import "./tasks/accounts";
 import "./tasks/peerlocal";
 
 const config: HardhatUserConfig = {
+  zksolc: {
+    version: "1.3.10",
+    compilerSource: "binary",
+    settings: {
+      //compilerPath: "zksolc",  // optional. Ignored for compilerSource "docker". Can be used if compiler is located in a specific folder
+      libraries: {}, // optional. References to non-inlinable libraries
+      isSystem: false, // optional.  Enables Yul instructions available only for zkSync system contracts and libraries
+      forceEvmla: false, // optional. Falls back to EVM legacy assembly if there is a bug with Yul
+      optimizer: {
+        enabled: true, // optional. True by default
+        mode: "3", // optional. 3 by default, z to optimize bytecode size
+      },
+    },
+  },
   solidity: {
     compilers: [
       {
@@ -77,6 +91,9 @@ const config: HardhatUserConfig = {
     zkSync_testnet: {
       url: "https://testnet.era.zksync.dev",
       accounts: accounts("zkSync_testnet"),
+      zksync: true,
+      ethNetwork:
+        "https://rpc.eu-north-1.gateway.fm/v4/ethereum/non-archival/goerli",
     },
   }),
   paths: {
