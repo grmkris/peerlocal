@@ -100,7 +100,11 @@ export interface PeerLocalInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "createCommunity",
-    values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
+    values: [
+      PromiseOrValue<string>,
+      PromiseOrValue<string>,
+      PromiseOrValue<BigNumberish>
+    ]
   ): string;
   encodeFunctionData(
     functionFragment: "createOffer",
@@ -182,7 +186,7 @@ export interface PeerLocalInterface extends utils.Interface {
   ): Result;
 
   events: {
-    "CommunityCreated(uint256,string,uint256,address)": EventFragment;
+    "CommunityCreated(uint256,string,address,address)": EventFragment;
     "MemberJoinedCommunity(uint256,address)": EventFragment;
     "OfferAccepted(uint256,uint256,address)": EventFragment;
     "OfferClosed(uint256,uint256,address)": EventFragment;
@@ -219,7 +223,7 @@ export interface CommunityCreatedEventObject {
   stakingToken: string;
 }
 export type CommunityCreatedEvent = TypedEvent<
-  [BigNumber, string, BigNumber, string],
+  [BigNumber, string, string, string],
   CommunityCreatedEventObject
 >;
 
@@ -415,8 +419,9 @@ export interface PeerLocal extends BaseContract {
     ): Promise<[string]>;
 
     createCommunity(
-      ipfsMetadata: PromiseOrValue<string>,
-      stakingRequirement: PromiseOrValue<BigNumberish>,
+      _ipfsMetadata: PromiseOrValue<string>,
+      _stakingToken: PromiseOrValue<string>,
+      _stakingRequirement: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -495,8 +500,9 @@ export interface PeerLocal extends BaseContract {
   ): Promise<string>;
 
   createCommunity(
-    ipfsMetadata: PromiseOrValue<string>,
-    stakingRequirement: PromiseOrValue<BigNumberish>,
+    _ipfsMetadata: PromiseOrValue<string>,
+    _stakingToken: PromiseOrValue<string>,
+    _stakingRequirement: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -575,8 +581,9 @@ export interface PeerLocal extends BaseContract {
     ): Promise<string>;
 
     createCommunity(
-      ipfsMetadata: PromiseOrValue<string>,
-      stakingRequirement: PromiseOrValue<BigNumberish>,
+      _ipfsMetadata: PromiseOrValue<string>,
+      _stakingToken: PromiseOrValue<string>,
+      _stakingRequirement: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -629,17 +636,17 @@ export interface PeerLocal extends BaseContract {
   };
 
   filters: {
-    "CommunityCreated(uint256,string,uint256,address)"(
+    "CommunityCreated(uint256,string,address,address)"(
       communityId?: PromiseOrValue<BigNumberish> | null,
       ipfsMetadata?: null,
-      stakingRequirement?: null,
-      owner?: PromiseOrValue<string> | null
+      owner?: PromiseOrValue<string> | null,
+      stakingToken?: null
     ): CommunityCreatedEventFilter;
     CommunityCreated(
       communityId?: PromiseOrValue<BigNumberish> | null,
       ipfsMetadata?: null,
-      stakingRequirement?: null,
-      owner?: PromiseOrValue<string> | null
+      owner?: PromiseOrValue<string> | null,
+      stakingToken?: null
     ): CommunityCreatedEventFilter;
 
     "MemberJoinedCommunity(uint256,address)"(
@@ -758,8 +765,9 @@ export interface PeerLocal extends BaseContract {
     ): Promise<BigNumber>;
 
     createCommunity(
-      ipfsMetadata: PromiseOrValue<string>,
-      stakingRequirement: PromiseOrValue<BigNumberish>,
+      _ipfsMetadata: PromiseOrValue<string>,
+      _stakingToken: PromiseOrValue<string>,
+      _stakingRequirement: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -823,8 +831,9 @@ export interface PeerLocal extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     createCommunity(
-      ipfsMetadata: PromiseOrValue<string>,
-      stakingRequirement: PromiseOrValue<BigNumberish>,
+      _ipfsMetadata: PromiseOrValue<string>,
+      _stakingToken: PromiseOrValue<string>,
+      _stakingRequirement: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
