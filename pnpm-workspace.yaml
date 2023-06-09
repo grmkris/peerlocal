@@ -1,0 +1,4 @@
+packages:
+  - "peerlocal"
+  - "eth"
+  - "sg"
