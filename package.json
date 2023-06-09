@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build:peerlocal": "pnpm run --filter clerk-t3-minimal build",
-    "dev:peerlocal": "pnpm run --filter clerk-t3-minimal dev"
+    "build:peerlocal": "pnpm run --filter peerlocal build",
+    "dev:peerlocal": "pnpm run --filter peerlocal dev"
   },
   "keywords": [],
   "author": "",

@@ -2,9 +2,7 @@ import { type NextPage } from "next";
 import Head from "next/head";
 
 import { ConnectWallet } from "../features/ConnectWallet";
-import { Clerk } from "../features/Clerk";
 import { Layout } from "../features/Layout";
-import { SignIn } from "@clerk/nextjs";
 import { useModalStore } from "../features/modals/useModalStore";
 
 const Home: NextPage = () => {
@@ -22,8 +20,6 @@ const Home: NextPage = () => {
             Hackathon<span className="text-accent">Starter</span> Kit
           </h1>
         </div>
-        <Clerk />
-        <SignIn />
         <ConnectWallet />
         <button
           className={"btn-primary btn"}
