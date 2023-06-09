@@ -35,7 +35,7 @@ contract PeerLocal is Ownable {
     IERC20 public token; // GHO
     mapping(uint256 => Community) public communities;
     uint256 communityCounter = 0;
-    uint256 offerId = 0;
+    uint256 offerCounter = 0;
     // communityId => offerId => Offer
     mapping(uint256 => mapping(uint256 => Offer)) public offers;
 
@@ -64,8 +64,6 @@ contract PeerLocal is Ownable {
         token.transferFrom(msg.sender, address(this), communities[communityId].stakingRequirement);
         // add msg.sender to communityMembers
         communityMembers[communityId].push(msg.sender);
-        // add reputation to msg.sender
-        reputation[msg.sender] += 1;
         // emit event
         emit MemberJoinedCommunity(communityId, msg.sender);
     }
@@ -74,26 +72,22 @@ contract PeerLocal is Ownable {
         require(reputation[msg.sender] >= reputationRequirement, "Insufficient reputation to create offer");
         
         //We add one to the offerCounter
-        offerId += 1;
-        
+        offerCounter += 1;
 
         Offer memory newOffer = Offer(msg.sender, communityId, metadata, reputationRequirement, stakingRequirement, "created");
 
-        offers[communityId][offerId] = newOffer;
+        offers[communityId][offerCounter] = newOffer;
         // set the status of the offer to 1, created, not accept
-        emit OfferCreated(communityId, offerId, newOffer);
+        emit OfferCreated(communityId, offerCounter, newOffer);
     }
 
     function acceptOffer(uint256 communityId, uint256 offerId) public {
         require(token.balanceOf(msg.sender) >= offers[communityId][offerId].stakingRequirement, "Insufficient balance to accept offer");
-        require(reputation[msg.sender] >= offers[communityId][offerId].reputationRequirement, "Insufficient reputation to accept offer");
-        require(offerStatus[offerId] == 1); 
+        require(reputation[msg.sender] >= offers[communityId][offerId].reputationRequirement, "Insufficient reputation to accept offer"); 
         // Transfer staked tokens
         token.transferFrom(msg.sender, address(this), offers[communityId][offerId].stakingRequirement);
         // Transfer staked tokens to offer owner
         token.transfer(offers[communityId][offerId].owner, offers[communityId][offerId].stakingRequirement);
-        // set the status of the offer to 1, accept, not closed
-        offerStatus[offerId] = 2;
         // emit event
         emit OfferAccepted(communityId, offerId, msg.sender);
     }
@@ -104,10 +98,5 @@ contract PeerLocal is Ownable {
         return ECDSA.recover(ECDSA.toEthSignedMessageHash(MESSAGE_TO_BE_SIGNED_BY_COMMUNIT_OWNER), signature);
     }
 
-    function endOffer(uint256 communityId, uint256 offerId) public {
-        require(offerStatus[offerId] == 2);
-        offerStatus[offerId] = 2;
-
-
-    }
+    //function endOffer(uint256 communityId, uint256 offerId) public {}
 }
