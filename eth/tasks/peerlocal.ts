@@ -1,7 +1,8 @@
 import { task } from "hardhat/config";
 import pinataSdk from "@pinata/sdk";
-import { PeerLocal__factory } from "../typechain";
+import { PeerLocal__factory, TestERC20__factory } from "../typechain";
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
+import { ethers } from "ethers";
 
 task("create-community", "Uploads json file to pinata", async (args, hre) => {
   const { deployments, network } = hre;
@@ -36,7 +37,7 @@ task("create-community", "Uploads json file to pinata", async (args, hre) => {
     const tx = await peerLocalContract.createCommunity(
       ipfs.IpfsHash,
       "0xcbE9771eD31e761b744D3cB9eF78A1f32DD99211",
-      0x1
+      0
     );
     console.log("Tx hash: " + tx.hash);
   } else {
@@ -71,7 +72,7 @@ task("join-community", "Uploads json file to pinata", async (args, hre) => {
     signer
   );
 
-  const tx = await peerLocalContract.joinCommunity(0, signature);
+  const tx = await peerLocalContract.joinCommunity(2, signature);
 
   console.log("Tx hash: " + tx.hash);
 });
@@ -137,3 +138,40 @@ task("end-offer", "Uploads json file to pinata", async (args, hre) => {
   const offerTx = await peerLocalContract.endOffer(0, 0, true);
   console.log("offerTx", offerTx);
 });
+
+task(
+  "mint-erc20test",
+  "Mint erc20test to account[0] and account[1]",
+  async (args, hre) => {
+    const { deployments, network, ethers } = hre;
+    const peerERC20 = await deployments.get("TestERC20");
+    const peerERC20Address = peerERC20.address;
+    const signer: SignerWithAddress = (await hre.ethers.getSigners())[0];
+    const peerERC20Contract = TestERC20__factory.connect(
+      peerERC20Address,
+      signer
+    );
+    const tx = await peerERC20Contract.mint(signer.address, 1000000000000000);
+    console.log("tx", tx);
+  }
+);
+
+task(
+  "increase-allowance-erc20test",
+  "Increase allowance of erc20test to account[1]",
+  async (args, hre) => {
+    const { deployments, network } = hre;
+    const peerERC20 = await deployments.get("TestERC20");
+    const peerERC20Address = peerERC20.address;
+    const signer: SignerWithAddress = (await hre.ethers.getSigners())[0];
+    const peerERC20Contract = TestERC20__factory.connect(
+      peerERC20Address,
+      signer
+    );
+    const tx = await peerERC20Contract.increaseAllowance(
+      signer.address,
+      1000000000000000
+    );
+    console.log("tx", tx);
+  }
+);

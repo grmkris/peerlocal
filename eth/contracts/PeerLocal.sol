@@ -31,7 +31,7 @@ contract PeerLocal is Ownable {
         uint8 offerStatus; //created -> 1, active -> 2, finished -> 3
     }
 
-    event CommunityCreated(uint256 indexed communityId, string ipfsMetadata, address indexed owner, IERC20 stakingToken);
+    event CommunityCreated(uint256 indexed communityId, string ipfsMetadata, address indexed owner, IERC20 stakingToken, uint256 stakingRequirement);
     event MemberJoinedCommunity(uint256 indexed communityId, address indexed member);
     event OfferCreated(uint256 indexed communityId, uint256 offerId, Offer newOffer);
     event OfferAccepted(uint256 indexed communityId, uint256 indexed offerId, address indexed member);
