@@ -5,6 +5,50 @@ import Link from "next/link";
 
 const Market: NextPage = () => {
 
+    const listings = [
+        {
+            "name": "name1",
+            "price": 1250.00,
+            "availability": true,
+            "img": "https://placeholder.pics/svg/300"
+        },
+        {
+            "name": "name2",
+            "price": 3450.00,
+            "availability": true,
+            "img": "https://placeholder.pics/svg/300"
+        },
+        {
+            "name": "name3",
+            "price": 11250.00,
+            "availability": false,
+            "img": "https://placeholder.pics/svg/300"
+        },
+        {
+            "name": "name4",
+            "price": 1269.00,
+            "availability": true,
+            "img": "https://placeholder.pics/svg/300"
+        },
+        {
+            "name": "name5",
+            "price": 14295.00,
+            "availability": true,
+            "img": "https://placeholder.pics/svg/300"
+        },
+        {
+            "name": "name6",
+            "price": 420.69,
+            "availability": true,
+            "img": "https://placeholder.pics/svg/300"
+        },
+        {
+            "name": "name7",
+            "price": 1337.00,
+            "availability": true,
+            "img": "https://placeholder.pics/svg/300"
+        }
+    ]
     return (
         <div>
             <Head>
@@ -13,7 +57,7 @@ const Market: NextPage = () => {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <Layout>
-            <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
+                <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
                     <h1 className="text-5xl font-extrabold tracking-tight text-white sm:text-[5rem]">
                         Welcome to our <span className="text-accent">Market</span>
                     </h1>
@@ -23,6 +67,33 @@ const Market: NextPage = () => {
                     <p className="text-2xl font-extrabold tracking-tight text-white">
                         Or Browse active listings below:
                     </p>
+                </div>
+                <div className="container flex items-center justify-center">
+                    {/*
+                    Fields:
+                    Name
+                    Price
+                    Availablility
+                    */}
+
+                    <ul className="flex flex-wrap min-w-5/12 items-center justify-center ">
+                        {listings.map((listing, i) => {
+                            return (
+                                <li key={i}>
+                                    <div className="card card-compact w-96 bg-base-100 shadow-xl">
+                                        <figure><img src="https://placeholder.pics/svg/300" alt="Shoes" /></figure>
+                                        <div className="card-body">
+                                            <h2 className="card-title">{listing.name}</h2>
+                                            <p>If a dog chews shoes whose shoes does he choose?</p>
+                                            <div className="card-actions justify-end">
+                                                <button className="btn btn-primary">Buy Now</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            );
+                        })}
+                    </ul>
                 </div>
             </Layout>
         </div>
