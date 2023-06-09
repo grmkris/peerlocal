@@ -12,6 +12,6 @@ contract ReputationToken is ERC20 {
         _mint(recipient, amount);
     }
     function burn(uint256 amount) external {
-        _bugit orn(msg.sender, amount);
+        _burn(msg.sender, amount);
     }
 }

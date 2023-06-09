@@ -33,7 +33,8 @@ task("create-community", "Uploads json file to pinata", async (args, hre) => {
   console.log("Pinata project uploaded: " + ipfs.IpfsHash);
 });
 
-task("pinata-create-offer", "Uploads json file to pinata", async () => {
+task("create-offer", "Uploads json file to pinata", async (args, hre) => {
+  const { deployments, network } = hre;
   const object = {
     name: "Tool name",
     description: "Tool description",
@@ -46,5 +47,16 @@ task("pinata-create-offer", "Uploads json file to pinata", async () => {
     "fcc42dccdf872e2cad73c610fd456fcba50069ef682877fb6c9d383d927e11ff"
   );
   const ipfs = await pinata.pinJSONToIPFS(object);
-  console.log("Offer uploaded: " + ipfs.IpfsHash);
+  const signer: SignerWithAddress = (await hre.ethers.getSigners())[0];
+
+  // get PeerLocal contract from deployments
+  const peerLocal = await deployments.get("PeerLocal");
+  const peerLocalAddress = peerLocal.address;
+  const peerLocalContract = PeerLocal__factory.connect(
+    peerLocalAddress,
+    signer
+  );
+
+  const offerTx = await peerLocalContract.createOffer(0, ipfs.IpfsHash, 0, 0);
+  console.log("offerTx", offerTx);
 });

@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { subgraph } from "../../../subgraph";
+import { subgraph } from "../../graph-client/graphClient";
 
 export const useCommunites = () => {
   return useQuery({
