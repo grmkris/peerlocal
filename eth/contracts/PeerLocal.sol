@@ -142,7 +142,8 @@ contract PeerLocal is Ownable {
 
             }
             if (offers[communityId][offerId].reputationRequirement > 0) {
-                token.transferFrom(address(this), msg.sender, offers[communityId][offerId].reputationRequirement);
+
+                reputationToken.transferFrom(address(this), msg.sender, offers[communityId][offerId].reputationRequirement);
                 emit reputationTokenReturned(offers[communityId][offerId].reputationRequirement);
             }
 
