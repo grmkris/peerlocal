@@ -36,6 +36,12 @@ contract PeerLocal is Ownable {
     event OfferClosed(uint256 indexed communityId, uint256 indexed offerId, address indexed member);
     event PeerLocalInitalized(address indexed erc20);
 
+    event reputationTokenStaked(uint256 reputationRequirementStaked)
+    event collateralTokenStaked(uint256 stakingRequirementStaked)
+
+    event reputationTokenReturned(uint256 reputationRequirementReturned)
+    event collateralTokenReturned(uint256 stakingRequirementReturned)
+
     event ReputationTokenMint(uint256 mintAmount);
     event ReputationTokenBurn(uint256 burnAmount);
 
@@ -99,15 +105,18 @@ contract PeerLocal is Ownable {
         //We need to check the status of the offer is 1
         require((offers[communityId][offerId]).offerStatus == 1);
         // Transfer staked tokens
-        token.transferFrom(msg.sender, address(this), offers[communityId][offerId].stakingRequirement);
+        if (offers[communityId][offerId].stakingRequirement > 0) {
+            token.transferFrom(msg.sender, address(this), offers[communityId][offerId].stakingRequirement);
+            emit collateralTokenStaked([communityId][offerId].stakingRequirement)
+        }
         //Stake reputation if needed
         if (offers[communityId][offerId].reputationRequirement > 0) {
             reputationToken.transferFrom(msg.sender, address(this), offers[communityId][offerId].reputationRequirement);
+            emit reputationTokenStaked([communityId][offerId].reputationRequirement)
         }
         // Transfer staked tokens to offer owner
         // We should transfer the tokens to the owner util we decide if the return it's ok or no!!!!
         //token.transfer(offers[communityId][offerId].owner, offers[communityId][offerId].stakingRequirement);
-
         //We also have to stake some 
         
         offers[communityId][offerId].offerStatus = 2;
@@ -127,7 +136,17 @@ contract PeerLocal is Ownable {
 
         if (finalResult == true){
             // Transfer staked tokens back
-            token.transferFrom(address(this), msg.sender, offers[communityId][offerId].stakingRequirement);
+            if (offers[communityId][offerId].stakingRequirement > 0) {
+                token.transferFrom(address(this), msg.sender, offers[communityId][offerId].stakingRequirement);
+                emit collateralTokenReturned([communityId][offerId].stakingRequirement);
+
+            }
+            if (offers[communityId][offerId].reputationRequirement > 0) {
+                token.transferFrom(address(this), msg.sender, offers[communityId][offerId].reputationRequirement);
+                emit reputationTokenReturned([communityId][offerId].reputationRequirement);
+            }
+
+            //Return reputation lender and borrower
             //The lender and the borrower gets 1 Reputation Token
             mintTokens(msg.sender, 1);
             mintTokens(offers[communityId][offerId].owner, 1);
@@ -138,7 +157,7 @@ contract PeerLocal is Ownable {
         }else {
             token.transferFrom(address(this), offers[communityId][offerId].owner, offers[communityId][offerId].stakingRequirement);
             if (offers[communityId][offerId].reputationRequirement > 0) {
-                burnTokens(offers[communityId][offerId].reputationRequirement);
+                burnTokens(offers[communityId][offerId].reputationRequirement); //the staked ones
             }
             offers[communityId][offerId].offerStatus = 3;
             emit OfferClosed(communityId, offerId, msg.sender);
