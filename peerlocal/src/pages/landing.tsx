@@ -5,7 +5,7 @@ import { ConnectWallet } from "../features/ConnectWallet";
 import { Layout } from "../features/Layout";
 import { useModalStore } from "../features/modals/useModalStore";
 
-const Home: NextPage = () => {
+const Landing: NextPage = () => {
   const openModal = useModalStore((s) => s.openModal);
   return (
     <>
@@ -29,7 +29,7 @@ const Home: NextPage = () => {
               <h2 className="card-title">Decisions</h2>
               <p>Vote now for existing proposals in our Community DAO</p>
               <div className="card-actions">
-                <button className="btn btn-primary">go to Decisions</button>
+                <button className="btn btn-inactive">Coming soon...</button>
               </div>
             </div>
           </div>
@@ -63,4 +63,4 @@ const Home: NextPage = () => {
   );
 };
 
-export default Home;
+export default Landing;
