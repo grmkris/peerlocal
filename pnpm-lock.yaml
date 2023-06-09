@@ -70,6 +70,9 @@ importers:
       mocha:
         specifier: ^10.2.0
         version: 10.2.0
+      peerlocal/subgraph-client:
+        specifier: workspace:*
+        version: link:../sg-client
       prettier:
         specifier: ^2.8.8
         version: 2.8.8
@@ -133,6 +136,9 @@ importers:
       octokit:
         specifier: ^2.0.14
         version: 2.0.14
+      peerlocal/subgraph-client:
+        specifier: workspace:*
+        version: link:../sg-client
       react:
         specifier: 18.2.0
         version: 18.2.0
