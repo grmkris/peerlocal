@@ -31,7 +31,7 @@ contract PeerLocal is Ownable {
         uint8 offerStatus; //created -> 1, active -> 2, finished -> 3
     }
 
-    event CommunityCreated(uint256 indexed communityId, string ipfsMetadata, uint256 stakingRequirement, address indexed owner, IERC20 stakingToken);
+    event CommunityCreated(uint256 indexed communityId, string ipfsMetadata, address indexed owner, IERC20 stakingToken);
     event MemberJoinedCommunity(uint256 indexed communityId, address indexed member);
     event OfferCreated(uint256 indexed communityId, uint256 offerId, Offer newOffer);
     event OfferAccepted(uint256 indexed communityId, uint256 indexed offerId, address indexed member);
@@ -47,84 +47,78 @@ contract PeerLocal is Ownable {
     event ReputationTokenMint(uint256 mintAmount);
     event ReputationTokenBurn(uint256 burnAmount);
 
-
-    IERC20 public token; // GHO //Now don't used anymore
-    mapping(uint256 => Community) public communities;
-    uint256 communityCounter = 0;
+    uint256 communitiesCounter = 0;
     uint256 offerCounter = 0;
-    // communityId => offerId => Offer
+
+    mapping(uint256 => Community) public communities;
     mapping(uint256 => mapping(uint256 => Offer)) public offers;
 
     mapping(uint256 => address[]) public communityMembers;
-    mapping(address => uint256) public reputation;
-
-    mapping(uint256 => string) public offerStatus;
 
 
-    constructor(IERC20 _token) {
-        token = _token;
-        reputationToken = ReputationToken(0xE5397854e5Efa5b487DcB5D39B1173608F74b728);
-        emit PeerLocalInitalized(address(_token));
-
+    constructor(address _reputationTokenAddress) public {
+        reputationToken = ReputationToken(_reputationTokenAddress);
+        emit PeerLocalInitalized(address(_reputationTokenAddress));
     }
 
-    function createCommunity(string memory ipfsMetadata, uint256 stakingRequirement, IERC20 stakingToken) public {
-        communities[communityCounter] = Community({ipfsMetadata: ipfsMetadata, stakingRequirement: stakingRequirement, owner: msg.sender, stakingToken: stakingToken});
-        communityCounter++;
-        communityMembers[communityCounter].push(msg.sender);
 
-        emit CommunityCreated(communityCounter - 1, ipfsMetadata, stakingRequirement, msg.sender, stakingToken);
+    function createCommunity(string memory _ipfsMetadata, IERC20 _stakingToken, uint256 _stakingRequirement) public {
+        communities[communitiesCounter] = Community({ipfsMetadata: _ipfsMetadata, owner: msg.sender, stakingToken: _stakingToken , stakingRequirement: _stakingRequirement});
+        communitiesCounter++;
+        communityMembers[communitiesCounter].push(msg.sender);
+        emit CommunityCreated(communitiesCounter - 1, _ipfsMetadata, msg.sender, _stakingToken);
     }
 
-    function joinCommunity(uint256 communityId, bytes memory signature) public {
+    function joinCommunity(uint256 _communityId, bytes memory _signature) public {
         // signature has to be from the owner of the community
-        require(_recoverSigner(signature) == communities[communityId].owner, "Invalid signature");
-        require((communities[communityId].stakingToken).balanceOf(msg.sender) >= communities[communityId].stakingRequirement, "Insufficient balance to join community");
+        require(_recoverSigner(_signature) == communities[_communityId].owner, "Invalid signature");
+        require((communities[_communityId].stakingToken).balanceOf(msg.sender) >= communities[_communityId].stakingRequirement, "Insufficient balance to join community");
         // transfer from msg.sender to this contract
-        (communities[communityId].stakingToken).transferFrom(msg.sender, address(this), communities[communityId].stakingRequirement);
+        (communities[_communityId].stakingToken).transferFrom(msg.sender, address(this), communities[_communityId].stakingRequirement);
         // add msg.sender to communityMembers
-        communityMembers[communityId].push(msg.sender);
+        communityMembers[_communityId].push(msg.sender);
         // emit event
-        emit MemberJoinedCommunity(communityId, msg.sender);
+        emit MemberJoinedCommunity(_communityId, msg.sender);
     }
 
-    function createOffer(uint256 communityId, string memory metadata, uint256 reputationRequirement, uint256 stakingRequirement) public {
+    function createOffer(uint256 _communityId, string memory _metadata, uint256 _reputationRequirement, uint256 _stakingRequirement) public {
         //require(reputation[msg.sender] >= reputationRequirement, "Insufficient reputation to create offer");
 
         //We add one to the offerCounter
         offerCounter += 1;
 
-        Offer memory newOffer = Offer(msg.sender, communityId, metadata, reputationRequirement, stakingRequirement, 1);
+        Offer memory newOffer = Offer(msg.sender, _communityId, _metadata, _reputationRequirement, _stakingRequirement, 1);
 
-        offers[communityId][offerCounter] = newOffer;
+        offers[_communityId][offerCounter] = newOffer;
         // set the status of the offer to 1, created, not accept
-        emit OfferCreated(communityId, offerCounter, newOffer);
+        emit OfferCreated(_communityId, offerCounter, newOffer);
     }
 
-    function acceptOffer(uint256 communityId, uint256 offerId) public {
-        require((communities[communityId].stakingToken).balanceOf(msg.sender) >= offers[communityId][offerId].stakingRequirement, "Insufficient balance to accept offer");
-        require(reputation[msg.sender] >= offers[communityId][offerId].reputationRequirement, "Insufficient reputation to accept offer");
+    function acceptOffer(uint256 _communityId, uint256 _offerId) public {
+        require((communities[_communityId].stakingToken).balanceOf(msg.sender) >= offers[_communityId][_offerId].stakingRequirement, "Insufficient balance to accept offer");
+        require((communities[_communityId].stakingToken).allowance(msg.sender, address(this)) >= offers[_communityId][_offerId].stakingRequirement, "Insufficient allowance to accept offer");
+
         //We need to check the status of the offer is 1
-        require((offers[communityId][offerId]).offerStatus == 1);
+        require((offers[_communityId][_offerId]).offerStatus == 1);
         // Transfer staked tokens
-        if (offers[communityId][offerId].stakingRequirement > 0) {
-            (communities[communityId].stakingToken).transferFrom(msg.sender, address(this), offers[communityId][offerId].stakingRequirement);
-            emit collateralTokenStaked(offers[communityId][offerId].stakingRequirement);
+        if (offers[_communityId][_offerId].stakingRequirement > 0) {
+            (communities[_communityId].stakingToken).transferFrom(msg.sender, address(this), offers[_communityId][_offerId].stakingRequirement);
+            emit collateralTokenStaked(offers[_communityId][_offerId].stakingRequirement);
         }
         //Stake reputation if needed
-        if (offers[communityId][offerId].reputationRequirement > 0) {
-            reputationToken.transferFrom(msg.sender, address(this), offers[communityId][offerId].reputationRequirement);
-            emit reputationTokenStaked(offers[communityId][offerId].reputationRequirement);
+        if (offers[_communityId][_offerId].reputationRequirement > 0) {
+            reputationToken.transferFrom(msg.sender, address(this), offers[_communityId][_offerId].reputationRequirement);
+            emit reputationTokenStaked(offers[_communityId][_offerId].reputationRequirement);
         }
         // Transfer staked tokens to offer owner
         // We should transfer the tokens to the owner util we decide if the return it's ok or no!!!!
         //token.transfer(offers[communityId][offerId].owner, offers[communityId][offerId].stakingRequirement);
         //We also have to stake some
 
-        offers[communityId][offerId].offerStatus = 2;
+        offers[_communityId][_offerId].offerStatus = 2;
 
         // emit event
-        emit OfferAccepted(communityId, offerId, msg.sender);
+        emit OfferAccepted(_communityId, _offerId, msg.sender);
     }
 
     function _recoverSigner(
@@ -133,46 +127,46 @@ contract PeerLocal is Ownable {
         return ECDSA.recover(ECDSA.toEthSignedMessageHash(MESSAGE_TO_BE_SIGNED_BY_COMMUNIT_OWNER), signature);
     }
 
-    function endOffer(uint256 communityId, uint256 offerId, bool finalResult) public {
-        require((offers[communityId][offerId]).offerStatus == 2);
+    function endOffer(uint256 _communityId, uint256 _offerId, bool _finalResult) public {
+        require((offers[_communityId][_offerId]).offerStatus == 2);
 
-        if (finalResult == true){
+        if (_finalResult == true){
             // Transfer staked tokens back
-            if (offers[communityId][offerId].stakingRequirement > 0) {
-                (communities[communityId].stakingToken).transferFrom(address(this), msg.sender, offers[communityId][offerId].stakingRequirement);
-                emit collateralTokenReturned(offers[communityId][offerId].stakingRequirement);
+            if (offers[_communityId][_offerId].stakingRequirement > 0) {
+                (communities[_communityId].stakingToken).transferFrom(address(this), msg.sender, offers[_communityId][_offerId].stakingRequirement);
+                emit collateralTokenReturned(offers[_communityId][_offerId].stakingRequirement);
 
             }
-            if (offers[communityId][offerId].reputationRequirement > 0) {
-                reputationToken.transferFrom(address(this), msg.sender, offers[communityId][offerId].reputationRequirement);
-                emit reputationTokenReturned(offers[communityId][offerId].reputationRequirement);
+            if (offers[_communityId][_offerId].reputationRequirement > 0) {
+                reputationToken.transferFrom(address(this), msg.sender, offers[_communityId][_offerId].reputationRequirement);
+                emit reputationTokenReturned(offers[_communityId][_offerId].reputationRequirement);
             }
 
             //Return reputation lender and borrower
             //The lender and the borrower gets 1 Reputation Token
             mintTokens(msg.sender, 1);
-            mintTokens(offers[communityId][offerId].owner, 1);
+            mintTokens(offers[_communityId][_offerId].owner, 1);
 
-            offers[communityId][offerId].offerStatus = 3;
-            emit OfferClosed(communityId, offerId, msg.sender);
+            offers[_communityId][_offerId].offerStatus = 3;
+            emit OfferClosed(_communityId, _offerId, msg.sender);
 
         }else {
-            (communities[communityId].stakingToken).transferFrom(address(this), offers[communityId][offerId].owner, offers[communityId][offerId].stakingRequirement);
-            if (offers[communityId][offerId].reputationRequirement > 0) {
-                burnTokens(offers[communityId][offerId].reputationRequirement); //the staked ones
+            (communities[_communityId].stakingToken).transferFrom(address(this), offers[_communityId][_offerId].owner, offers[_communityId][_offerId].stakingRequirement);
+            if (offers[_communityId][_offerId].reputationRequirement > 0) {
+                burnTokens(offers[_communityId][_offerId].reputationRequirement); //the staked ones
             }
-            offers[communityId][offerId].offerStatus = 3;
-            emit OfferClosed(communityId, offerId, msg.sender);
+            offers[_communityId][_offerId].offerStatus = 3;
+            emit OfferClosed(_communityId, _offerId, msg.sender);
         }
 
     }
 
-    function mintTokens(address recipient, uint256 amount) private {
-        reputationToken.mint(recipient, amount);
-        emit ReputationTokenMint(amount);
+    function mintTokens(address _recipient, uint256 _amount) private {
+        reputationToken.mint(_recipient, _amount);
+        emit ReputationTokenMint(_amount);
     }
-     function burnTokens(uint256 amount) private {
-        reputationToken.burn(amount);
-        emit ReputationTokenBurn(amount);
+     function burnTokens(uint256 _amount) private {
+        reputationToken.burn(_amount);
+        emit ReputationTokenBurn(_amount);
     }
 }
