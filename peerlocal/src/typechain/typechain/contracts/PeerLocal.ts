@@ -59,7 +59,7 @@ export interface PeerLocalInterface extends utils.Interface {
     "acceptOffer(uint256,uint256)": FunctionFragment;
     "communities(uint256)": FunctionFragment;
     "communityMembers(uint256,uint256)": FunctionFragment;
-    "createCommunity(string,uint256)": FunctionFragment;
+    "createCommunity(string,uint256,address)": FunctionFragment;
     "createOffer(uint256,string,uint256,uint256)": FunctionFragment;
     "endOffer(uint256,uint256,bool)": FunctionFragment;
     "joinCommunity(uint256,bytes)": FunctionFragment;
@@ -106,7 +106,11 @@ export interface PeerLocalInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "createCommunity",
-    values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
+    values: [
+      PromiseOrValue<string>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<string>
+    ]
   ): string;
   encodeFunctionData(
     functionFragment: "createOffer",
@@ -203,7 +207,7 @@ export interface PeerLocalInterface extends utils.Interface {
   ): Result;
 
   events: {
-    "CommunityCreated(uint256,string,uint256,address)": EventFragment;
+    "CommunityCreated(uint256,string,uint256,address,address)": EventFragment;
     "MemberJoinedCommunity(uint256,address)": EventFragment;
     "OfferAccepted(uint256,uint256,address)": EventFragment;
     "OfferClosed(uint256,uint256,address)": EventFragment;
@@ -238,9 +242,10 @@ export interface CommunityCreatedEventObject {
   ipfsMetadata: string;
   stakingRequirement: BigNumber;
   owner: string;
+  stakingToken: string;
 }
 export type CommunityCreatedEvent = TypedEvent<
-  [BigNumber, string, BigNumber, string],
+  [BigNumber, string, BigNumber, string, string],
   CommunityCreatedEventObject
 >;
 
@@ -421,10 +426,11 @@ export interface PeerLocal extends BaseContract {
       arg0: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<
-      [string, BigNumber, string] & {
+      [string, BigNumber, string, string] & {
         ipfsMetadata: string;
         stakingRequirement: BigNumber;
         owner: string;
+        stakingToken: string;
       }
     >;
 
@@ -437,6 +443,7 @@ export interface PeerLocal extends BaseContract {
     createCommunity(
       ipfsMetadata: PromiseOrValue<string>,
       stakingRequirement: PromiseOrValue<BigNumberish>,
+      stakingToken: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -512,10 +519,11 @@ export interface PeerLocal extends BaseContract {
     arg0: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
   ): Promise<
-    [string, BigNumber, string] & {
+    [string, BigNumber, string, string] & {
       ipfsMetadata: string;
       stakingRequirement: BigNumber;
       owner: string;
+      stakingToken: string;
     }
   >;
 
@@ -528,6 +536,7 @@ export interface PeerLocal extends BaseContract {
   createCommunity(
     ipfsMetadata: PromiseOrValue<string>,
     stakingRequirement: PromiseOrValue<BigNumberish>,
+    stakingToken: PromiseOrValue<string>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -603,10 +612,11 @@ export interface PeerLocal extends BaseContract {
       arg0: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<
-      [string, BigNumber, string] & {
+      [string, BigNumber, string, string] & {
         ipfsMetadata: string;
         stakingRequirement: BigNumber;
         owner: string;
+        stakingToken: string;
       }
     >;
 
@@ -619,6 +629,7 @@ export interface PeerLocal extends BaseContract {
     createCommunity(
       ipfsMetadata: PromiseOrValue<string>,
       stakingRequirement: PromiseOrValue<BigNumberish>,
+      stakingToken: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -683,17 +694,19 @@ export interface PeerLocal extends BaseContract {
   };
 
   filters: {
-    "CommunityCreated(uint256,string,uint256,address)"(
+    "CommunityCreated(uint256,string,uint256,address,address)"(
       communityId?: PromiseOrValue<BigNumberish> | null,
       ipfsMetadata?: null,
       stakingRequirement?: null,
-      owner?: PromiseOrValue<string> | null
+      owner?: PromiseOrValue<string> | null,
+      stakingToken?: null
     ): CommunityCreatedEventFilter;
     CommunityCreated(
       communityId?: PromiseOrValue<BigNumberish> | null,
       ipfsMetadata?: null,
       stakingRequirement?: null,
-      owner?: PromiseOrValue<string> | null
+      owner?: PromiseOrValue<string> | null,
+      stakingToken?: null
     ): CommunityCreatedEventFilter;
 
     "MemberJoinedCommunity(uint256,address)"(
@@ -814,6 +827,7 @@ export interface PeerLocal extends BaseContract {
     createCommunity(
       ipfsMetadata: PromiseOrValue<string>,
       stakingRequirement: PromiseOrValue<BigNumberish>,
+      stakingToken: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -891,6 +905,7 @@ export interface PeerLocal extends BaseContract {
     createCommunity(
       ipfsMetadata: PromiseOrValue<string>,
       stakingRequirement: PromiseOrValue<BigNumberish>,
+      stakingToken: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
