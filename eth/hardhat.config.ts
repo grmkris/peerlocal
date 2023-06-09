@@ -59,7 +59,7 @@ const config: HardhatUserConfig = {
       accounts: accounts("kovan"),
     },
     goerli: {
-      url: "https://eth-goerli.public.blastapi.io",
+      url: "https://rpc.eu-north-1.gateway.fm/v4/ethereum/non-archival/goerli",
       accounts: accounts("goerli"),
     },
     fuji: {
@@ -69,6 +69,14 @@ const config: HardhatUserConfig = {
     sepolia: {
       url: "https://rpc2.sepolia.org",
       accounts: accounts("sepolia"),
+    },
+    "optimism-goerli": {
+      url: "https://rpc.eu-north-1.gateway.fm/v4/optimism/non-archival/goerli",
+      accounts: accounts("optimism-goerli"),
+    },
+    zkSync_testnet: {
+      url: "https://testnet.era.zksync.dev",
+      accounts: accounts("zkSync_testnet"),
     },
   }),
   paths: {
