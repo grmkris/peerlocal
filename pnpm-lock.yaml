@@ -10,9 +10,15 @@ importers:
 
   eth:
     devDependencies:
+      '@matterlabs/hardhat-zksync-deploy':
+        specifier: ^0.6.3
+        version: 0.6.3(ethers@5.7.2)(hardhat@2.14.0)(zksync-web3@0.14.3)
       '@matterlabs/hardhat-zksync-solc':
         specifier: ^0.3.17
         version: 0.3.17(hardhat@2.14.0)
+      '@matterlabs/zksync-contracts':
+        specifier: ^0.6.1
+        version: 0.6.1(@openzeppelin/contracts-upgradeable@4.6.0)(@openzeppelin/contracts@4.8.3)
       '@nomicfoundation/hardhat-chai-matchers':
         specifier: ^1.0.6
         version: 1.0.6(@nomiclabs/hardhat-ethers@2.2.3)(chai@4.3.7)(ethers@5.7.2)(hardhat@2.14.0)
@@ -100,6 +106,9 @@ importers:
       typescript:
         specifier: ^5.0.4
         version: 5.0.4
+      zksync-web3:
+        specifier: ^0.14.3
+        version: 0.14.3(ethers@5.7.2)
 
   peerlocal:
     dependencies:
@@ -2117,6 +2126,19 @@ packages:
       '@lit-labs/ssr-dom-shim': 1.1.1
     dev: false
 
+  /@matterlabs/hardhat-zksync-deploy@0.6.3(ethers@5.7.2)(hardhat@2.14.0)(zksync-web3@0.14.3):
+    resolution: {integrity: sha512-FB+2xFL/80JJwlGna+aHA6dk4ONrMFqThTZATYVJUAKooA0Aw5qmpmM8B3qsNB4LLzHSO/EmVrHIcLaPv8hYwQ==}
+    peerDependencies:
+      ethers: ~5.7.2
+      hardhat: ^2.13.0
+      zksync-web3: ^0.14.3
+    dependencies:
+      chalk: 4.1.2
+      ethers: 5.7.2
+      hardhat: 2.14.0(ts-node@10.9.1)(typescript@5.0.4)
+      zksync-web3: 0.14.3(ethers@5.7.2)
+    dev: true
+
   /@matterlabs/hardhat-zksync-solc@0.3.17(hardhat@2.14.0):
     resolution: {integrity: sha512-aZgQ0yfXW5xPkfuEH1d44ncWV4T2LzKZd0VVPo4PL5cUrYs2/II1FaEDp5zsf3FxOR1xT3mBsjuSrtJkk4AL8Q==}
     peerDependencies:
@@ -2129,6 +2151,16 @@ packages:
     transitivePeerDependencies:
       - encoding
       - supports-color
+    dev: true
+
+  /@matterlabs/zksync-contracts@0.6.1(@openzeppelin/contracts-upgradeable@4.6.0)(@openzeppelin/contracts@4.8.3):
+    resolution: {integrity: sha512-+hucLw4DhGmTmQlXOTEtpboYCaOm/X2VJcWmnW4abNcOgQXEHX+mTxQrxEfPjIZT0ZE6z5FTUrOK9+RgUZwBMQ==}
+    peerDependencies:
+      '@openzeppelin/contracts': 4.6.0
+      '@openzeppelin/contracts-upgradeable': 4.6.0
+    dependencies:
+      '@openzeppelin/contracts': 4.8.3
+      '@openzeppelin/contracts-upgradeable': 4.6.0
     dev: true
 
   /@metamask/eth-sig-util@4.0.1:
@@ -2955,6 +2987,10 @@ packages:
       '@octokit/webhooks-types': 6.11.0
       aggregate-error: 3.1.0
     dev: false
+
+  /@openzeppelin/contracts-upgradeable@4.6.0:
+    resolution: {integrity: sha512-5OnVuO4HlkjSCJO165a4i2Pu1zQGzMs//o54LPrwUgxvEO2P3ax1QuaSI0cEHHTveA77guS0PnNugpR2JMsPfA==}
+    dev: true
 
   /@openzeppelin/contracts@4.8.3:
     resolution: {integrity: sha512-bQHV8R9Me8IaJoJ2vPG4rXcL7seB7YVuskr4f+f5RyOStSZetwzkWtoqDMl5erkBJy0lDRUnIR2WIkPiC0GJlg==}

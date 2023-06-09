@@ -19,7 +19,7 @@ const config: HardhatUserConfig = {
     settings: {
       //compilerPath: "zksolc",  // optional. Ignored for compilerSource "docker". Can be used if compiler is located in a specific folder
       libraries: {}, // optional. References to non-inlinable libraries
-      isSystem: false, // optional.  Enables Yul instructions available only for zkSync system contracts and libraries
+      isSystem: true, // optional.  Enables Yul instructions available only for zkSync system contracts and libraries
       forceEvmla: false, // optional. Falls back to EVM legacy assembly if there is a bug with Yul
       optimizer: {
         enabled: true, // optional. True by default
@@ -30,7 +30,7 @@ const config: HardhatUserConfig = {
   solidity: {
     compilers: [
       {
-        version: "0.8.10",
+        version: "0.8.11",
         settings: {
           optimizer: {
             enabled: true,

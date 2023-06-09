@@ -3,7 +3,9 @@
   "version": "0.0.1",
   "description": "",
   "devDependencies": {
+    "@matterlabs/hardhat-zksync-deploy": "^0.6.3",
     "@matterlabs/hardhat-zksync-solc": "^0.3.17",
+    "@matterlabs/zksync-contracts": "^0.6.1",
     "@nomicfoundation/hardhat-chai-matchers": "^1.0.6",
     "@nomiclabs/hardhat-ethers": "^2.2.3",
     "@openzeppelin/contracts": "^4.8.3",
@@ -32,13 +34,14 @@
     "ts-generator": "^0.1.1",
     "ts-node": "^10.9.1",
     "typechain": "^8.1.1",
-    "typescript": "^5.0.4"
+    "typescript": "^5.0.4",
+    "zksync-web3": "^0.14.3"
   },
   "scripts": {
     "prepare": "node ./.setup.js && hardhat typechain",
     "format": "prettier --check \"**/*.{ts,js,sol}\"",
     "format:fix": "prettier --write \"**/*.{ts,js,sol}\"",
-    "compile": "hardhat compile",
+    "compile": "hardhat compile && cp -r typechain ../peerlocal/src/typechain",
     "void:deploy": "hardhat deploy --report-gas",
     "test": "cross-env HARDHAT_DEPLOY_FIXTURE=true HARDHAT_COMPILE=true mocha --bail --recursive test",
     "gas": "cross-env REPORT_GAS=true hardhat test",
