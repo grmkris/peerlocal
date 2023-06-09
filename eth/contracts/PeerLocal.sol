@@ -74,6 +74,8 @@ contract PeerLocal is Ownable {
     function createCommunity(string memory ipfsMetadata, uint256 stakingRequirement, IERC20 stakingToken) public {
         communities[communityCounter] = Community({ipfsMetadata: ipfsMetadata, stakingRequirement: stakingRequirement, owner: msg.sender, stakingToken: stakingToken});
         communityCounter++;
+        communityMembers[communityCounter].push(msg.sender);
+
         emit CommunityCreated(communityCounter - 1, ipfsMetadata, stakingRequirement, msg.sender, stakingToken);
     }
 
@@ -90,7 +92,7 @@ contract PeerLocal is Ownable {
     }
 
     function createOffer(uint256 communityId, string memory metadata, uint256 reputationRequirement, uint256 stakingRequirement) public {
-        require(reputation[msg.sender] >= reputationRequirement, "Insufficient reputation to create offer");
+        //require(reputation[msg.sender] >= reputationRequirement, "Insufficient reputation to create offer");
 
         //We add one to the offerCounter
         offerCounter += 1;
