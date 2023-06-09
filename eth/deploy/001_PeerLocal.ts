@@ -33,6 +33,14 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
       });
       console.log("PeerLocal deployed to:", deployment2.address);
       break;
+    default:
+      const testERC20 = await deployments.get("TestERC20");
+      const deployment3 = await deploy("PeerLocal", {
+        from: deployer,
+        log: true,
+        args: [testERC20.address],
+      });
+      console.log("PeerLocal deployed to:", deployment3.address);
   }
 };
 
