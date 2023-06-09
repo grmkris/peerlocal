@@ -2,3 +2,4 @@ packages:
   - "peerlocal"
   - "eth"
   - "sg"
+  - "peerlocal-sg"

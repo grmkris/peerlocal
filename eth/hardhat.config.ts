@@ -65,6 +65,10 @@ const config: HardhatUserConfig = {
       url: "https://ava-testnet.public.blastapi.io/ext/bc/C/rpc",
       accounts: accounts("fuji"),
     },
+    sepolia: {
+      url: "https://rpc2.sepolia.org",
+      accounts: accounts("sepolia"),
+    }
   }),
   paths: {
     sources: "contracts",
