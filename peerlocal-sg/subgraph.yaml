@@ -1,0 +1,37 @@
+specVersion: 0.0.5
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: PeerLocal
+    network: goerli
+    source:
+      abi: PeerLocal
+      address: "0x9A90f394b6de7E462669413fEf6D3e644B7Dd0E5"
+      startBlock: 9149165
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - CommunityCreated
+        - MemberJoinedCommunity
+        - OfferAccepted
+        - OfferCreated
+        - OwnershipTransferred
+      abis:
+        - name: PeerLocal
+          file: ./abis/PeerLocal.json
+      eventHandlers:
+        - event: CommunityCreated(indexed uint256,string,uint256,indexed address)
+          handler: handleCommunityCreated
+        - event: MemberJoinedCommunity(indexed uint256,indexed address)
+          handler: handleMemberJoinedCommunity
+        - event: OfferAccepted(indexed uint256,indexed uint256,indexed address)
+          handler: handleOfferAccepted
+        - event: OfferCreated(indexed uint256,uint256,indexed
+            address,string,uint256,uint256)
+          handler: handleOfferCreated
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+      file: ./src/peer-local.ts

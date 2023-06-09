@@ -12,6 +12,8 @@ node_modules
 /.next/
 /out/
 
+eth/v8-compile-cache-0/*
+
 # production
 build
 

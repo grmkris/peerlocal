@@ -1,0 +1,14 @@
+{
+  "sepolia": {
+    "PeerLocal": {
+      "address": "0x9A90f394b6de7E462669413fEf6D3e644B7Dd0E5",
+      "startBlock": 3655311
+    }
+  },
+  "goerli": {
+    "PeerLocal": {
+      "address": "0x9A90f394b6de7E462669413fEf6D3e644B7Dd0E5",
+      "startBlock": 9149165
+    }
+  }
+}

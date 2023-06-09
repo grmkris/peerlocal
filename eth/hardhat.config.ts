@@ -58,13 +58,17 @@ const config: HardhatUserConfig = {
       accounts: accounts("kovan"),
     },
     goerli: {
-      url: node_url("goerli"),
+      url: "https://eth-goerli.public.blastapi.io",
       accounts: accounts("goerli"),
     },
     fuji: {
       url: "https://ava-testnet.public.blastapi.io/ext/bc/C/rpc",
       accounts: accounts("fuji"),
     },
+    sepolia: {
+      url: "https://rpc2.sepolia.org",
+      accounts: accounts("sepolia"),
+    }
   }),
   paths: {
     sources: "contracts",
