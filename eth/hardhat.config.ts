@@ -10,6 +10,7 @@ import "solidity-coverage";
 import "hardhat-deploy-tenderly";
 import { accounts, addForkConfiguration, node_url } from "./utils/network";
 import "./tasks/accounts";
+import "./tasks/peerlocal";
 
 const config: HardhatUserConfig = {
   solidity: {
@@ -68,7 +69,7 @@ const config: HardhatUserConfig = {
     sepolia: {
       url: "https://rpc2.sepolia.org",
       accounts: accounts("sepolia"),
-    }
+    },
   }),
   paths: {
     sources: "contracts",
