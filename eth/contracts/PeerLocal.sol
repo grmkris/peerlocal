@@ -5,6 +5,7 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 
+
 import "./ReputationToken.sol";  // Import the ReputationToken contract's ABI
 
 
@@ -18,6 +19,7 @@ contract PeerLocal is Ownable {
         string ipfsMetadata;
         uint256 stakingRequirement;
         address owner;
+        IERC20 stakingToken;
     }
 
     struct Offer {
@@ -29,7 +31,7 @@ contract PeerLocal is Ownable {
         uint8 offerStatus; //created -> 1, active -> 2, finished -> 3
     }
 
-    event CommunityCreated(uint256 indexed communityId, string ipfsMetadata, uint256 stakingRequirement, address indexed owner);
+    event CommunityCreated(uint256 indexed communityId, string ipfsMetadata, uint256 stakingRequirement, address indexed owner, IERC20 stakingToken);
     event MemberJoinedCommunity(uint256 indexed communityId, address indexed member);
     event OfferCreated(uint256 indexed communityId, uint256 offerId, Offer newOffer);
     event OfferAccepted(uint256 indexed communityId, uint256 indexed offerId, address indexed member);
@@ -46,10 +48,7 @@ contract PeerLocal is Ownable {
     event ReputationTokenBurn(uint256 burnAmount);
 
 
-
-
-
-    IERC20 public token; // GHO
+    IERC20 public token; // GHO //Now don't used anymore
     mapping(uint256 => Community) public communities;
     uint256 communityCounter = 0;
     uint256 offerCounter = 0;
@@ -64,22 +63,25 @@ contract PeerLocal is Ownable {
 
     constructor(IERC20 _token) {
         token = _token;
-        emit PeerLocalInitalized(address(_token));
         reputationToken = ReputationToken(0xE5397854e5Efa5b487DcB5D39B1173608F74b728);
+        emit PeerLocalInitalized(address(_token));
+
     }
 
-    function createCommunity(string memory ipfsMetadata, uint256 stakingRequirement) public {
-        communities[communityCounter] = Community({ipfsMetadata: ipfsMetadata, stakingRequirement: stakingRequirement, owner: msg.sender});
+    function createCommunity(string memory ipfsMetadata, uint256 stakingRequirement, IERC20 stakingToken) public {
+        communities[communityCounter] = Community({ipfsMetadata: ipfsMetadata, stakingRequirement: stakingRequirement, owner: msg.sender, stakingToken: stakingToken});
         communityCounter++;
-        emit CommunityCreated(communityCounter - 1, ipfsMetadata, stakingRequirement, msg.sender);
+        communityMembers[communityCounter].push(msg.sender);
+
+        emit CommunityCreated(communityCounter - 1, ipfsMetadata, stakingRequirement, msg.sender, stakingToken);
     }
 
     function joinCommunity(uint256 communityId, bytes memory signature) public {
         // signature has to be from the owner of the community
         require(_recoverSigner(signature) == communities[communityId].owner, "Invalid signature");
-        require(token.balanceOf(msg.sender) >= communities[communityId].stakingRequirement, "Insufficient balance to join community");
+        require((communities[communityId].stakingToken).balanceOf(msg.sender) >= communities[communityId].stakingRequirement, "Insufficient balance to join community");
         // transfer from msg.sender to this contract
-        token.transferFrom(msg.sender, address(this), communities[communityId].stakingRequirement);
+        (communities[communityId].stakingToken).transferFrom(msg.sender, address(this), communities[communityId].stakingRequirement);
         // add msg.sender to communityMembers
         communityMembers[communityId].push(msg.sender);
         // emit event
@@ -87,7 +89,7 @@ contract PeerLocal is Ownable {
     }
 
     function createOffer(uint256 communityId, string memory metadata, uint256 reputationRequirement, uint256 stakingRequirement) public {
-        require(reputation[msg.sender] >= reputationRequirement, "Insufficient reputation to create offer");
+        //require(reputation[msg.sender] >= reputationRequirement, "Insufficient reputation to create offer");
 
         //We add one to the offerCounter
         offerCounter += 1;
@@ -100,13 +102,13 @@ contract PeerLocal is Ownable {
     }
 
     function acceptOffer(uint256 communityId, uint256 offerId) public {
-        require(token.balanceOf(msg.sender) >= offers[communityId][offerId].stakingRequirement, "Insufficient balance to accept offer");
+        require((communities[communityId].stakingToken).balanceOf(msg.sender) >= offers[communityId][offerId].stakingRequirement, "Insufficient balance to accept offer");
         require(reputation[msg.sender] >= offers[communityId][offerId].reputationRequirement, "Insufficient reputation to accept offer");
         //We need to check the status of the offer is 1
         require((offers[communityId][offerId]).offerStatus == 1);
         // Transfer staked tokens
         if (offers[communityId][offerId].stakingRequirement > 0) {
-            token.transferFrom(msg.sender, address(this), offers[communityId][offerId].stakingRequirement);
+            (communities[communityId].stakingToken).transferFrom(msg.sender, address(this), offers[communityId][offerId].stakingRequirement);
             emit collateralTokenStaked(offers[communityId][offerId].stakingRequirement);
         }
         //Stake reputation if needed
@@ -137,12 +139,11 @@ contract PeerLocal is Ownable {
         if (finalResult == true){
             // Transfer staked tokens back
             if (offers[communityId][offerId].stakingRequirement > 0) {
-                token.transferFrom(address(this), msg.sender, offers[communityId][offerId].stakingRequirement);
+                (communities[communityId].stakingToken).transferFrom(address(this), msg.sender, offers[communityId][offerId].stakingRequirement);
                 emit collateralTokenReturned(offers[communityId][offerId].stakingRequirement);
 
             }
             if (offers[communityId][offerId].reputationRequirement > 0) {
-
                 reputationToken.transferFrom(address(this), msg.sender, offers[communityId][offerId].reputationRequirement);
                 emit reputationTokenReturned(offers[communityId][offerId].reputationRequirement);
             }
@@ -156,7 +157,7 @@ contract PeerLocal is Ownable {
             emit OfferClosed(communityId, offerId, msg.sender);
 
         }else {
-            token.transferFrom(address(this), offers[communityId][offerId].owner, offers[communityId][offerId].stakingRequirement);
+            (communities[communityId].stakingToken).transferFrom(address(this), offers[communityId][offerId].owner, offers[communityId][offerId].stakingRequirement);
             if (offers[communityId][offerId].reputationRequirement > 0) {
                 burnTokens(offers[communityId][offerId].reputationRequirement); //the staked ones
             }
