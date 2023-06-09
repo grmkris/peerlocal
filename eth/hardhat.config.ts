@@ -87,6 +87,7 @@ const config: HardhatUserConfig = {
     "optimism-goerli": {
       url: "https://rpc.eu-north-1.gateway.fm/v4/optimism/non-archival/goerli",
       accounts: accounts("optimism-goerli"),
+      gasPrice: 35000000000,
     },
     zkSync_testnet: {
       url: "https://testnet.era.zksync.dev",
