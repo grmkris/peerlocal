@@ -7,8 +7,6 @@ import { useModalStore } from "../features/modals/useModalStore";
 import { useCommunites } from "src/features/peerlocal/hooks/usePeerLocal";
 
 const Landing: NextPage = () => {
-  const community = useCommunites()
-  console.log(community)
   return (
     <>
       <Head>

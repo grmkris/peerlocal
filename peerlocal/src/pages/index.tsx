@@ -4,8 +4,6 @@ import { Layout } from "../features/Layout";
 import { useCommunites } from "../features/peerlocal/hooks/usePeerLocal";
 
 const Home: NextPage = () => {
-  const community = useCommunites();
-  console.log(community);
   return (
     <>
       <Head>
