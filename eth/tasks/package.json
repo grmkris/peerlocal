@@ -1,0 +1,16 @@
+{
+  "name": "pinata",
+  "version": "1.0.0",
+  "description": "upload files to ipds",
+  "main": "pinata.js",
+  "scripts": {
+    "upload": "node pinata.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@pinata/sdk": "^2.1.0",
+    "axios": "^1.4.0"
+  }
+}
