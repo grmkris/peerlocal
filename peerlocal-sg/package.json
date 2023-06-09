@@ -8,11 +8,15 @@
     "create-local": "graph create --node http://localhost:8020/ peerlocal-sepolia",
     "remove-local": "graph remove --node http://localhost:8020/ peerlocal-sepolia",
     "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 peerlocal-sepolia",
-    "test": "graph test"
+    "test": "graph test",
+    "build:goerli": "graph build --network goerli",
+    "build:sepolia": "graph build --network sepolia",
+    "deploy:goerli": "pnpm build:goerli && graph deploy --product hosted-service grmkris/peerlocal-goerli",
+    "deploy:sepolia": "pnpm  build:sepolia && graph deploy --product hosted-service grmkris/peerlocal-sepolia"
   },
   "dependencies": {
-    "@graphprotocol/graph-cli": "0.49.0",
-    "@graphprotocol/graph-ts": "0.29.1"
+    "@graphprotocol/graph-cli": "^0.51.0",
+    "@graphprotocol/graph-ts": "^0.31.0"
   },
   "devDependencies": { "matchstick-as": "0.5.0" }
 }

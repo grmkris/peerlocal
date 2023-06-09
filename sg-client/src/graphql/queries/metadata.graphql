@@ -1,0 +1,8 @@
+query SubgraphMetadata {
+    _meta {
+        block {
+            timestamp
+            number
+        }
+    }
+}

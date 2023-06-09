@@ -27,6 +27,7 @@ contract PeerLocal is Ownable {
     event MemberJoinedCommunity(uint256 indexed communityId, address indexed member);
     event OfferCreated(uint256 indexed communityId, uint256 offerId, address indexed owner, string metadata, uint256 reputationRequirement, uint256 stakingRequirement);
     event OfferAccepted(uint256 indexed communityId, uint256 indexed offerId, address indexed member);
+    event PeerLocalInitalized(address indexed erc20);
 
 
 
@@ -42,6 +43,7 @@ contract PeerLocal is Ownable {
 
     constructor(IERC20 _token) {
         token = _token;
+        emit PeerLocalInitalized(address(_token));
     }
 
     function createCommunity(string memory ipfsMetadata, uint256 stakingRequirement) public {

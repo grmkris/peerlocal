@@ -148,6 +148,24 @@ export class OwnershipTransferred__Params {
   }
 }
 
+export class PeerLocalInitalized extends ethereum.Event {
+  get params(): PeerLocalInitalized__Params {
+    return new PeerLocalInitalized__Params(this);
+  }
+}
+
+export class PeerLocalInitalized__Params {
+  _event: PeerLocalInitalized;
+
+  constructor(event: PeerLocalInitalized) {
+    this._event = event;
+  }
+
+  get erc20(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+}
+
 export class PeerLocal__communitiesResult {
   value0: string;
   value1: BigInt;

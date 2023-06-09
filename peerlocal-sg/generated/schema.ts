@@ -649,3 +649,60 @@ export class OwnershipTransferred extends Entity {
     this.set("transactionHash", Value.fromBytes(value));
   }
 }
+
+export class PeerLocal extends Entity {
+  constructor(id: Bytes) {
+    super();
+    this.set("id", Value.fromBytes(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save PeerLocal entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.BYTES,
+        `Entities of type PeerLocal must have an ID of type Bytes but the id '${id.displayData()}' is of type ${id.displayKind()}`
+      );
+      store.set("PeerLocal", id.toBytes().toHexString(), this);
+    }
+  }
+
+  static loadInBlock(id: Bytes): PeerLocal | null {
+    return changetype<PeerLocal | null>(
+      store.get_in_block("PeerLocal", id.toHexString())
+    );
+  }
+
+  static load(id: Bytes): PeerLocal | null {
+    return changetype<PeerLocal | null>(
+      store.get("PeerLocal", id.toHexString())
+    );
+  }
+
+  get id(): Bytes {
+    let value = this.get("id");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set id(value: Bytes) {
+    this.set("id", Value.fromBytes(value));
+  }
+
+  get erc20(): Bytes {
+    let value = this.get("erc20");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set erc20(value: Bytes) {
+    this.set("erc20", Value.fromBytes(value));
+  }
+}

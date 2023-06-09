@@ -1,0 +1,43 @@
+query Communites {
+    communityCreateds {
+        id
+        blockNumber
+        blockTimestamp
+        communityId
+        ipfsMetadata
+        owner
+        stakingRequirement
+        transactionHash
+    }
+}
+
+query CommunityMembers($communityId: BigInt!) {
+    memberJoinedCommunities(where: {communityId: $communityId}) {
+        communityId
+        transactionHash
+        blockTimestamp
+        id
+        member
+    }
+
+}
+
+query Offers($communityId: BigInt!) {
+    offerCreateds(where: {communityId: $communityId}) {
+        communityId
+        id
+        reputationRequirement
+        metadata
+        stakingRequirement
+    }
+}
+
+query OffersAccepted($communityId: BigInt!) {
+    offerAccepteds(where: {communityId: $communityId}) {
+        communityId
+        id
+        member
+        transactionHash
+    }
+}
+
