@@ -24,7 +24,7 @@ task("create-community", "Uploads json file to pinata", async (args, hre) => {
   const peerNetwork = await deployments.getNetworkName(); //To check if its goerli
   const peerLocalAddress = peerLocal.address;
 
-  const peerERC20 = await deployments.get("TestErc20Token");
+  const peerERC20 = await deployments.get("TestERC20");
   const peerERC20Address = peerERC20.address;
 
   const peerLocalContract = PeerLocal__factory.connect(
