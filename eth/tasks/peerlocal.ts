@@ -44,7 +44,7 @@ task("create-community", "Uploads json file to pinata", async (args, hre) => {
     const tx = await peerLocalContract.createCommunity(
       ipfs.IpfsHash,
       peerERC20Address,
-      0x1
+      0
     );
     console.log("Tx hash: " + tx.hash);
   }
@@ -61,7 +61,6 @@ task("join-community", "Uploads json file to pinata", async (args, hre) => {
   const signature = await signer.signMessage(
     "I am the owner of this community"
   );
-
 
   const peerLocal = await deployments.get("PeerLocal");
   const peerLocalAddress = peerLocal.address;
