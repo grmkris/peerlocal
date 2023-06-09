@@ -5,7 +5,17 @@ import { Layout } from "../../features/Layout";
 
 const Listing: NextPage = () => {
     const router = useRouter()
-    console.log(router.query)
+    const listing = {
+        "name": "name7",
+        "price": 1337.00,
+        "available": true,
+        "availability": "6/5 - 7/8",
+        "img": "https://placeholder.pics/svg/300",
+        "description": "asdjkasdh",
+        "pickup": "afternoon",
+        "deposing": 200,
+        "deposit_coin": "GOH"
+    }
     return (
         <>
             <Head>
@@ -16,6 +26,7 @@ const Listing: NextPage = () => {
             <Layout>
                 <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
                     {router.query.listing_id}
+                    <p>{listing.description}</p>
                 </div>
             </Layout>
         </>

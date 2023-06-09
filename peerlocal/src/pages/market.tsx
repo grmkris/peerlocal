@@ -2,8 +2,13 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import { Layout } from "../features/Layout";
 import Link from "next/link";
+import { useOffers, useCommunites } from "src/features/peerlocal/hooks/usePeerLocal";
 
 const Market: NextPage = () => {
+    const offers = useOffers({ communityId: "0" })
+    console.log(offers)
+    const community = useCommunites();
+    console.log(community);
 
     const listings = [
         {
