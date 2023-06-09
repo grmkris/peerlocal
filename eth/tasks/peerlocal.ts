@@ -73,7 +73,7 @@ task("join-community", "Uploads json file to pinata", async (args, hre) => {
     signer
   );
 
-  const tx = await peerLocalContract.joinCommunity(1, signature);
+  const tx = await peerLocalContract.joinCommunity(2, signature);
 
   console.log("Tx hash: " + tx.hash);
 });
