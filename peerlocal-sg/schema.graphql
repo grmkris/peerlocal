@@ -1,0 +1,51 @@
+type CommunityCreated @entity(immutable: true) {
+  id: Bytes!
+  communityId: BigInt! # uint256
+  ipfsMetadata: String! # string
+  stakingRequirement: BigInt! # uint256
+  owner: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type MemberJoinedCommunity @entity(immutable: true) {
+  id: Bytes!
+  communityId: BigInt! # uint256
+  member: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type OfferAccepted @entity(immutable: true) {
+  id: Bytes!
+  communityId: BigInt! # uint256
+  offerId: BigInt! # uint256
+  member: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type OfferCreated @entity(immutable: true) {
+  id: Bytes!
+  communityId: BigInt! # uint256
+  offerId: BigInt! # uint256
+  owner: Bytes! # address
+  metadata: String! # string
+  reputationRequirement: BigInt! # uint256
+  stakingRequirement: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type OwnershipTransferred @entity(immutable: true) {
+  id: Bytes!
+  previousOwner: Bytes! # address
+  newOwner: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
