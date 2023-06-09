@@ -56,7 +56,7 @@ task("join-community", "Uploads json file to pinata", async (args, hre) => {
   const signer: SignerWithAddress = (await hre.ethers.getSigners())[0];
 
   // get PeerLocal contract from deployments
-  const signature = signer.signMessage("I am a member of this community");
+  const signature = signer.signMessage("I am the owner of this community");
 
   const peerLocal = await deployments.get("PeerLocal");
   const peerLocalAddress = peerLocal.address;
@@ -69,7 +69,7 @@ task("join-community", "Uploads json file to pinata", async (args, hre) => {
     signer
   );
 
-  const tx = await peerLocalContract.joinCommunity(0, signature);
+  const tx = await peerLocalContract.joinCommunity(1, signature);
 
   console.log("Tx hash: " + tx.hash);
 });
