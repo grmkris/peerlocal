@@ -58,7 +58,7 @@ const config: HardhatUserConfig = {
       accounts: accounts("kovan"),
     },
     goerli: {
-      url: node_url("goerli"),
+      url: "https://eth-goerli.public.blastapi.io",
       accounts: accounts("goerli"),
     },
     fuji: {
