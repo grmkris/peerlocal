@@ -3,3 +3,4 @@ packages:
   - "eth"
   - "sg"
   - "peerlocal-sg"
+  - "sg-client"
