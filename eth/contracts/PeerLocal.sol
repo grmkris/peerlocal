@@ -48,9 +48,6 @@ contract PeerLocal is Ownable {
     event ReputationTokenBurn(uint256 burnAmount);
 
 
-    //Make the token dynamic
-
-
     IERC20 public token; // GHO //Now don't used anymore
     mapping(uint256 => Community) public communities;
     uint256 communityCounter = 0;
