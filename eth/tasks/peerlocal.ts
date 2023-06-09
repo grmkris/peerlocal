@@ -56,12 +56,16 @@ task("join-community", "Uploads json file to pinata", async (args, hre) => {
   const signer: SignerWithAddress = (await hre.ethers.getSigners())[0];
 
   // get PeerLocal contract from deployments
-  const signature = signer.signMessage("I am the owner of this community");
+
+  const signature = await signer.signMessage(
+    "I am the owner of this community"
+  );
+
 
   const peerLocal = await deployments.get("PeerLocal");
   const peerLocalAddress = peerLocal.address;
 
-  const peerERC20 = await deployments.get("TestErc20Token");
+  const peerERC20 = await deployments.get("TestERC20");
   const peerERC20Address = peerERC20.address;
 
   const peerLocalContract = PeerLocal__factory.connect(
