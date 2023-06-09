@@ -59,17 +59,14 @@ export interface PeerLocalInterface extends utils.Interface {
     "acceptOffer(uint256,uint256)": FunctionFragment;
     "communities(uint256)": FunctionFragment;
     "communityMembers(uint256,uint256)": FunctionFragment;
-    "createCommunity(string,uint256)": FunctionFragment;
+    "createCommunity(string,address,uint256)": FunctionFragment;
     "createOffer(uint256,string,uint256,uint256)": FunctionFragment;
     "endOffer(uint256,uint256,bool)": FunctionFragment;
     "joinCommunity(uint256,bytes)": FunctionFragment;
-    "offerStatus(uint256)": FunctionFragment;
     "offers(uint256,uint256)": FunctionFragment;
     "owner()": FunctionFragment;
     "renounceOwnership()": FunctionFragment;
-    "reputation(address)": FunctionFragment;
     "reputationToken()": FunctionFragment;
-    "token()": FunctionFragment;
     "transferOwnership(address)": FunctionFragment;
   };
 
@@ -82,13 +79,10 @@ export interface PeerLocalInterface extends utils.Interface {
       | "createOffer"
       | "endOffer"
       | "joinCommunity"
-      | "offerStatus"
       | "offers"
       | "owner"
       | "renounceOwnership"
-      | "reputation"
       | "reputationToken"
-      | "token"
       | "transferOwnership"
   ): FunctionFragment;
 
@@ -106,7 +100,11 @@ export interface PeerLocalInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "createCommunity",
-    values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
+    values: [
+      PromiseOrValue<string>,
+      PromiseOrValue<string>,
+      PromiseOrValue<BigNumberish>
+    ]
   ): string;
   encodeFunctionData(
     functionFragment: "createOffer",
@@ -130,10 +128,6 @@ export interface PeerLocalInterface extends utils.Interface {
     values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BytesLike>]
   ): string;
   encodeFunctionData(
-    functionFragment: "offerStatus",
-    values: [PromiseOrValue<BigNumberish>]
-  ): string;
-  encodeFunctionData(
     functionFragment: "offers",
     values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>]
   ): string;
@@ -143,14 +137,9 @@ export interface PeerLocalInterface extends utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "reputation",
-    values: [PromiseOrValue<string>]
-  ): string;
-  encodeFunctionData(
     functionFragment: "reputationToken",
     values?: undefined
   ): string;
-  encodeFunctionData(functionFragment: "token", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "transferOwnership",
     values: [PromiseOrValue<string>]
@@ -181,29 +170,23 @@ export interface PeerLocalInterface extends utils.Interface {
     functionFragment: "joinCommunity",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(
-    functionFragment: "offerStatus",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "offers", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "renounceOwnership",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "reputation", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "reputationToken",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "token", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "transferOwnership",
     data: BytesLike
   ): Result;
 
   events: {
-    "CommunityCreated(uint256,string,uint256,address)": EventFragment;
+    "CommunityCreated(uint256,string,address,address)": EventFragment;
     "MemberJoinedCommunity(uint256,address)": EventFragment;
     "OfferAccepted(uint256,uint256,address)": EventFragment;
     "OfferClosed(uint256,uint256,address)": EventFragment;
@@ -236,11 +219,11 @@ export interface PeerLocalInterface extends utils.Interface {
 export interface CommunityCreatedEventObject {
   communityId: BigNumber;
   ipfsMetadata: string;
-  stakingRequirement: BigNumber;
   owner: string;
+  stakingToken: string;
 }
 export type CommunityCreatedEvent = TypedEvent<
-  [BigNumber, string, BigNumber, string],
+  [BigNumber, string, string, string],
   CommunityCreatedEventObject
 >;
 
@@ -412,8 +395,8 @@ export interface PeerLocal extends BaseContract {
 
   functions: {
     acceptOffer(
-      communityId: PromiseOrValue<BigNumberish>,
-      offerId: PromiseOrValue<BigNumberish>,
+      _communityId: PromiseOrValue<BigNumberish>,
+      _offerId: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -421,10 +404,11 @@ export interface PeerLocal extends BaseContract {
       arg0: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<
-      [string, BigNumber, string] & {
+      [string, BigNumber, string, string] & {
         ipfsMetadata: string;
         stakingRequirement: BigNumber;
         owner: string;
+        stakingToken: string;
       }
     >;
 
@@ -435,36 +419,32 @@ export interface PeerLocal extends BaseContract {
     ): Promise<[string]>;
 
     createCommunity(
-      ipfsMetadata: PromiseOrValue<string>,
-      stakingRequirement: PromiseOrValue<BigNumberish>,
+      _ipfsMetadata: PromiseOrValue<string>,
+      _stakingToken: PromiseOrValue<string>,
+      _stakingRequirement: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     createOffer(
-      communityId: PromiseOrValue<BigNumberish>,
-      metadata: PromiseOrValue<string>,
-      reputationRequirement: PromiseOrValue<BigNumberish>,
-      stakingRequirement: PromiseOrValue<BigNumberish>,
+      _communityId: PromiseOrValue<BigNumberish>,
+      _metadata: PromiseOrValue<string>,
+      _reputationRequirement: PromiseOrValue<BigNumberish>,
+      _stakingRequirement: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     endOffer(
-      communityId: PromiseOrValue<BigNumberish>,
-      offerId: PromiseOrValue<BigNumberish>,
-      finalResult: PromiseOrValue<boolean>,
+      _communityId: PromiseOrValue<BigNumberish>,
+      _offerId: PromiseOrValue<BigNumberish>,
+      _finalResult: PromiseOrValue<boolean>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     joinCommunity(
-      communityId: PromiseOrValue<BigNumberish>,
-      signature: PromiseOrValue<BytesLike>,
+      _communityId: PromiseOrValue<BigNumberish>,
+      _signature: PromiseOrValue<BytesLike>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
-
-    offerStatus(
-      arg0: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<[string]>;
 
     offers(
       arg0: PromiseOrValue<BigNumberish>,
@@ -487,14 +467,7 @@ export interface PeerLocal extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    reputation(
-      arg0: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
-
     reputationToken(overrides?: CallOverrides): Promise<[string]>;
-
-    token(overrides?: CallOverrides): Promise<[string]>;
 
     transferOwnership(
       newOwner: PromiseOrValue<string>,
@@ -503,8 +476,8 @@ export interface PeerLocal extends BaseContract {
   };
 
   acceptOffer(
-    communityId: PromiseOrValue<BigNumberish>,
-    offerId: PromiseOrValue<BigNumberish>,
+    _communityId: PromiseOrValue<BigNumberish>,
+    _offerId: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -512,10 +485,11 @@ export interface PeerLocal extends BaseContract {
     arg0: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
   ): Promise<
-    [string, BigNumber, string] & {
+    [string, BigNumber, string, string] & {
       ipfsMetadata: string;
       stakingRequirement: BigNumber;
       owner: string;
+      stakingToken: string;
     }
   >;
 
@@ -526,36 +500,32 @@ export interface PeerLocal extends BaseContract {
   ): Promise<string>;
 
   createCommunity(
-    ipfsMetadata: PromiseOrValue<string>,
-    stakingRequirement: PromiseOrValue<BigNumberish>,
+    _ipfsMetadata: PromiseOrValue<string>,
+    _stakingToken: PromiseOrValue<string>,
+    _stakingRequirement: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   createOffer(
-    communityId: PromiseOrValue<BigNumberish>,
-    metadata: PromiseOrValue<string>,
-    reputationRequirement: PromiseOrValue<BigNumberish>,
-    stakingRequirement: PromiseOrValue<BigNumberish>,
+    _communityId: PromiseOrValue<BigNumberish>,
+    _metadata: PromiseOrValue<string>,
+    _reputationRequirement: PromiseOrValue<BigNumberish>,
+    _stakingRequirement: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   endOffer(
-    communityId: PromiseOrValue<BigNumberish>,
-    offerId: PromiseOrValue<BigNumberish>,
-    finalResult: PromiseOrValue<boolean>,
+    _communityId: PromiseOrValue<BigNumberish>,
+    _offerId: PromiseOrValue<BigNumberish>,
+    _finalResult: PromiseOrValue<boolean>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   joinCommunity(
-    communityId: PromiseOrValue<BigNumberish>,
-    signature: PromiseOrValue<BytesLike>,
+    _communityId: PromiseOrValue<BigNumberish>,
+    _signature: PromiseOrValue<BytesLike>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
-
-  offerStatus(
-    arg0: PromiseOrValue<BigNumberish>,
-    overrides?: CallOverrides
-  ): Promise<string>;
 
   offers(
     arg0: PromiseOrValue<BigNumberish>,
@@ -578,14 +548,7 @@ export interface PeerLocal extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  reputation(
-    arg0: PromiseOrValue<string>,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
-
   reputationToken(overrides?: CallOverrides): Promise<string>;
-
-  token(overrides?: CallOverrides): Promise<string>;
 
   transferOwnership(
     newOwner: PromiseOrValue<string>,
@@ -594,8 +557,8 @@ export interface PeerLocal extends BaseContract {
 
   callStatic: {
     acceptOffer(
-      communityId: PromiseOrValue<BigNumberish>,
-      offerId: PromiseOrValue<BigNumberish>,
+      _communityId: PromiseOrValue<BigNumberish>,
+      _offerId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -603,10 +566,11 @@ export interface PeerLocal extends BaseContract {
       arg0: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<
-      [string, BigNumber, string] & {
+      [string, BigNumber, string, string] & {
         ipfsMetadata: string;
         stakingRequirement: BigNumber;
         owner: string;
+        stakingToken: string;
       }
     >;
 
@@ -617,36 +581,32 @@ export interface PeerLocal extends BaseContract {
     ): Promise<string>;
 
     createCommunity(
-      ipfsMetadata: PromiseOrValue<string>,
-      stakingRequirement: PromiseOrValue<BigNumberish>,
+      _ipfsMetadata: PromiseOrValue<string>,
+      _stakingToken: PromiseOrValue<string>,
+      _stakingRequirement: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
 
     createOffer(
-      communityId: PromiseOrValue<BigNumberish>,
-      metadata: PromiseOrValue<string>,
-      reputationRequirement: PromiseOrValue<BigNumberish>,
-      stakingRequirement: PromiseOrValue<BigNumberish>,
+      _communityId: PromiseOrValue<BigNumberish>,
+      _metadata: PromiseOrValue<string>,
+      _reputationRequirement: PromiseOrValue<BigNumberish>,
+      _stakingRequirement: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
 
     endOffer(
-      communityId: PromiseOrValue<BigNumberish>,
-      offerId: PromiseOrValue<BigNumberish>,
-      finalResult: PromiseOrValue<boolean>,
+      _communityId: PromiseOrValue<BigNumberish>,
+      _offerId: PromiseOrValue<BigNumberish>,
+      _finalResult: PromiseOrValue<boolean>,
       overrides?: CallOverrides
     ): Promise<void>;
 
     joinCommunity(
-      communityId: PromiseOrValue<BigNumberish>,
-      signature: PromiseOrValue<BytesLike>,
+      _communityId: PromiseOrValue<BigNumberish>,
+      _signature: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<void>;
-
-    offerStatus(
-      arg0: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<string>;
 
     offers(
       arg0: PromiseOrValue<BigNumberish>,
@@ -667,14 +627,7 @@ export interface PeerLocal extends BaseContract {
 
     renounceOwnership(overrides?: CallOverrides): Promise<void>;
 
-    reputation(
-      arg0: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
     reputationToken(overrides?: CallOverrides): Promise<string>;
-
-    token(overrides?: CallOverrides): Promise<string>;
 
     transferOwnership(
       newOwner: PromiseOrValue<string>,
@@ -683,17 +636,17 @@ export interface PeerLocal extends BaseContract {
   };
 
   filters: {
-    "CommunityCreated(uint256,string,uint256,address)"(
+    "CommunityCreated(uint256,string,address,address)"(
       communityId?: PromiseOrValue<BigNumberish> | null,
       ipfsMetadata?: null,
-      stakingRequirement?: null,
-      owner?: PromiseOrValue<string> | null
+      owner?: PromiseOrValue<string> | null,
+      stakingToken?: null
     ): CommunityCreatedEventFilter;
     CommunityCreated(
       communityId?: PromiseOrValue<BigNumberish> | null,
       ipfsMetadata?: null,
-      stakingRequirement?: null,
-      owner?: PromiseOrValue<string> | null
+      owner?: PromiseOrValue<string> | null,
+      stakingToken?: null
     ): CommunityCreatedEventFilter;
 
     "MemberJoinedCommunity(uint256,address)"(
@@ -795,8 +748,8 @@ export interface PeerLocal extends BaseContract {
 
   estimateGas: {
     acceptOffer(
-      communityId: PromiseOrValue<BigNumberish>,
-      offerId: PromiseOrValue<BigNumberish>,
+      _communityId: PromiseOrValue<BigNumberish>,
+      _offerId: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -812,35 +765,31 @@ export interface PeerLocal extends BaseContract {
     ): Promise<BigNumber>;
 
     createCommunity(
-      ipfsMetadata: PromiseOrValue<string>,
-      stakingRequirement: PromiseOrValue<BigNumberish>,
+      _ipfsMetadata: PromiseOrValue<string>,
+      _stakingToken: PromiseOrValue<string>,
+      _stakingRequirement: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     createOffer(
-      communityId: PromiseOrValue<BigNumberish>,
-      metadata: PromiseOrValue<string>,
-      reputationRequirement: PromiseOrValue<BigNumberish>,
-      stakingRequirement: PromiseOrValue<BigNumberish>,
+      _communityId: PromiseOrValue<BigNumberish>,
+      _metadata: PromiseOrValue<string>,
+      _reputationRequirement: PromiseOrValue<BigNumberish>,
+      _stakingRequirement: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     endOffer(
-      communityId: PromiseOrValue<BigNumberish>,
-      offerId: PromiseOrValue<BigNumberish>,
-      finalResult: PromiseOrValue<boolean>,
+      _communityId: PromiseOrValue<BigNumberish>,
+      _offerId: PromiseOrValue<BigNumberish>,
+      _finalResult: PromiseOrValue<boolean>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     joinCommunity(
-      communityId: PromiseOrValue<BigNumberish>,
-      signature: PromiseOrValue<BytesLike>,
+      _communityId: PromiseOrValue<BigNumberish>,
+      _signature: PromiseOrValue<BytesLike>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
-    offerStatus(
-      arg0: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     offers(
@@ -855,14 +804,7 @@ export interface PeerLocal extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    reputation(
-      arg0: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
     reputationToken(overrides?: CallOverrides): Promise<BigNumber>;
-
-    token(overrides?: CallOverrides): Promise<BigNumber>;
 
     transferOwnership(
       newOwner: PromiseOrValue<string>,
@@ -872,8 +814,8 @@ export interface PeerLocal extends BaseContract {
 
   populateTransaction: {
     acceptOffer(
-      communityId: PromiseOrValue<BigNumberish>,
-      offerId: PromiseOrValue<BigNumberish>,
+      _communityId: PromiseOrValue<BigNumberish>,
+      _offerId: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -889,35 +831,31 @@ export interface PeerLocal extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     createCommunity(
-      ipfsMetadata: PromiseOrValue<string>,
-      stakingRequirement: PromiseOrValue<BigNumberish>,
+      _ipfsMetadata: PromiseOrValue<string>,
+      _stakingToken: PromiseOrValue<string>,
+      _stakingRequirement: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     createOffer(
-      communityId: PromiseOrValue<BigNumberish>,
-      metadata: PromiseOrValue<string>,
-      reputationRequirement: PromiseOrValue<BigNumberish>,
-      stakingRequirement: PromiseOrValue<BigNumberish>,
+      _communityId: PromiseOrValue<BigNumberish>,
+      _metadata: PromiseOrValue<string>,
+      _reputationRequirement: PromiseOrValue<BigNumberish>,
+      _stakingRequirement: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     endOffer(
-      communityId: PromiseOrValue<BigNumberish>,
-      offerId: PromiseOrValue<BigNumberish>,
-      finalResult: PromiseOrValue<boolean>,
+      _communityId: PromiseOrValue<BigNumberish>,
+      _offerId: PromiseOrValue<BigNumberish>,
+      _finalResult: PromiseOrValue<boolean>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     joinCommunity(
-      communityId: PromiseOrValue<BigNumberish>,
-      signature: PromiseOrValue<BytesLike>,
+      _communityId: PromiseOrValue<BigNumberish>,
+      _signature: PromiseOrValue<BytesLike>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    offerStatus(
-      arg0: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     offers(
@@ -932,14 +870,7 @@ export interface PeerLocal extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
-    reputation(
-      arg0: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
     reputationToken(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    token(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     transferOwnership(
       newOwner: PromiseOrValue<string>,
