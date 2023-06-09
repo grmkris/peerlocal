@@ -4,9 +4,11 @@ import Head from "next/head";
 import { ConnectWallet } from "../features/ConnectWallet";
 import { Layout } from "../features/Layout";
 import { useModalStore } from "../features/modals/useModalStore";
+import { useCommunites } from "src/features/peerlocal/hooks/usePeerLocal";
 
 const Landing: NextPage = () => {
-  const openModal = useModalStore((s) => s.openModal);
+  const community = useCommunites()
+  console.log(community)
   return (
     <>
       <Head>
