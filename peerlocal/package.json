@@ -8,8 +8,7 @@
     "postinstall": "prisma generate",
     "lint": "next lint",
     "start": "next start",
-    "codegen": "graphql-codegen --config src/features/graph-client/graphql/codegen.ts",
-    "build:sg:client": "preconstruct build && npm run copy-package-json-to-dist"
+    "codegen": "graphql-codegen --config src/features/graph-client/graphql/codegen.ts"
   },
   "dependencies": {
     "graphql": "^16.6.0",

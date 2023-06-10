@@ -13,11 +13,13 @@ import {
 import Link from "next/link";
 import { useRouter } from "next/router";
 
+
 const Landing: NextPage = () => {
     const router = useRouter()
-    const h = "QmaVm9U5ZUK8QBajPkyFmZexNjedD28Uz9izZkzt2r7AcM"
+    const activeCommunity = useCommunity({id: router.query.landing_id ? router.query.landing_id.toString() : "0"})
+    console.log(activeCommunity.data)
     const commMeta = useCommunityIPFS({
-        ipfsHash: router.query.landing_id
+        ipfsHash: activeCommunity.data?.community?.ipfsMetadata
     })
     console.log('comm meta: ')
     console.log(commMeta)
@@ -37,7 +39,7 @@ const Landing: NextPage = () => {
                 <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
                     <h1 className="text-5xl font-extrabold tracking-tight text-white sm:text-[5rem]">
                         Welcome to your Community DAO{" "}
-                        <span className="text-accent">{commMeta.data?.name}</span>
+                        <span className="text-accent">{commMeta.data?.Name}</span>
                     </h1>
                 </div>
                 <div className="flex justify-between">

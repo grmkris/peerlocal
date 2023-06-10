@@ -1549,19 +1549,6 @@ export class Member extends Entity {
     this.set("community", Value.fromString(value));
   }
 
-  get member(): Bytes {
-    let value = this.get("member");
-    if (!value || value.kind == ValueKind.NULL) {
-      throw new Error("Cannot return null for a required field.");
-    } else {
-      return value.toBytes();
-    }
-  }
-
-  set member(value: Bytes) {
-    this.set("member", Value.fromBytes(value));
-  }
-
   get blockNumber(): BigInt {
     let value = this.get("blockNumber");
     if (!value || value.kind == ValueKind.NULL) {
@@ -1599,6 +1586,71 @@ export class Member extends Entity {
 
   set transactionHash(value: Bytes) {
     this.set("transactionHash", Value.fromBytes(value));
+  }
+
+  get totalReputation(): BigInt {
+    let value = this.get("totalReputation");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set totalReputation(value: BigInt) {
+    this.set("totalReputation", Value.fromBigInt(value));
+  }
+
+  get stakedReputation(): BigInt {
+    let value = this.get("stakedReputation");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set stakedReputation(value: BigInt) {
+    this.set("stakedReputation", Value.fromBigInt(value));
+  }
+
+  get trades(): BigInt {
+    let value = this.get("trades");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set trades(value: BigInt) {
+    this.set("trades", Value.fromBigInt(value));
+  }
+
+  get stakedCollateral(): BigInt {
+    let value = this.get("stakedCollateral");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set stakedCollateral(value: BigInt) {
+    this.set("stakedCollateral", Value.fromBigInt(value));
+  }
+
+  get allTimeCollateral(): BigInt {
+    let value = this.get("allTimeCollateral");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set allTimeCollateral(value: BigInt) {
+    this.set("allTimeCollateral", Value.fromBigInt(value));
   }
 }
 
@@ -1732,17 +1784,17 @@ export class Offer extends Entity {
     this.set("stakingRequirement", Value.fromBigInt(value));
   }
 
-  get offerStatus(): i32 {
+  get offerStatus(): string {
     let value = this.get("offerStatus");
     if (!value || value.kind == ValueKind.NULL) {
-      return 0;
+      throw new Error("Cannot return null for a required field.");
     } else {
-      return value.toI32();
+      return value.toString();
     }
   }
 
-  set offerStatus(value: i32) {
-    this.set("offerStatus", Value.fromI32(value));
+  set offerStatus(value: string) {
+    this.set("offerStatus", Value.fromString(value));
   }
 
   get blockNumber(): BigInt {

@@ -31,6 +31,7 @@ import {
   Member,
   Offer,
 } from "../generated/schema";
+import { BigInt } from "@graphprotocol/graph-ts";
 
 export function handleCommunityCreated(event: CommunityCreatedEvent): void {
   let entity = new CommunityCreated(
@@ -86,6 +87,11 @@ export function handleMemberJoinedCommunity(
   member.blockNumber = event.block.number;
   member.blockTimestamp = event.block.timestamp;
   member.transactionHash = event.transaction.hash;
+  member.totalReputation = BigInt.zero();
+  member.stakedCollateral = BigInt.zero();
+  member.allTimeCollateral = BigInt.zero();
+  member.stakedReputation = BigInt.zero();
+  member.trades = BigInt.zero();
   member.save();
 }
 
@@ -102,6 +108,14 @@ export function handleOfferAccepted(event: OfferAcceptedEvent): void {
   entity.transactionHash = event.transaction.hash;
 
   entity.save();
+
+  let offer = Offer.load(event.params.offerId.toString());
+  if (offer == null) {
+    return;
+  }
+  //created -> 1, active -> 2, finished -> 3
+  offer.offerStatus = "ACTIVE";
+  offer.save();
 }
 
 export function handleOfferClosed(event: OfferClosedEvent): void {
@@ -117,6 +131,15 @@ export function handleOfferClosed(event: OfferClosedEvent): void {
   entity.transactionHash = event.transaction.hash;
 
   entity.save();
+
+  let offer = Offer.load(event.params.offerId.toString());
+  if (offer == null) {
+    return;
+  }
+  //created -> 1, active -> 2, finished -> 3
+  offer.offerStatus = "FINISHED";
+
+  offer.save();
 }
 
 export function handleOfferCreated(event: OfferCreatedEvent): void {
@@ -152,7 +175,7 @@ export function handleOfferCreated(event: OfferCreatedEvent): void {
   offer.reputationRequirement = event.params.newOffer.reputationRequirement;
   offer.stakingRequirement = event.params.newOffer.stakingRequirement;
   offer.offerId = event.params.offerId;
-  offer.offerStatus = event.params.newOffer.offerStatus;
+  offer.offerStatus = "CREATED";
   offer.transactionHash = event.transaction.hash;
   offer.blockNumber = event.block.number;
   offer.blockTimestamp = event.block.timestamp;
@@ -218,6 +241,13 @@ export function handleReputationTokenMint(
   entity.transactionHash = event.transaction.hash;
 
   entity.save();
+
+  let member = Member.load(event.params.member);
+  if (member == null) {
+    return;
+  }
+  member.totalReputation = member.totalReputation.plus(event.params.mintAmount);
+  member.save();
 }
 
 export function handlecollateralTokenReturned(
@@ -233,6 +263,15 @@ export function handlecollateralTokenReturned(
   entity.transactionHash = event.transaction.hash;
 
   entity.save();
+
+  let member = Member.load(event.params.member);
+  if (member == null) {
+    return;
+  }
+  member.stakedCollateral = member.stakedCollateral.minus(
+    event.params.stakingRequirementReturned
+  );
+  member.save();
 }
 
 export function handlecollateralTokenStaked(
@@ -248,6 +287,18 @@ export function handlecollateralTokenStaked(
   entity.transactionHash = event.transaction.hash;
 
   entity.save();
+
+  let member = Member.load(event.params.member);
+  if (member == null) {
+    return;
+  }
+  member.stakedCollateral = member.stakedCollateral.plus(
+    event.params.stakingRequirementStaked
+  );
+  member.allTimeCollateral = member.allTimeCollateral.plus(
+    event.params.stakingRequirementStaked
+  );
+  member.save();
 }
 
 export function handlereputationTokenReturned(
@@ -264,6 +315,15 @@ export function handlereputationTokenReturned(
   entity.transactionHash = event.transaction.hash;
 
   entity.save();
+
+  let member = Member.load(event.params.member);
+  if (member == null) {
+    return;
+  }
+  member.stakedReputation = member.stakedReputation.minus(
+    event.params.reputationRequirementReturned
+  );
+  member.save();
 }
 
 export function handlereputationTokenStaked(
@@ -279,4 +339,13 @@ export function handlereputationTokenStaked(
   entity.transactionHash = event.transaction.hash;
 
   entity.save();
+
+  let member = Member.load(event.params.member);
+  if (member == null) {
+    return;
+  }
+  member.stakedReputation = member.stakedReputation.plus(
+    event.params.reputationRequirementStaked
+  );
+  member.save();
 }
