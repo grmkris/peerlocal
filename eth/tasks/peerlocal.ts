@@ -78,6 +78,38 @@ task("join-community", "Uploads json file to pinata", async (args, hre) => {
   console.log("Tx hash: " + tx.hash);
 });
 
+task(
+  "join-community-loop",
+  "Uploads json file to pinata",
+  async (args, hre) => {
+    const { deployments, network } = hre;
+
+    const signers = await hre.ethers.getSigners();
+    const signature = await signers[0].signMessage(
+      "I am the owner of this community"
+    );
+    // loop over all signers
+    for (const signer of signers) {
+      // get PeerLocal contract from deployments
+
+      const peerLocal = await deployments.get("PeerLocal");
+      const peerLocalAddress = peerLocal.address;
+
+      const peerERC20 = await deployments.get("TestERC20");
+      const peerERC20Address = peerERC20.address;
+
+      const peerLocalContract = PeerLocal__factory.connect(
+        peerLocalAddress,
+        signer
+      );
+
+      const tx = await peerLocalContract.joinCommunity(2, signature);
+
+      console.log("Tx hash: " + tx.hash);
+    }
+  }
+);
+
 task("create-offer", "Uploads json file to pinata", async (args, hre) => {
   const { deployments, network } = hre;
   const object = {
