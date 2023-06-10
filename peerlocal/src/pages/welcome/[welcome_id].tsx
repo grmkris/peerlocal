@@ -7,6 +7,7 @@ import Link from "next/link";
 
 const Welcome: NextPage = () => {
     const router = useRouter()
+    
     console.log(router.query)
     return (
         <>
@@ -18,13 +19,9 @@ const Welcome: NextPage = () => {
             <Layout>
                 <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
                     <h1 className="text-5xl font-extrabold tracking-tight text-white sm:text-[5rem]">
-                        Welcome to our <span className="text-accent">community</span>, DAO; please stake
-                        the required amount to help our community with
-                        regeneration of our neighborhood.
+                        Welcome to our <span className="text-accent">community</span>, DAO;
+                        Please sign the message to join our community
                     </h1>
-                    <h2>
-                        <span className="text-accent">100 </span> GHO
-                    </h2>
                     <button className="btn mw-50 btn-accent">Connect wallet</button>
                 </div>
             </Layout>
