@@ -17,17 +17,9 @@ import { useRouter } from "next/router";
 const Landing: NextPage = () => {
     const router = useRouter()
     const activeCommunity = useCommunity({id: router.query.landing_id ? router.query.landing_id.toString() : "0"})
-    console.log(activeCommunity.data)
     const commMeta = useCommunityIPFS({
         ipfsHash: activeCommunity.data?.community?.ipfsMetadata
     })
-    console.log('comm meta: ')
-    console.log(commMeta)
-    {/*
-  console.log(community.data?.community?.ipfsMetadata)
-  console.log('comm meta: QmaVm9U5ZUK8QBajPkyFmZexNjedD28Uz9izZkzt2r7AcM')
-  console.log(commMeta.data)
-*/ }
     return (
         <>
             <Head>

@@ -72,7 +72,7 @@ const Market: NextPage = () => {
 
           <ul className="min-w-5/12 flex flex-wrap items-center justify-center ">
             {offers.data?.community?.offers.map((offer, i) => {
-              return <OfferCard offerId={"0"} ipfsHash={offer.metadata} key={offer.id} />;
+              return <OfferCard offerId={offer.metadata} ipfsHash={offer.metadata} key={offer.id} />;
             })}
           </ul>
         </div>
@@ -82,48 +82,3 @@ const Market: NextPage = () => {
 };
 
 export default Market;
-
-const listings_old = [
-  {
-    name: "name1",
-    price: 1250.0,
-    availability: true,
-    img: "https://placeholder.pics/svg/300",
-  },
-  {
-    name: "name2",
-    price: 3450.0,
-    availability: true,
-    img: "https://placeholder.pics/svg/300",
-  },
-  {
-    name: "name3",
-    price: 11250.0,
-    availability: false,
-    img: "https://placeholder.pics/svg/300",
-  },
-  {
-    name: "name4",
-    price: 1269.0,
-    availability: true,
-    img: "https://placeholder.pics/svg/300",
-  },
-  {
-    name: "name5",
-    price: 14295.0,
-    availability: true,
-    img: "https://placeholder.pics/svg/300",
-  },
-  {
-    name: "name6",
-    price: 420.69,
-    availability: true,
-    img: "https://placeholder.pics/svg/300",
-  },
-  {
-    name: "name7",
-    price: 1337.0,
-    availability: true,
-    img: "https://placeholder.pics/svg/300",
-  },
-];
