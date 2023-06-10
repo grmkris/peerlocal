@@ -158,20 +158,30 @@ task("accept-offer", "Uploads json file to pinata", async (args, hre) => {
 });
 
 task("end-offer", "Uploads json file to pinata", async (args, hre) => {
+  /////////
   const { deployments, network } = hre;
+  const signer = await hre.ethers.provider.getSigner();
+  const address = await signer.getAddress();
+  console.log(address);
 
-  const signer: SignerWithAddress = (await hre.ethers.getSigners())[0];
+  const signature = await signer.signMessage("I am the owner of this community");
 
-  // get PeerLocal contract from deployments
   const peerLocal = await deployments.get("PeerLocal");
   const peerLocalAddress = peerLocal.address;
-  const peerLocalContract = PeerLocal__factory.connect(
-    peerLocalAddress,
-    signer
-  );
-  //  function endOffer(uint256 _communityId, uint256 _offerId, bool _finalResult)
-  const offerTx = await peerLocalContract.endOffer(0, 0, true);
-  console.log("offerTx", offerTx);
+
+  const peerERC20 = await deployments.get("TestERC20");
+  const peerERC20Address = peerERC20.address;
+
+  const peerLocalContract = PeerLocal__factory.connect(peerLocalAddress, signer);
+  const peerERC20Contract = TestERC20__factory.connect(peerERC20Address, signer);
+
+  const tx1 = await peerERC20Contract.approve(peerLocalAddress, ethers.constants.MaxUint256);
+  await tx1.wait();
+
+  const tx2 = await peerLocalContract.endOffer(0, 14, true, { gasLimit: 3000000 });
+  await tx2.wait();
+  console.log("endOfferTx", tx2);
+
 });
 
 task(

@@ -5,8 +5,8 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 
-
 import "./ReputationToken.sol";  // Import the ReputationToken contract's ABI
+
 
 
 contract PeerLocal is Ownable {
@@ -134,7 +134,8 @@ contract PeerLocal is Ownable {
     }
 
     function endOffer(uint256 _communityId, uint256 _offerId, bool _finalResult) public {
-        require((offers[_communityId][_offerId]).offerStatus == 2);
+        require((offers[_communityId][_offerId]).offerStatus == 2, "Invalid offer");
+        //Error because there is no offer created in the community, but it enters anyway to the transaction!! should try to do it. 
 
         if (_finalResult == true){
             // Transfer staked tokens back
@@ -175,4 +176,5 @@ contract PeerLocal is Ownable {
         reputationToken.burn(_amount);
         emit ReputationTokenBurn(_amount);
     }
+
 }
