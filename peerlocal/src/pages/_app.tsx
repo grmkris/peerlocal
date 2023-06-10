@@ -6,6 +6,7 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { QueryClient } from "@tanstack/react-query";
 import { createConfig, mainnet, WagmiConfig } from "wagmi";
 import { createPublicClient, http } from "viem";
+import NoSSR from "src/features/NoSSR";
 
 const queryClient = new QueryClient();
 
@@ -20,10 +21,14 @@ const config = createConfig({
 
 const MyApp: AppType = ({ Component, pageProps }) => {
   return (
-    <WagmiConfig config={config}>
-        <Component {...pageProps} />
-        <ReactQueryDevtools />
-    </WagmiConfig>
+    <NoSSR>
+      <html data-theme="dark">
+        <WagmiConfig config={config}>
+          <Component {...pageProps} />
+          <ReactQueryDevtools />
+        </WagmiConfig>
+      </html>
+    </NoSSR>
   );
 };
 

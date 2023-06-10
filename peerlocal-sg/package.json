@@ -1,5 +1,5 @@
 {
-  "name": "peerlocal-sepolia",
+  "name": "peerlocal-sg",
   "license": "UNLICENSED",
   "scripts": {
     "codegen": "graph codegen",
@@ -11,8 +11,12 @@
     "test": "graph test",
     "build:goerli": "graph build --network goerli",
     "build:sepolia": "graph build --network sepolia",
-    "deploy:goerli": "pnpm build:goerli && graph deploy --product hosted-service grmkris/peerlocal-goerli",
-    "deploy:sepolia": "pnpm  build:sepolia && graph deploy --product hosted-service grmkris/peerlocal-sepolia"
+    "build:optimism-goerli": "graph build --network optimism-goerli",
+    "build:gnosis_chiado": "graph build --network gnosis_chiado",
+    "deploy:goerli": "pnpm build:goerli && graph deploy --network goerli --product hosted-service grmkris/peerlocal-goerli",
+    "deploy:sepolia": "pnpm build:sepolia && graph deploy --network sepolia --product hosted-service grmkris/peerlocal-sepolia",
+    "deploy:optimism-goerli": "pnpm build:optimism-goerli && graph deploy --network optimism-goerli --product hosted-service grmkris/peerlocal-optimism-goerli"
+
   },
   "dependencies": {
     "@graphprotocol/graph-cli": "^0.51.0",

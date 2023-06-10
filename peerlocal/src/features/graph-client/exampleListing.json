@@ -1,0 +1,10 @@
+{
+    "name": "name1",
+    "availableFrom": "2023-06-01",
+    "availableTo": "2023-07-01",
+    "img": "https://placeholder.pics/svg/300",
+    "description": "This is 1 Description",
+    "pickup": "afternoon",
+    "deposit": 200.00,
+    "deposit_token": "GOH"   
+}

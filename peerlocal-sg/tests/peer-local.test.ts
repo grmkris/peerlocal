@@ -19,13 +19,15 @@ describe("Describe entity assertions", () => {
   beforeAll(() => {
     let communityId = BigInt.fromI32(234)
     let ipfsMetadata = "Example string value"
-    let stakingRequirement = BigInt.fromI32(234)
     let owner = Address.fromString("0x0000000000000000000000000000000000000001")
+    let stakingToken = Address.fromString(
+      "0x0000000000000000000000000000000000000001"
+    )
     let newCommunityCreatedEvent = createCommunityCreatedEvent(
       communityId,
       ipfsMetadata,
-      stakingRequirement,
-      owner
+      owner,
+      stakingToken
     )
     handleCommunityCreated(newCommunityCreatedEvent)
   })
@@ -56,13 +58,13 @@ describe("Describe entity assertions", () => {
     assert.fieldEquals(
       "CommunityCreated",
       "0xa16081f360e3847006db660bae1c6d1b2e17ec2a-1",
-      "stakingRequirement",
-      "234"
+      "owner",
+      "0x0000000000000000000000000000000000000001"
     )
     assert.fieldEquals(
       "CommunityCreated",
       "0xa16081f360e3847006db660bae1c6d1b2e17ec2a-1",
-      "owner",
+      "stakingToken",
       "0x0000000000000000000000000000000000000001"
     )
 

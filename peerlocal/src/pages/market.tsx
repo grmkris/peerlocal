@@ -5,11 +5,6 @@ import Link from "next/link";
 import { useOffers, useCommunites } from "src/features/peerlocal/hooks/usePeerLocal";
 
 const Market: NextPage = () => {
-    const offers = useOffers({ communityId: "0" })
-    console.log(offers)
-    const community = useCommunites();
-    console.log(community);
-
     const listings = [
         {
             "name": "name1",
@@ -85,13 +80,13 @@ const Market: NextPage = () => {
                         {listings.map((listing, i) => {
                             return (
                                 <li key={i}>
-                                    <div className="card card-compact w-96 bg-base-100 shadow-xl">
+                                    <div className="card card-compact mx-5 my-2 w-96 bg-base-100 shadow-xl">
                                         <figure><img src="https://placeholder.pics/svg/300" alt="Shoes" /></figure>
                                         <div className="card-body">
                                             <h2 className="card-title">{listing.name}</h2>
                                             <p>If a dog chews shoes whose shoes does he choose?</p>
                                             <div className="card-actions justify-end">
-                                                <button className="btn btn-primary">Buy Now</button>
+                                                <Link className="btn btn-primary" href={"/listing/"+listing.name}>Borrow now!</Link>
                                             </div>
                                         </div>
                                     </div>
