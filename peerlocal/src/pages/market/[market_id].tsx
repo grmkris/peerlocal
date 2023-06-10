@@ -16,12 +16,7 @@ function OfferCard(props: { ipfsHash: string; offerId: string }) {
     <li>
       <div className="card-compact card mx-5 my-2 w-96 bg-base-100 shadow-xl">
         <figure>
-          <img src="https://placeholder.pics/svg/300" alt="Shoes" />
-          <Image
-            src={"data:image/png;base64" + offer.data?.Image}
-            alt=""
-            fill={true}
-          />
+          <img src="/drill.jpg" alt="a Drill, jo" />
         </figure>
         <div className="card-body">
           <h2 className="card-title">{offer.data?.Name}</h2>
@@ -77,7 +72,7 @@ const Market: NextPage = () => {
 
           <ul className="min-w-5/12 flex flex-wrap items-center justify-center ">
             {offers.data?.community?.offers.map((offer, i) => {
-              return <OfferCard offerId={offer.id} ipfsHash={offer.metadata} />;
+              return <OfferCard offerId={"0"} ipfsHash={offer.metadata} key={offer.id} />;
             })}
           </ul>
         </div>
