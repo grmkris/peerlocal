@@ -41,7 +41,7 @@ const TopNavigation = ({ children }: { children: ReactNode }) => {
           </div>
         </div>
         <div className="navbar-center">
-          <a className="btn-ghost normal-case text-xl">peerlocal</a>
+          <a className="btn-ghost normal-case text-xl">PEER UP</a>
         </div>
         <div className="navbar-end">
           {isConnected ? "150 Score" : "not connected"}

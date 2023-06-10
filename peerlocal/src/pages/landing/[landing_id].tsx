@@ -47,7 +47,7 @@ const Landing: NextPage = () => {
                     <div className="card w-96 bg-base-100 shadow-xl">
                         <figure className="px-10 pt-10">
                             <img
-                                src="https://placeholder.pics/svg/300"
+                                src="/decision.svg"
                                 alt="Shoes"
                                 className="rounded-xl"
                             />
@@ -63,7 +63,7 @@ const Landing: NextPage = () => {
                     <div className="card w-96 bg-base-100 shadow-xl">
                         <figure className="px-10 pt-10">
                             <img
-                                src="https://placeholder.pics/svg/300"
+                                src="/market.svg"
                                 alt="Shoes"
                                 className="rounded-xl"
                             />
@@ -79,7 +79,7 @@ const Landing: NextPage = () => {
                     <div className="card w-96 bg-base-100 shadow-xl">
                         <figure className="px-10 pt-10">
                             <img
-                                src="https://placeholder.pics/svg/300"
+                                src="/petitions.svg"
                                 alt="Shoes"
                                 className="rounded-xl"
                             />
