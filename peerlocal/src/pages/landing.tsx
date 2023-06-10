@@ -1,32 +1,29 @@
 import { type NextPage } from "next";
 import Head from "next/head";
 
-import { ConnectWallet } from "../features/ConnectWallet";
 import { Layout } from "../features/Layout";
-import { useModalStore } from "../features/modals/useModalStore";
 import {
   useCommunityIPFS,
-  useCommunites,
   useCommunity,
-  useIPFS,
 } from "src/features/peerlocal/hooks/usePeerLocal";
 import Link from "next/link";
 
 const Landing: NextPage = () => {
-
   const community = useCommunity({
     id: "2",
   });
 
-  const h = "QmaVm9U5ZUK8QBajPkyFmZexNjedD28Uz9izZkzt2r7AcM"
+  const h = "QmaVm9U5ZUK8QBajPkyFmZexNjedD28Uz9izZkzt2r7AcM";
   const commMeta = useCommunityIPFS({
-    ipfsHash: h
-  })
-  {/*
+    ipfsHash: h,
+  });
+  {
+    /*
   console.log(community.data?.community?.ipfsMetadata)
   console.log('comm meta: QmaVm9U5ZUK8QBajPkyFmZexNjedD28Uz9izZkzt2r7AcM')
   console.log(commMeta.data)
-*/ }
+*/
+  }
   return (
     <>
       <Head>
@@ -70,7 +67,9 @@ const Landing: NextPage = () => {
               <h2 className="card-title">Market</h2>
               <p>Lend out unused tools or Borrow tools you need!</p>
               <div className="card-actions">
-                <Link className="btn btn-accent" href="/market">go to Market</Link>
+                <Link className="btn-accent btn" href="/market">
+                  go to Market
+                </Link>
               </div>
             </div>
           </div>
@@ -86,7 +85,7 @@ const Landing: NextPage = () => {
               <h2 className="card-title">Petitions</h2>
               <p>View and vote for existing Petitions or create a new one!</p>
               <div className="card-actions">
-                <button className="btn btn-primary">Coming soon...</button>
+                <button className="btn-primary btn">Coming soon...</button>
               </div>
             </div>
           </div>
