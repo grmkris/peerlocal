@@ -5,13 +5,15 @@ import { useRouter } from 'next/router'
 import { Layout } from "../../features/Layout";
 import { useCommunity, useOfferIPFS } from "src/features/peerlocal/hooks/usePeerLocal";
 import { useOffer } from "src/features/peerlocal/hooks/usePeerLocal";
+import { usePeerLocalContract } from "src/features/peerlocal/hooks/usePeerLocalContract";
 
 const Listing: NextPage = () => {
     const router = useRouter()
     const hash = router.query.listing_id ? router.query.listing_id.toString() : "0"
-    const nIFPS = useOfferIPFS({ipfsHash: hash})
-    const cOffer = useOffer({"metadata": hash,})
+    const nIFPS = useOfferIPFS({ ipfsHash: hash })
+    const cOffer = useOffer({ "metadata": hash, })
     console.log(cOffer.data)
+    const { acceptOffer } = usePeerLocalContract()
     return (
         <>
             <Head>
@@ -27,8 +29,8 @@ const Listing: NextPage = () => {
                         <p className="mt-5">{nIFPS.data?.Description}</p>
                         <p className="mt-5"> min. Reputation: <p className="text-accent"> {cOffer.data?.reputationRequirement} </p> </p>
                         <div className="flex flex-row">
-                            <button className="btn btn-neutral" onClick={()=> router.back()}>Back</button>
-                            <Link className="btn btn-primary" href={"/market"}>Borrow for {cOffer.data?.stakingRequirement} GHO</Link>
+                            <button className="btn btn-neutral" onClick={() => router.back()}>Back</button>
+                            <button className="btn btn-primary" onClick={() => acceptOffer.mutate({ communityId: "0", offerId: "1" })}>Borrow for {cOffer.data?.stakingRequirement} GHO</button>
                         </div>
 
                     </div>
