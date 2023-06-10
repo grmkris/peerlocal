@@ -4,13 +4,25 @@ import Head from "next/head";
 import { ConnectWallet } from "../features/ConnectWallet";
 import { Layout } from "../features/Layout";
 import { useModalStore } from "../features/modals/useModalStore";
-import { useCommunites, useIPFS } from "src/features/peerlocal/hooks/usePeerLocal";
+import {
+  useCommunites,
+  useCommunity,
+  useIPFS,
+} from "src/features/peerlocal/hooks/usePeerLocal";
 
 const Landing: NextPage = () => {
-  const comms = useCommunites()
-  console.log(comms.data?.communityCreateds)
-  const r = useIPFS({ "ipfsHash": "QmNc9hDnhEMXXzRaxY6Q8ag6wa39GFf3gezSyPTgoxB2Wb?_gl=1*64u9hp*rs_ga*MTEyMzc3MTgxMS4xNjg2MzExMzI1*rs_ga_5RMPXG14TE*MTY4NjM0NzYzOC4yLjEuMTY4NjM0OTM3NC42MC4wLjA" })
-  console.log(r.data)
+  const comms = useCommunites();
+  console.log(comms.data?.communities);
+  const r = useIPFS({
+    ipfsHash: "QmdARiC5sHPC7sLFWNvMg7BzaFL5LHpxqiTDYhrdyUy42h",
+  });
+
+  const community = useCommunity({
+    id: "2",
+  });
+
+  console.log("qqq2", community.data?.community);
+  console.log(r.data);
   return (
     <>
       <Head>
@@ -21,43 +33,56 @@ const Landing: NextPage = () => {
       <Layout>
         <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
           <h1 className="text-5xl font-extrabold tracking-tight text-white sm:text-[5rem]">
-            Welcome to your Community DAO <span className="text-accent">Prague Holesovice</span>
+            Welcome to your Community DAO{" "}
+            <span className="text-accent">Prague Holesovice</span>
           </h1>
         </div>
         <div className="flex justify-between">
           <div className="card w-96 bg-base-100 shadow-xl">
             <figure className="px-10 pt-10">
-              <img src="https://placeholder.pics/svg/300" alt="Shoes" className="rounded-xl" />
+              <img
+                src="https://placeholder.pics/svg/300"
+                alt="Shoes"
+                className="rounded-xl"
+              />
             </figure>
             <div className="card-body items-center text-center">
               <h2 className="card-title">Decisions</h2>
               <p>Vote now for existing proposals in our Community DAO</p>
               <div className="card-actions">
-                <button className="btn btn-inactive">Coming soon...</button>
+                <button className="btn-inactive btn">Coming soon...</button>
               </div>
             </div>
           </div>
           <div className="card w-96 bg-base-100 shadow-xl">
             <figure className="px-10 pt-10">
-              <img src="https://placeholder.pics/svg/300" alt="Shoes" className="rounded-xl" />
+              <img
+                src="https://placeholder.pics/svg/300"
+                alt="Shoes"
+                className="rounded-xl"
+              />
             </figure>
             <div className="card-body items-center text-center">
               <h2 className="card-title">Market</h2>
               <p>Lend out unused tools or Borrow tools you need!</p>
               <div className="card-actions">
-                <button className="btn btn-primary">go to Market</button>
+                <button className="btn-primary btn">go to Market</button>
               </div>
             </div>
           </div>
           <div className="card w-96 bg-base-100 shadow-xl">
             <figure className="px-10 pt-10">
-              <img src="https://placeholder.pics/svg/300" alt="Shoes" className="rounded-xl" />
+              <img
+                src="https://placeholder.pics/svg/300"
+                alt="Shoes"
+                className="rounded-xl"
+              />
             </figure>
             <div className="card-body items-center text-center">
               <h2 className="card-title">Petitions</h2>
               <p>View and vote for existing Petitions or create a new one!</p>
               <div className="card-actions">
-                <button className="btn btn-inactive">Coming soon...</button>
+                <button className="btn-inactive btn">Coming soon...</button>
               </div>
             </div>
           </div>

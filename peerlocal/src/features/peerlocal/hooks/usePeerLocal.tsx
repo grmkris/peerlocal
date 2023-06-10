@@ -41,9 +41,10 @@ export const useIPFS = (props: { ipfsHash?: string }) => {
         "https://violet-tremendous-elephant-215.mypinata.cloud/ipfs/" +
           props.ipfsHash
       );
-      const data = await fetch(
-        "https://violet-tremendous-elephant-215.mypinata.cloud/ipfs/QmNc9hDnhEMXXzRaxY6Q8ag6wa39GFf3gezSyPTgoxB2Wb?_gl=1*64u9hp*rs_ga*MTEyMzc3MTgxMS4xNjg2MzExMzI1*rs_ga_5RMPXG14TE*MTY4NjM0NzYzOC4yLjEuMTY4NjM0OTM3NC42MC4wLjA"
+      const res = await fetch(
+        "https://violet-tremendous-elephant-215.mypinata.cloud/ipfs/QmdARiC5sHPC7sLFWNvMg7BzaFL5LHpxqiTDYhrdyUy42h"
       );
+      const data = await res.json();
       return ipfsSchema.parse(data);
     },
     enabled: !!props.ipfsHash,
