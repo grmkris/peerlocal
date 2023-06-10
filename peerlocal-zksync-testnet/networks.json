@@ -1,0 +1,8 @@
+{
+  "zkSync2-testnet": {
+    "PeerLocal": {
+      "address": "0x5012dd82d53f576fff50097FA6C2Bf4AA2949748",
+      "startBlock": 7310900
+    }
+  }
+}

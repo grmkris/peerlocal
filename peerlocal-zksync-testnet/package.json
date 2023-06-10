@@ -1,0 +1,20 @@
+{
+  "name": "peerlocal-zksync-testnet",
+  "license": "UNLICENSED",
+  "scripts": {
+    "codegen": "graph codegen",
+    "build": "graph build",
+    "deploy": "graph deploy --node https://api.studio.thegraph.com/deploy/ peerlocal-zksync-testnet",
+    "create-local": "graph create --node http://localhost:8020/ grmkris/peerlocal-zksync-testnet",
+    "remove-local": "graph remove --node http://localhost:8020/ grmkris/peerlocal-zksync-testnet",
+    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 grmkris/peerlocal-zksync-testnet",
+    "test": "graph test",
+    "build:zksync2-testnet": "graph build --network zkSync2-testnet",
+    "deploy:zksync-testnet": "pnpm build:zksync2-testnet && graph deploy --network zkSync2-testnet --product hosted-service grmkris/peerlocal-zksync-testnet"
+  },
+  "dependencies": {
+    "@graphprotocol/graph-cli": "0.51.0",
+    "@graphprotocol/graph-ts": "0.30.0"
+  },
+  "devDependencies": { "matchstick-as": "0.5.0" }
+}
