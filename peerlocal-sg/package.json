@@ -15,8 +15,8 @@
     "build:gnosis_chiado": "graph build --network gnosis_chiado",
     "deploy:goerli": "pnpm build:goerli && graph deploy --network goerli --product hosted-service grmkris/peerlocal-goerli",
     "deploy:sepolia": "pnpm build:sepolia && graph deploy --network sepolia --product hosted-service grmkris/peerlocal-sepolia",
-    "deploy:optimism-goerli": "pnpm build:optimism-goerli && graph deploy --network optimism-goerli --product hosted-service grmkris/peerlocal-optimism-goerli"
-
+    "deploy:optimism-goerli": "pnpm build:optimism-goerli && graph deploy --network optimism-goerli --product hosted-service grmkris/peerlocal-optimism-goerli",
+    "deploy:optimism-goerli-v1": "pnpm build:optimism-goerli && graph deploy --network optimism-goerli --product hosted-service grmkris/peerlocal-optimism-goerli-1"
   },
   "dependencies": {
     "@graphprotocol/graph-cli": "^0.51.0",

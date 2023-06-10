@@ -13,7 +13,7 @@
   },
   "optimism-goerli": {
     "PeerLocal": {
-      "address": "0xF687aEe26F1083891710e82cCE07aBc014b93e5d",
+      "address": "0x8B33C9B0ee89D609f5bC6eC074Da4c500F3B8cA1",
       "startBlock": 10447246
     }
   }

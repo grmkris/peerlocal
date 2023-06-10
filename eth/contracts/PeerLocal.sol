@@ -58,7 +58,7 @@ contract PeerLocal is Ownable {
     uint256 offerCounter = 0;
 
     //AAVE
-    address lendingPool = 0x794a61358D6845594F94dc1DB02A252b5b4814aD;
+    address lendingPool = 0xCAd01dAdb7E97ae45b89791D986470F3dfC256f7;
 
 
     mapping(uint256 => Community) public communities;
@@ -201,7 +201,7 @@ contract PeerLocal is Ownable {
     //AAVE Token sypply -> Done for Testnet Optimism
     //address lendingPool = "0x794a61358D6845594F94dc1DB02A252b5b4814aD";
     function supply(address _lendingPool, address  _tokenAddress,  uint256 _amount, uint256 _communityId) private {
-        IPool(_lendingPool).supply(_tokenAddress, _amount, address(this), 0);
+        IPool(_lendingPool).supply(_tokenAddress, _amount, msg.sender, 0);
 
         aaveTokenSuppliedByCommunity[_communityId][_tokenAddress] += _amount;
         //event TokenDepositAAVE(uint256 communityId, address tokenDepositAAVE, uint256 amountDeposited, uint256 totalAmountInAAVE);
