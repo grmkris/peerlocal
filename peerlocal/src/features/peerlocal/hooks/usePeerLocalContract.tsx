@@ -99,4 +99,7 @@ export const usePeerLocalContract = () => {
       );
     },
   });
+  return {
+    createCommunity, joinCommunity, createOffer, acceptOffer, endOffer
+  }
 };
