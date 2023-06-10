@@ -135,17 +135,17 @@ contract PeerLocal is Ownable {
 
     function endOffer(uint256 _communityId, uint256 _offerId, bool _finalResult) public {
         require((offers[_communityId][_offerId]).offerStatus == 2, "Invalid offer");
-        //Error because there is no offer created in the community, but it enters anyway to the transaction!! should try to do it. 
+        //Error because there is no offer created in the community, but it enters anyway to the transaction!! should try to do it.
 
         if (_finalResult == true){
             // Transfer staked tokens back
             if (offers[_communityId][_offerId].stakingRequirement > 0) {
-                (communities[_communityId].stakingToken).transferFrom(address(this), msg.sender, offers[_communityId][_offerId].stakingRequirement);
+                (communities[_communityId].stakingToken).transfer(msg.sender, offers[_communityId][_offerId].stakingRequirement);
                 emit collateralTokenReturned(msg.sender, offers[_communityId][_offerId].stakingRequirement);
 
             }
             if (offers[_communityId][_offerId].reputationRequirement > 0) {
-                reputationToken.transferFrom(address(this), msg.sender, offers[_communityId][_offerId].reputationRequirement);
+                reputationToken.transfer(msg.sender, offers[_communityId][_offerId].reputationRequirement);
                 emit reputationTokenReturned(msg.sender, offers[_communityId][_offerId].reputationRequirement);
             }
 
@@ -158,7 +158,7 @@ contract PeerLocal is Ownable {
             emit OfferClosed(_communityId, _offerId, msg.sender, true);
 
         }else {
-            (communities[_communityId].stakingToken).transferFrom(address(this), offers[_communityId][_offerId].owner, offers[_communityId][_offerId].stakingRequirement);
+            (communities[_communityId].stakingToken).transfer(offers[_communityId][_offerId].owner, offers[_communityId][_offerId].stakingRequirement);
             if (offers[_communityId][_offerId].reputationRequirement > 0) {
                 burnTokens(offers[_communityId][_offerId].reputationRequirement); //the staked ones
             }

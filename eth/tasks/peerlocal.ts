@@ -8,10 +8,15 @@ task("send-eth", "Sends eth to address", async (args, hre) => {
   // send eth to 0x09e626AC7422597415F75946eE39a97d0c281b07 from signer[0]
   const accounts: SignerWithAddress[] = await hre.ethers.getSigners();
   const signer = accounts[1];
+  const response = await signer.sendTransaction({
+    to: accounts[0].address,
+    value: hre.ethers.utils.parseEther("0.1"),
+  });
+  return;
   for (const account of accounts) {
     const response = await signer.sendTransaction({
       to: account.address,
-      value: hre.ethers.utils.parseEther("0.01"),
+      value: hre.ethers.utils.parseEther("0.1"),
     });
     await response.wait();
     console.log("Tx hash: " + response.hash);
@@ -143,7 +148,7 @@ task(
 task("accept-offer", "Uploads json file to pinata", async (args, hre) => {
   const { deployments, network } = hre;
 
-  const signer: SignerWithAddress = (await hre.ethers.getSigners())[0];
+  const signer: SignerWithAddress = (await hre.ethers.getSigners())[3];
 
   // get PeerLocal contract from deployments
   const peerLocal = await deployments.get("PeerLocal");
@@ -153,18 +158,19 @@ task("accept-offer", "Uploads json file to pinata", async (args, hre) => {
     signer
   );
   //    function acceptOffer(uint256 _communityId, uint256 _offerId) public {
-  const offerTx = await peerLocalContract.acceptOffer(0, 0);
-  console.log("offerTx", offerTx);
+  const offerTx = await peerLocalContract.acceptOffer(0, 1);
+  console.log("offerTx", offerTx.hash);
 });
 
 task("end-offer", "Uploads json file to pinata", async (args, hre) => {
   /////////
   const { deployments, network } = hre;
-  const signer = await hre.ethers.provider.getSigner();
-  const address = await signer.getAddress();
-  console.log(address);
+  const signer: SignerWithAddress = (await hre.ethers.getSigners())[3];
+  console.log("signer", signer.address);
 
-  const signature = await signer.signMessage("I am the owner of this community");
+  const signature = await signer.signMessage(
+    "I am the owner of this community"
+  );
 
   const peerLocal = await deployments.get("PeerLocal");
   const peerLocalAddress = peerLocal.address;
@@ -172,16 +178,24 @@ task("end-offer", "Uploads json file to pinata", async (args, hre) => {
   const peerERC20 = await deployments.get("TestERC20");
   const peerERC20Address = peerERC20.address;
 
-  const peerLocalContract = PeerLocal__factory.connect(peerLocalAddress, signer);
-  const peerERC20Contract = TestERC20__factory.connect(peerERC20Address, signer);
+  const peerLocalContract = PeerLocal__factory.connect(
+    peerLocalAddress,
+    signer
+  );
+  const peerERC20Contract = TestERC20__factory.connect(
+    peerERC20Address,
+    signer
+  );
 
-  const tx1 = await peerERC20Contract.approve(peerLocalAddress, ethers.constants.MaxUint256);
+  const tx1 = await peerERC20Contract.approve(
+    peerLocalAddress,
+    ethers.constants.MaxUint256
+  );
   await tx1.wait();
-
-  const tx2 = await peerLocalContract.endOffer(0, 14, true, { gasLimit: 3000000 });
+  console.log("blablbala0");
+  const tx2 = await peerLocalContract.endOffer(0, 1, true);
   await tx2.wait();
   console.log("endOfferTx", tx2);
-
 });
 
 task(
