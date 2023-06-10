@@ -29,6 +29,39 @@ export type Block_Height = {
   number_gte?: InputMaybe<Scalars['Int']>;
 };
 
+export type Community = {
+  __typename?: 'Community';
+  blockNumber: Scalars['BigInt'];
+  blockTimestamp: Scalars['BigInt'];
+  communityId: Scalars['BigInt'];
+  id: Scalars['String'];
+  ipfsMetadata: Scalars['String'];
+  members: Array<Member>;
+  offers: Array<Offer>;
+  owner: Scalars['Bytes'];
+  stakingRequirement: Scalars['BigInt'];
+  stakingToken: Scalars['Bytes'];
+  transactionHash: Scalars['Bytes'];
+};
+
+
+export type CommunityMembersArgs = {
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Member_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars['Int']>;
+  where?: InputMaybe<Member_Filter>;
+};
+
+
+export type CommunityOffersArgs = {
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Offer_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars['Int']>;
+  where?: InputMaybe<Offer_Filter>;
+};
+
 export type CommunityCreated = {
   __typename?: 'CommunityCreated';
   blockNumber: Scalars['BigInt'];
@@ -38,6 +71,7 @@ export type CommunityCreated = {
   ipfsMetadata: Scalars['String'];
   owner: Scalars['Bytes'];
   stakingRequirement: Scalars['BigInt'];
+  stakingToken: Scalars['Bytes'];
   transactionHash: Scalars['Bytes'];
 };
 
@@ -118,6 +152,16 @@ export type CommunityCreated_Filter = {
   stakingRequirement_lte?: InputMaybe<Scalars['BigInt']>;
   stakingRequirement_not?: InputMaybe<Scalars['BigInt']>;
   stakingRequirement_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  stakingToken?: InputMaybe<Scalars['Bytes']>;
+  stakingToken_contains?: InputMaybe<Scalars['Bytes']>;
+  stakingToken_gt?: InputMaybe<Scalars['Bytes']>;
+  stakingToken_gte?: InputMaybe<Scalars['Bytes']>;
+  stakingToken_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  stakingToken_lt?: InputMaybe<Scalars['Bytes']>;
+  stakingToken_lte?: InputMaybe<Scalars['Bytes']>;
+  stakingToken_not?: InputMaybe<Scalars['Bytes']>;
+  stakingToken_not_contains?: InputMaybe<Scalars['Bytes']>;
+  stakingToken_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
   transactionHash?: InputMaybe<Scalars['Bytes']>;
   transactionHash_contains?: InputMaybe<Scalars['Bytes']>;
   transactionHash_gt?: InputMaybe<Scalars['Bytes']>;
@@ -138,8 +182,143 @@ export enum CommunityCreated_OrderBy {
   IpfsMetadata = 'ipfsMetadata',
   Owner = 'owner',
   StakingRequirement = 'stakingRequirement',
+  StakingToken = 'stakingToken',
   TransactionHash = 'transactionHash'
 }
+
+export type Community_Filter = {
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<Community_Filter>>>;
+  blockNumber?: InputMaybe<Scalars['BigInt']>;
+  blockNumber_gt?: InputMaybe<Scalars['BigInt']>;
+  blockNumber_gte?: InputMaybe<Scalars['BigInt']>;
+  blockNumber_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  blockNumber_lt?: InputMaybe<Scalars['BigInt']>;
+  blockNumber_lte?: InputMaybe<Scalars['BigInt']>;
+  blockNumber_not?: InputMaybe<Scalars['BigInt']>;
+  blockNumber_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  blockTimestamp?: InputMaybe<Scalars['BigInt']>;
+  blockTimestamp_gt?: InputMaybe<Scalars['BigInt']>;
+  blockTimestamp_gte?: InputMaybe<Scalars['BigInt']>;
+  blockTimestamp_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  blockTimestamp_lt?: InputMaybe<Scalars['BigInt']>;
+  blockTimestamp_lte?: InputMaybe<Scalars['BigInt']>;
+  blockTimestamp_not?: InputMaybe<Scalars['BigInt']>;
+  blockTimestamp_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  communityId?: InputMaybe<Scalars['BigInt']>;
+  communityId_gt?: InputMaybe<Scalars['BigInt']>;
+  communityId_gte?: InputMaybe<Scalars['BigInt']>;
+  communityId_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  communityId_lt?: InputMaybe<Scalars['BigInt']>;
+  communityId_lte?: InputMaybe<Scalars['BigInt']>;
+  communityId_not?: InputMaybe<Scalars['BigInt']>;
+  communityId_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  id?: InputMaybe<Scalars['String']>;
+  id_contains?: InputMaybe<Scalars['String']>;
+  id_contains_nocase?: InputMaybe<Scalars['String']>;
+  id_ends_with?: InputMaybe<Scalars['String']>;
+  id_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  id_gt?: InputMaybe<Scalars['String']>;
+  id_gte?: InputMaybe<Scalars['String']>;
+  id_in?: InputMaybe<Array<Scalars['String']>>;
+  id_lt?: InputMaybe<Scalars['String']>;
+  id_lte?: InputMaybe<Scalars['String']>;
+  id_not?: InputMaybe<Scalars['String']>;
+  id_not_contains?: InputMaybe<Scalars['String']>;
+  id_not_contains_nocase?: InputMaybe<Scalars['String']>;
+  id_not_ends_with?: InputMaybe<Scalars['String']>;
+  id_not_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  id_not_in?: InputMaybe<Array<Scalars['String']>>;
+  id_not_starts_with?: InputMaybe<Scalars['String']>;
+  id_not_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  id_starts_with?: InputMaybe<Scalars['String']>;
+  id_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  ipfsMetadata?: InputMaybe<Scalars['String']>;
+  ipfsMetadata_contains?: InputMaybe<Scalars['String']>;
+  ipfsMetadata_contains_nocase?: InputMaybe<Scalars['String']>;
+  ipfsMetadata_ends_with?: InputMaybe<Scalars['String']>;
+  ipfsMetadata_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  ipfsMetadata_gt?: InputMaybe<Scalars['String']>;
+  ipfsMetadata_gte?: InputMaybe<Scalars['String']>;
+  ipfsMetadata_in?: InputMaybe<Array<Scalars['String']>>;
+  ipfsMetadata_lt?: InputMaybe<Scalars['String']>;
+  ipfsMetadata_lte?: InputMaybe<Scalars['String']>;
+  ipfsMetadata_not?: InputMaybe<Scalars['String']>;
+  ipfsMetadata_not_contains?: InputMaybe<Scalars['String']>;
+  ipfsMetadata_not_contains_nocase?: InputMaybe<Scalars['String']>;
+  ipfsMetadata_not_ends_with?: InputMaybe<Scalars['String']>;
+  ipfsMetadata_not_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  ipfsMetadata_not_in?: InputMaybe<Array<Scalars['String']>>;
+  ipfsMetadata_not_starts_with?: InputMaybe<Scalars['String']>;
+  ipfsMetadata_not_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  ipfsMetadata_starts_with?: InputMaybe<Scalars['String']>;
+  ipfsMetadata_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  members_?: InputMaybe<Member_Filter>;
+  offers_?: InputMaybe<Offer_Filter>;
+  or?: InputMaybe<Array<InputMaybe<Community_Filter>>>;
+  owner?: InputMaybe<Scalars['Bytes']>;
+  owner_contains?: InputMaybe<Scalars['Bytes']>;
+  owner_gt?: InputMaybe<Scalars['Bytes']>;
+  owner_gte?: InputMaybe<Scalars['Bytes']>;
+  owner_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  owner_lt?: InputMaybe<Scalars['Bytes']>;
+  owner_lte?: InputMaybe<Scalars['Bytes']>;
+  owner_not?: InputMaybe<Scalars['Bytes']>;
+  owner_not_contains?: InputMaybe<Scalars['Bytes']>;
+  owner_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  stakingRequirement?: InputMaybe<Scalars['BigInt']>;
+  stakingRequirement_gt?: InputMaybe<Scalars['BigInt']>;
+  stakingRequirement_gte?: InputMaybe<Scalars['BigInt']>;
+  stakingRequirement_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  stakingRequirement_lt?: InputMaybe<Scalars['BigInt']>;
+  stakingRequirement_lte?: InputMaybe<Scalars['BigInt']>;
+  stakingRequirement_not?: InputMaybe<Scalars['BigInt']>;
+  stakingRequirement_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  stakingToken?: InputMaybe<Scalars['Bytes']>;
+  stakingToken_contains?: InputMaybe<Scalars['Bytes']>;
+  stakingToken_gt?: InputMaybe<Scalars['Bytes']>;
+  stakingToken_gte?: InputMaybe<Scalars['Bytes']>;
+  stakingToken_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  stakingToken_lt?: InputMaybe<Scalars['Bytes']>;
+  stakingToken_lte?: InputMaybe<Scalars['Bytes']>;
+  stakingToken_not?: InputMaybe<Scalars['Bytes']>;
+  stakingToken_not_contains?: InputMaybe<Scalars['Bytes']>;
+  stakingToken_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  transactionHash?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_contains?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_gt?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_gte?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  transactionHash_lt?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_lte?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_not?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_not_contains?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
+};
+
+export enum Community_OrderBy {
+  BlockNumber = 'blockNumber',
+  BlockTimestamp = 'blockTimestamp',
+  CommunityId = 'communityId',
+  Id = 'id',
+  IpfsMetadata = 'ipfsMetadata',
+  Members = 'members',
+  Offers = 'offers',
+  Owner = 'owner',
+  StakingRequirement = 'stakingRequirement',
+  StakingToken = 'stakingToken',
+  TransactionHash = 'transactionHash'
+}
+
+export type Member = {
+  __typename?: 'Member';
+  blockNumber: Scalars['BigInt'];
+  blockTimestamp: Scalars['BigInt'];
+  community: Community;
+  id: Scalars['Bytes'];
+  transactionHash: Scalars['Bytes'];
+};
 
 export type MemberJoinedCommunity = {
   __typename?: 'MemberJoinedCommunity';
@@ -220,6 +399,103 @@ export enum MemberJoinedCommunity_OrderBy {
   Member = 'member',
   TransactionHash = 'transactionHash'
 }
+
+export type Member_Filter = {
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<Member_Filter>>>;
+  blockNumber?: InputMaybe<Scalars['BigInt']>;
+  blockNumber_gt?: InputMaybe<Scalars['BigInt']>;
+  blockNumber_gte?: InputMaybe<Scalars['BigInt']>;
+  blockNumber_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  blockNumber_lt?: InputMaybe<Scalars['BigInt']>;
+  blockNumber_lte?: InputMaybe<Scalars['BigInt']>;
+  blockNumber_not?: InputMaybe<Scalars['BigInt']>;
+  blockNumber_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  blockTimestamp?: InputMaybe<Scalars['BigInt']>;
+  blockTimestamp_gt?: InputMaybe<Scalars['BigInt']>;
+  blockTimestamp_gte?: InputMaybe<Scalars['BigInt']>;
+  blockTimestamp_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  blockTimestamp_lt?: InputMaybe<Scalars['BigInt']>;
+  blockTimestamp_lte?: InputMaybe<Scalars['BigInt']>;
+  blockTimestamp_not?: InputMaybe<Scalars['BigInt']>;
+  blockTimestamp_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  community?: InputMaybe<Scalars['String']>;
+  community_?: InputMaybe<Community_Filter>;
+  community_contains?: InputMaybe<Scalars['String']>;
+  community_contains_nocase?: InputMaybe<Scalars['String']>;
+  community_ends_with?: InputMaybe<Scalars['String']>;
+  community_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  community_gt?: InputMaybe<Scalars['String']>;
+  community_gte?: InputMaybe<Scalars['String']>;
+  community_in?: InputMaybe<Array<Scalars['String']>>;
+  community_lt?: InputMaybe<Scalars['String']>;
+  community_lte?: InputMaybe<Scalars['String']>;
+  community_not?: InputMaybe<Scalars['String']>;
+  community_not_contains?: InputMaybe<Scalars['String']>;
+  community_not_contains_nocase?: InputMaybe<Scalars['String']>;
+  community_not_ends_with?: InputMaybe<Scalars['String']>;
+  community_not_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  community_not_in?: InputMaybe<Array<Scalars['String']>>;
+  community_not_starts_with?: InputMaybe<Scalars['String']>;
+  community_not_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  community_starts_with?: InputMaybe<Scalars['String']>;
+  community_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['Bytes']>;
+  id_contains?: InputMaybe<Scalars['Bytes']>;
+  id_gt?: InputMaybe<Scalars['Bytes']>;
+  id_gte?: InputMaybe<Scalars['Bytes']>;
+  id_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  id_lt?: InputMaybe<Scalars['Bytes']>;
+  id_lte?: InputMaybe<Scalars['Bytes']>;
+  id_not?: InputMaybe<Scalars['Bytes']>;
+  id_not_contains?: InputMaybe<Scalars['Bytes']>;
+  id_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  or?: InputMaybe<Array<InputMaybe<Member_Filter>>>;
+  transactionHash?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_contains?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_gt?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_gte?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  transactionHash_lt?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_lte?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_not?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_not_contains?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
+};
+
+export enum Member_OrderBy {
+  BlockNumber = 'blockNumber',
+  BlockTimestamp = 'blockTimestamp',
+  Community = 'community',
+  CommunityBlockNumber = 'community__blockNumber',
+  CommunityBlockTimestamp = 'community__blockTimestamp',
+  CommunityCommunityId = 'community__communityId',
+  CommunityId = 'community__id',
+  CommunityIpfsMetadata = 'community__ipfsMetadata',
+  CommunityOwner = 'community__owner',
+  CommunityStakingRequirement = 'community__stakingRequirement',
+  CommunityStakingToken = 'community__stakingToken',
+  CommunityTransactionHash = 'community__transactionHash',
+  Id = 'id',
+  TransactionHash = 'transactionHash'
+}
+
+export type Offer = {
+  __typename?: 'Offer';
+  blockNumber: Scalars['BigInt'];
+  blockTimestamp: Scalars['BigInt'];
+  community: Community;
+  communityId: Scalars['BigInt'];
+  id: Scalars['String'];
+  metadata: Scalars['String'];
+  offerId: Scalars['BigInt'];
+  offerStatus: Scalars['Int'];
+  owner: Scalars['Bytes'];
+  reputationRequirement: Scalars['BigInt'];
+  stakingRequirement: Scalars['BigInt'];
+  transactionHash: Scalars['Bytes'];
+};
 
 export type OfferAccepted = {
   __typename?: 'OfferAccepted';
@@ -311,17 +587,109 @@ export enum OfferAccepted_OrderBy {
   TransactionHash = 'transactionHash'
 }
 
+export type OfferClosed = {
+  __typename?: 'OfferClosed';
+  blockNumber: Scalars['BigInt'];
+  blockTimestamp: Scalars['BigInt'];
+  communityId: Scalars['BigInt'];
+  id: Scalars['Bytes'];
+  member: Scalars['Bytes'];
+  offerId: Scalars['BigInt'];
+  transactionHash: Scalars['Bytes'];
+};
+
+export type OfferClosed_Filter = {
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<OfferClosed_Filter>>>;
+  blockNumber?: InputMaybe<Scalars['BigInt']>;
+  blockNumber_gt?: InputMaybe<Scalars['BigInt']>;
+  blockNumber_gte?: InputMaybe<Scalars['BigInt']>;
+  blockNumber_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  blockNumber_lt?: InputMaybe<Scalars['BigInt']>;
+  blockNumber_lte?: InputMaybe<Scalars['BigInt']>;
+  blockNumber_not?: InputMaybe<Scalars['BigInt']>;
+  blockNumber_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  blockTimestamp?: InputMaybe<Scalars['BigInt']>;
+  blockTimestamp_gt?: InputMaybe<Scalars['BigInt']>;
+  blockTimestamp_gte?: InputMaybe<Scalars['BigInt']>;
+  blockTimestamp_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  blockTimestamp_lt?: InputMaybe<Scalars['BigInt']>;
+  blockTimestamp_lte?: InputMaybe<Scalars['BigInt']>;
+  blockTimestamp_not?: InputMaybe<Scalars['BigInt']>;
+  blockTimestamp_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  communityId?: InputMaybe<Scalars['BigInt']>;
+  communityId_gt?: InputMaybe<Scalars['BigInt']>;
+  communityId_gte?: InputMaybe<Scalars['BigInt']>;
+  communityId_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  communityId_lt?: InputMaybe<Scalars['BigInt']>;
+  communityId_lte?: InputMaybe<Scalars['BigInt']>;
+  communityId_not?: InputMaybe<Scalars['BigInt']>;
+  communityId_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  id?: InputMaybe<Scalars['Bytes']>;
+  id_contains?: InputMaybe<Scalars['Bytes']>;
+  id_gt?: InputMaybe<Scalars['Bytes']>;
+  id_gte?: InputMaybe<Scalars['Bytes']>;
+  id_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  id_lt?: InputMaybe<Scalars['Bytes']>;
+  id_lte?: InputMaybe<Scalars['Bytes']>;
+  id_not?: InputMaybe<Scalars['Bytes']>;
+  id_not_contains?: InputMaybe<Scalars['Bytes']>;
+  id_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  member?: InputMaybe<Scalars['Bytes']>;
+  member_contains?: InputMaybe<Scalars['Bytes']>;
+  member_gt?: InputMaybe<Scalars['Bytes']>;
+  member_gte?: InputMaybe<Scalars['Bytes']>;
+  member_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  member_lt?: InputMaybe<Scalars['Bytes']>;
+  member_lte?: InputMaybe<Scalars['Bytes']>;
+  member_not?: InputMaybe<Scalars['Bytes']>;
+  member_not_contains?: InputMaybe<Scalars['Bytes']>;
+  member_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  offerId?: InputMaybe<Scalars['BigInt']>;
+  offerId_gt?: InputMaybe<Scalars['BigInt']>;
+  offerId_gte?: InputMaybe<Scalars['BigInt']>;
+  offerId_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  offerId_lt?: InputMaybe<Scalars['BigInt']>;
+  offerId_lte?: InputMaybe<Scalars['BigInt']>;
+  offerId_not?: InputMaybe<Scalars['BigInt']>;
+  offerId_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  or?: InputMaybe<Array<InputMaybe<OfferClosed_Filter>>>;
+  transactionHash?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_contains?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_gt?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_gte?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  transactionHash_lt?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_lte?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_not?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_not_contains?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
+};
+
+export enum OfferClosed_OrderBy {
+  BlockNumber = 'blockNumber',
+  BlockTimestamp = 'blockTimestamp',
+  CommunityId = 'communityId',
+  Id = 'id',
+  Member = 'member',
+  OfferId = 'offerId',
+  TransactionHash = 'transactionHash'
+}
+
 export type OfferCreated = {
   __typename?: 'OfferCreated';
   blockNumber: Scalars['BigInt'];
   blockTimestamp: Scalars['BigInt'];
   communityId: Scalars['BigInt'];
   id: Scalars['Bytes'];
-  metadata: Scalars['String'];
+  newOffer_communityId: Scalars['BigInt'];
+  newOffer_metadata: Scalars['String'];
+  newOffer_offerStatus: Scalars['Int'];
+  newOffer_owner: Scalars['Bytes'];
+  newOffer_reputationRequirement: Scalars['BigInt'];
+  newOffer_stakingRequirement: Scalars['BigInt'];
   offerId: Scalars['BigInt'];
-  owner: Scalars['Bytes'];
-  reputationRequirement: Scalars['BigInt'];
-  stakingRequirement: Scalars['BigInt'];
   transactionHash: Scalars['Bytes'];
 };
 
@@ -363,6 +731,173 @@ export type OfferCreated_Filter = {
   id_not?: InputMaybe<Scalars['Bytes']>;
   id_not_contains?: InputMaybe<Scalars['Bytes']>;
   id_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  newOffer_communityId?: InputMaybe<Scalars['BigInt']>;
+  newOffer_communityId_gt?: InputMaybe<Scalars['BigInt']>;
+  newOffer_communityId_gte?: InputMaybe<Scalars['BigInt']>;
+  newOffer_communityId_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  newOffer_communityId_lt?: InputMaybe<Scalars['BigInt']>;
+  newOffer_communityId_lte?: InputMaybe<Scalars['BigInt']>;
+  newOffer_communityId_not?: InputMaybe<Scalars['BigInt']>;
+  newOffer_communityId_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  newOffer_metadata?: InputMaybe<Scalars['String']>;
+  newOffer_metadata_contains?: InputMaybe<Scalars['String']>;
+  newOffer_metadata_contains_nocase?: InputMaybe<Scalars['String']>;
+  newOffer_metadata_ends_with?: InputMaybe<Scalars['String']>;
+  newOffer_metadata_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  newOffer_metadata_gt?: InputMaybe<Scalars['String']>;
+  newOffer_metadata_gte?: InputMaybe<Scalars['String']>;
+  newOffer_metadata_in?: InputMaybe<Array<Scalars['String']>>;
+  newOffer_metadata_lt?: InputMaybe<Scalars['String']>;
+  newOffer_metadata_lte?: InputMaybe<Scalars['String']>;
+  newOffer_metadata_not?: InputMaybe<Scalars['String']>;
+  newOffer_metadata_not_contains?: InputMaybe<Scalars['String']>;
+  newOffer_metadata_not_contains_nocase?: InputMaybe<Scalars['String']>;
+  newOffer_metadata_not_ends_with?: InputMaybe<Scalars['String']>;
+  newOffer_metadata_not_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  newOffer_metadata_not_in?: InputMaybe<Array<Scalars['String']>>;
+  newOffer_metadata_not_starts_with?: InputMaybe<Scalars['String']>;
+  newOffer_metadata_not_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  newOffer_metadata_starts_with?: InputMaybe<Scalars['String']>;
+  newOffer_metadata_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  newOffer_offerStatus?: InputMaybe<Scalars['Int']>;
+  newOffer_offerStatus_gt?: InputMaybe<Scalars['Int']>;
+  newOffer_offerStatus_gte?: InputMaybe<Scalars['Int']>;
+  newOffer_offerStatus_in?: InputMaybe<Array<Scalars['Int']>>;
+  newOffer_offerStatus_lt?: InputMaybe<Scalars['Int']>;
+  newOffer_offerStatus_lte?: InputMaybe<Scalars['Int']>;
+  newOffer_offerStatus_not?: InputMaybe<Scalars['Int']>;
+  newOffer_offerStatus_not_in?: InputMaybe<Array<Scalars['Int']>>;
+  newOffer_owner?: InputMaybe<Scalars['Bytes']>;
+  newOffer_owner_contains?: InputMaybe<Scalars['Bytes']>;
+  newOffer_owner_gt?: InputMaybe<Scalars['Bytes']>;
+  newOffer_owner_gte?: InputMaybe<Scalars['Bytes']>;
+  newOffer_owner_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  newOffer_owner_lt?: InputMaybe<Scalars['Bytes']>;
+  newOffer_owner_lte?: InputMaybe<Scalars['Bytes']>;
+  newOffer_owner_not?: InputMaybe<Scalars['Bytes']>;
+  newOffer_owner_not_contains?: InputMaybe<Scalars['Bytes']>;
+  newOffer_owner_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  newOffer_reputationRequirement?: InputMaybe<Scalars['BigInt']>;
+  newOffer_reputationRequirement_gt?: InputMaybe<Scalars['BigInt']>;
+  newOffer_reputationRequirement_gte?: InputMaybe<Scalars['BigInt']>;
+  newOffer_reputationRequirement_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  newOffer_reputationRequirement_lt?: InputMaybe<Scalars['BigInt']>;
+  newOffer_reputationRequirement_lte?: InputMaybe<Scalars['BigInt']>;
+  newOffer_reputationRequirement_not?: InputMaybe<Scalars['BigInt']>;
+  newOffer_reputationRequirement_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  newOffer_stakingRequirement?: InputMaybe<Scalars['BigInt']>;
+  newOffer_stakingRequirement_gt?: InputMaybe<Scalars['BigInt']>;
+  newOffer_stakingRequirement_gte?: InputMaybe<Scalars['BigInt']>;
+  newOffer_stakingRequirement_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  newOffer_stakingRequirement_lt?: InputMaybe<Scalars['BigInt']>;
+  newOffer_stakingRequirement_lte?: InputMaybe<Scalars['BigInt']>;
+  newOffer_stakingRequirement_not?: InputMaybe<Scalars['BigInt']>;
+  newOffer_stakingRequirement_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  offerId?: InputMaybe<Scalars['BigInt']>;
+  offerId_gt?: InputMaybe<Scalars['BigInt']>;
+  offerId_gte?: InputMaybe<Scalars['BigInt']>;
+  offerId_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  offerId_lt?: InputMaybe<Scalars['BigInt']>;
+  offerId_lte?: InputMaybe<Scalars['BigInt']>;
+  offerId_not?: InputMaybe<Scalars['BigInt']>;
+  offerId_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  or?: InputMaybe<Array<InputMaybe<OfferCreated_Filter>>>;
+  transactionHash?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_contains?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_gt?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_gte?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  transactionHash_lt?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_lte?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_not?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_not_contains?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
+};
+
+export enum OfferCreated_OrderBy {
+  BlockNumber = 'blockNumber',
+  BlockTimestamp = 'blockTimestamp',
+  CommunityId = 'communityId',
+  Id = 'id',
+  NewOfferCommunityId = 'newOffer_communityId',
+  NewOfferMetadata = 'newOffer_metadata',
+  NewOfferOfferStatus = 'newOffer_offerStatus',
+  NewOfferOwner = 'newOffer_owner',
+  NewOfferReputationRequirement = 'newOffer_reputationRequirement',
+  NewOfferStakingRequirement = 'newOffer_stakingRequirement',
+  OfferId = 'offerId',
+  TransactionHash = 'transactionHash'
+}
+
+export type Offer_Filter = {
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<Offer_Filter>>>;
+  blockNumber?: InputMaybe<Scalars['BigInt']>;
+  blockNumber_gt?: InputMaybe<Scalars['BigInt']>;
+  blockNumber_gte?: InputMaybe<Scalars['BigInt']>;
+  blockNumber_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  blockNumber_lt?: InputMaybe<Scalars['BigInt']>;
+  blockNumber_lte?: InputMaybe<Scalars['BigInt']>;
+  blockNumber_not?: InputMaybe<Scalars['BigInt']>;
+  blockNumber_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  blockTimestamp?: InputMaybe<Scalars['BigInt']>;
+  blockTimestamp_gt?: InputMaybe<Scalars['BigInt']>;
+  blockTimestamp_gte?: InputMaybe<Scalars['BigInt']>;
+  blockTimestamp_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  blockTimestamp_lt?: InputMaybe<Scalars['BigInt']>;
+  blockTimestamp_lte?: InputMaybe<Scalars['BigInt']>;
+  blockTimestamp_not?: InputMaybe<Scalars['BigInt']>;
+  blockTimestamp_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  community?: InputMaybe<Scalars['String']>;
+  communityId?: InputMaybe<Scalars['BigInt']>;
+  communityId_gt?: InputMaybe<Scalars['BigInt']>;
+  communityId_gte?: InputMaybe<Scalars['BigInt']>;
+  communityId_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  communityId_lt?: InputMaybe<Scalars['BigInt']>;
+  communityId_lte?: InputMaybe<Scalars['BigInt']>;
+  communityId_not?: InputMaybe<Scalars['BigInt']>;
+  communityId_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  community_?: InputMaybe<Community_Filter>;
+  community_contains?: InputMaybe<Scalars['String']>;
+  community_contains_nocase?: InputMaybe<Scalars['String']>;
+  community_ends_with?: InputMaybe<Scalars['String']>;
+  community_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  community_gt?: InputMaybe<Scalars['String']>;
+  community_gte?: InputMaybe<Scalars['String']>;
+  community_in?: InputMaybe<Array<Scalars['String']>>;
+  community_lt?: InputMaybe<Scalars['String']>;
+  community_lte?: InputMaybe<Scalars['String']>;
+  community_not?: InputMaybe<Scalars['String']>;
+  community_not_contains?: InputMaybe<Scalars['String']>;
+  community_not_contains_nocase?: InputMaybe<Scalars['String']>;
+  community_not_ends_with?: InputMaybe<Scalars['String']>;
+  community_not_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  community_not_in?: InputMaybe<Array<Scalars['String']>>;
+  community_not_starts_with?: InputMaybe<Scalars['String']>;
+  community_not_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  community_starts_with?: InputMaybe<Scalars['String']>;
+  community_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['String']>;
+  id_contains?: InputMaybe<Scalars['String']>;
+  id_contains_nocase?: InputMaybe<Scalars['String']>;
+  id_ends_with?: InputMaybe<Scalars['String']>;
+  id_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  id_gt?: InputMaybe<Scalars['String']>;
+  id_gte?: InputMaybe<Scalars['String']>;
+  id_in?: InputMaybe<Array<Scalars['String']>>;
+  id_lt?: InputMaybe<Scalars['String']>;
+  id_lte?: InputMaybe<Scalars['String']>;
+  id_not?: InputMaybe<Scalars['String']>;
+  id_not_contains?: InputMaybe<Scalars['String']>;
+  id_not_contains_nocase?: InputMaybe<Scalars['String']>;
+  id_not_ends_with?: InputMaybe<Scalars['String']>;
+  id_not_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  id_not_in?: InputMaybe<Array<Scalars['String']>>;
+  id_not_starts_with?: InputMaybe<Scalars['String']>;
+  id_not_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  id_starts_with?: InputMaybe<Scalars['String']>;
+  id_starts_with_nocase?: InputMaybe<Scalars['String']>;
   metadata?: InputMaybe<Scalars['String']>;
   metadata_contains?: InputMaybe<Scalars['String']>;
   metadata_contains_nocase?: InputMaybe<Scalars['String']>;
@@ -391,7 +926,15 @@ export type OfferCreated_Filter = {
   offerId_lte?: InputMaybe<Scalars['BigInt']>;
   offerId_not?: InputMaybe<Scalars['BigInt']>;
   offerId_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  or?: InputMaybe<Array<InputMaybe<OfferCreated_Filter>>>;
+  offerStatus?: InputMaybe<Scalars['Int']>;
+  offerStatus_gt?: InputMaybe<Scalars['Int']>;
+  offerStatus_gte?: InputMaybe<Scalars['Int']>;
+  offerStatus_in?: InputMaybe<Array<Scalars['Int']>>;
+  offerStatus_lt?: InputMaybe<Scalars['Int']>;
+  offerStatus_lte?: InputMaybe<Scalars['Int']>;
+  offerStatus_not?: InputMaybe<Scalars['Int']>;
+  offerStatus_not_in?: InputMaybe<Array<Scalars['Int']>>;
+  or?: InputMaybe<Array<InputMaybe<Offer_Filter>>>;
   owner?: InputMaybe<Scalars['Bytes']>;
   owner_contains?: InputMaybe<Scalars['Bytes']>;
   owner_gt?: InputMaybe<Scalars['Bytes']>;
@@ -430,13 +973,24 @@ export type OfferCreated_Filter = {
   transactionHash_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
 };
 
-export enum OfferCreated_OrderBy {
+export enum Offer_OrderBy {
   BlockNumber = 'blockNumber',
   BlockTimestamp = 'blockTimestamp',
+  Community = 'community',
   CommunityId = 'communityId',
+  CommunityBlockNumber = 'community__blockNumber',
+  CommunityBlockTimestamp = 'community__blockTimestamp',
+  CommunityCommunityId = 'community__communityId',
+  CommunityId = 'community__id',
+  CommunityIpfsMetadata = 'community__ipfsMetadata',
+  CommunityOwner = 'community__owner',
+  CommunityStakingRequirement = 'community__stakingRequirement',
+  CommunityStakingToken = 'community__stakingToken',
+  CommunityTransactionHash = 'community__transactionHash',
   Id = 'id',
   Metadata = 'metadata',
   OfferId = 'offerId',
+  OfferStatus = 'offerStatus',
   Owner = 'owner',
   ReputationRequirement = 'reputationRequirement',
   StakingRequirement = 'stakingRequirement',
@@ -531,25 +1085,171 @@ export enum OwnershipTransferred_OrderBy {
   TransactionHash = 'transactionHash'
 }
 
+export type PeerLocalInitalized = {
+  __typename?: 'PeerLocalInitalized';
+  blockNumber: Scalars['BigInt'];
+  blockTimestamp: Scalars['BigInt'];
+  erc20: Scalars['Bytes'];
+  id: Scalars['Bytes'];
+  transactionHash: Scalars['Bytes'];
+};
+
+export type PeerLocalInitalized_Filter = {
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<PeerLocalInitalized_Filter>>>;
+  blockNumber?: InputMaybe<Scalars['BigInt']>;
+  blockNumber_gt?: InputMaybe<Scalars['BigInt']>;
+  blockNumber_gte?: InputMaybe<Scalars['BigInt']>;
+  blockNumber_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  blockNumber_lt?: InputMaybe<Scalars['BigInt']>;
+  blockNumber_lte?: InputMaybe<Scalars['BigInt']>;
+  blockNumber_not?: InputMaybe<Scalars['BigInt']>;
+  blockNumber_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  blockTimestamp?: InputMaybe<Scalars['BigInt']>;
+  blockTimestamp_gt?: InputMaybe<Scalars['BigInt']>;
+  blockTimestamp_gte?: InputMaybe<Scalars['BigInt']>;
+  blockTimestamp_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  blockTimestamp_lt?: InputMaybe<Scalars['BigInt']>;
+  blockTimestamp_lte?: InputMaybe<Scalars['BigInt']>;
+  blockTimestamp_not?: InputMaybe<Scalars['BigInt']>;
+  blockTimestamp_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  erc20?: InputMaybe<Scalars['Bytes']>;
+  erc20_contains?: InputMaybe<Scalars['Bytes']>;
+  erc20_gt?: InputMaybe<Scalars['Bytes']>;
+  erc20_gte?: InputMaybe<Scalars['Bytes']>;
+  erc20_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  erc20_lt?: InputMaybe<Scalars['Bytes']>;
+  erc20_lte?: InputMaybe<Scalars['Bytes']>;
+  erc20_not?: InputMaybe<Scalars['Bytes']>;
+  erc20_not_contains?: InputMaybe<Scalars['Bytes']>;
+  erc20_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  id?: InputMaybe<Scalars['Bytes']>;
+  id_contains?: InputMaybe<Scalars['Bytes']>;
+  id_gt?: InputMaybe<Scalars['Bytes']>;
+  id_gte?: InputMaybe<Scalars['Bytes']>;
+  id_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  id_lt?: InputMaybe<Scalars['Bytes']>;
+  id_lte?: InputMaybe<Scalars['Bytes']>;
+  id_not?: InputMaybe<Scalars['Bytes']>;
+  id_not_contains?: InputMaybe<Scalars['Bytes']>;
+  id_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  or?: InputMaybe<Array<InputMaybe<PeerLocalInitalized_Filter>>>;
+  transactionHash?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_contains?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_gt?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_gte?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  transactionHash_lt?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_lte?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_not?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_not_contains?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
+};
+
+export enum PeerLocalInitalized_OrderBy {
+  BlockNumber = 'blockNumber',
+  BlockTimestamp = 'blockTimestamp',
+  Erc20 = 'erc20',
+  Id = 'id',
+  TransactionHash = 'transactionHash'
+}
+
 export type Query = {
   __typename?: 'Query';
   /** Access to subgraph metadata */
   _meta?: Maybe<_Meta_>;
+  collateralTokenReturned?: Maybe<CollateralTokenReturned>;
+  collateralTokenReturneds: Array<CollateralTokenReturned>;
+  collateralTokenStaked?: Maybe<CollateralTokenStaked>;
+  collateralTokenStakeds: Array<CollateralTokenStaked>;
+  communities: Array<Community>;
+  community?: Maybe<Community>;
   communityCreated?: Maybe<CommunityCreated>;
   communityCreateds: Array<CommunityCreated>;
+  member?: Maybe<Member>;
   memberJoinedCommunities: Array<MemberJoinedCommunity>;
   memberJoinedCommunity?: Maybe<MemberJoinedCommunity>;
+  members: Array<Member>;
+  offer?: Maybe<Offer>;
   offerAccepted?: Maybe<OfferAccepted>;
   offerAccepteds: Array<OfferAccepted>;
+  offerClosed?: Maybe<OfferClosed>;
+  offerCloseds: Array<OfferClosed>;
   offerCreated?: Maybe<OfferCreated>;
   offerCreateds: Array<OfferCreated>;
+  offers: Array<Offer>;
   ownershipTransferred?: Maybe<OwnershipTransferred>;
   ownershipTransferreds: Array<OwnershipTransferred>;
+  peerLocalInitalized?: Maybe<PeerLocalInitalized>;
+  peerLocalInitalizeds: Array<PeerLocalInitalized>;
+  reputationTokenBurn?: Maybe<ReputationTokenBurn>;
+  reputationTokenBurns: Array<ReputationTokenBurn>;
+  reputationTokenMint?: Maybe<ReputationTokenMint>;
+  reputationTokenMints: Array<ReputationTokenMint>;
+  reputationTokenReturned?: Maybe<ReputationTokenReturned>;
+  reputationTokenReturneds: Array<ReputationTokenReturned>;
+  reputationTokenStaked?: Maybe<ReputationTokenStaked>;
+  reputationTokenStakeds: Array<ReputationTokenStaked>;
 };
 
 
 export type Query_MetaArgs = {
   block?: InputMaybe<Block_Height>;
+};
+
+
+export type QueryCollateralTokenReturnedArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars['ID'];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QueryCollateralTokenReturnedsArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<CollateralTokenReturned_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars['Int']>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<CollateralTokenReturned_Filter>;
+};
+
+
+export type QueryCollateralTokenStakedArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars['ID'];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QueryCollateralTokenStakedsArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<CollateralTokenStaked_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars['Int']>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<CollateralTokenStaked_Filter>;
+};
+
+
+export type QueryCommunitiesArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Community_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars['Int']>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<Community_Filter>;
+};
+
+
+export type QueryCommunityArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars['ID'];
+  subgraphError?: _SubgraphErrorPolicy_;
 };
 
 
@@ -571,6 +1271,13 @@ export type QueryCommunityCreatedsArgs = {
 };
 
 
+export type QueryMemberArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars['ID'];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
 export type QueryMemberJoinedCommunitiesArgs = {
   block?: InputMaybe<Block_Height>;
   first?: InputMaybe<Scalars['Int']>;
@@ -583,6 +1290,24 @@ export type QueryMemberJoinedCommunitiesArgs = {
 
 
 export type QueryMemberJoinedCommunityArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars['ID'];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QueryMembersArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Member_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars['Int']>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<Member_Filter>;
+};
+
+
+export type QueryOfferArgs = {
   block?: InputMaybe<Block_Height>;
   id: Scalars['ID'];
   subgraphError?: _SubgraphErrorPolicy_;
@@ -607,6 +1332,24 @@ export type QueryOfferAcceptedsArgs = {
 };
 
 
+export type QueryOfferClosedArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars['ID'];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QueryOfferClosedsArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<OfferClosed_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars['Int']>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<OfferClosed_Filter>;
+};
+
+
 export type QueryOfferCreatedArgs = {
   block?: InputMaybe<Block_Height>;
   id: Scalars['ID'];
@@ -622,6 +1365,17 @@ export type QueryOfferCreatedsArgs = {
   skip?: InputMaybe<Scalars['Int']>;
   subgraphError?: _SubgraphErrorPolicy_;
   where?: InputMaybe<OfferCreated_Filter>;
+};
+
+
+export type QueryOffersArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Offer_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars['Int']>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<Offer_Filter>;
 };
 
 
@@ -642,25 +1396,327 @@ export type QueryOwnershipTransferredsArgs = {
   where?: InputMaybe<OwnershipTransferred_Filter>;
 };
 
+
+export type QueryPeerLocalInitalizedArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars['ID'];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QueryPeerLocalInitalizedsArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<PeerLocalInitalized_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars['Int']>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<PeerLocalInitalized_Filter>;
+};
+
+
+export type QueryReputationTokenBurnArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars['ID'];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QueryReputationTokenBurnsArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<ReputationTokenBurn_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars['Int']>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<ReputationTokenBurn_Filter>;
+};
+
+
+export type QueryReputationTokenMintArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars['ID'];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QueryReputationTokenMintsArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<ReputationTokenMint_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars['Int']>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<ReputationTokenMint_Filter>;
+};
+
+
+export type QueryReputationTokenReturnedArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars['ID'];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QueryReputationTokenReturnedsArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<ReputationTokenReturned_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars['Int']>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<ReputationTokenReturned_Filter>;
+};
+
+
+export type QueryReputationTokenStakedArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars['ID'];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QueryReputationTokenStakedsArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<ReputationTokenStaked_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars['Int']>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<ReputationTokenStaked_Filter>;
+};
+
+export type ReputationTokenBurn = {
+  __typename?: 'ReputationTokenBurn';
+  blockNumber: Scalars['BigInt'];
+  blockTimestamp: Scalars['BigInt'];
+  burnAmount: Scalars['BigInt'];
+  id: Scalars['Bytes'];
+  transactionHash: Scalars['Bytes'];
+};
+
+export type ReputationTokenBurn_Filter = {
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<ReputationTokenBurn_Filter>>>;
+  blockNumber?: InputMaybe<Scalars['BigInt']>;
+  blockNumber_gt?: InputMaybe<Scalars['BigInt']>;
+  blockNumber_gte?: InputMaybe<Scalars['BigInt']>;
+  blockNumber_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  blockNumber_lt?: InputMaybe<Scalars['BigInt']>;
+  blockNumber_lte?: InputMaybe<Scalars['BigInt']>;
+  blockNumber_not?: InputMaybe<Scalars['BigInt']>;
+  blockNumber_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  blockTimestamp?: InputMaybe<Scalars['BigInt']>;
+  blockTimestamp_gt?: InputMaybe<Scalars['BigInt']>;
+  blockTimestamp_gte?: InputMaybe<Scalars['BigInt']>;
+  blockTimestamp_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  blockTimestamp_lt?: InputMaybe<Scalars['BigInt']>;
+  blockTimestamp_lte?: InputMaybe<Scalars['BigInt']>;
+  blockTimestamp_not?: InputMaybe<Scalars['BigInt']>;
+  blockTimestamp_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  burnAmount?: InputMaybe<Scalars['BigInt']>;
+  burnAmount_gt?: InputMaybe<Scalars['BigInt']>;
+  burnAmount_gte?: InputMaybe<Scalars['BigInt']>;
+  burnAmount_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  burnAmount_lt?: InputMaybe<Scalars['BigInt']>;
+  burnAmount_lte?: InputMaybe<Scalars['BigInt']>;
+  burnAmount_not?: InputMaybe<Scalars['BigInt']>;
+  burnAmount_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  id?: InputMaybe<Scalars['Bytes']>;
+  id_contains?: InputMaybe<Scalars['Bytes']>;
+  id_gt?: InputMaybe<Scalars['Bytes']>;
+  id_gte?: InputMaybe<Scalars['Bytes']>;
+  id_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  id_lt?: InputMaybe<Scalars['Bytes']>;
+  id_lte?: InputMaybe<Scalars['Bytes']>;
+  id_not?: InputMaybe<Scalars['Bytes']>;
+  id_not_contains?: InputMaybe<Scalars['Bytes']>;
+  id_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  or?: InputMaybe<Array<InputMaybe<ReputationTokenBurn_Filter>>>;
+  transactionHash?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_contains?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_gt?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_gte?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  transactionHash_lt?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_lte?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_not?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_not_contains?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
+};
+
+export enum ReputationTokenBurn_OrderBy {
+  BlockNumber = 'blockNumber',
+  BlockTimestamp = 'blockTimestamp',
+  BurnAmount = 'burnAmount',
+  Id = 'id',
+  TransactionHash = 'transactionHash'
+}
+
+export type ReputationTokenMint = {
+  __typename?: 'ReputationTokenMint';
+  blockNumber: Scalars['BigInt'];
+  blockTimestamp: Scalars['BigInt'];
+  id: Scalars['Bytes'];
+  mintAmount: Scalars['BigInt'];
+  transactionHash: Scalars['Bytes'];
+};
+
+export type ReputationTokenMint_Filter = {
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<ReputationTokenMint_Filter>>>;
+  blockNumber?: InputMaybe<Scalars['BigInt']>;
+  blockNumber_gt?: InputMaybe<Scalars['BigInt']>;
+  blockNumber_gte?: InputMaybe<Scalars['BigInt']>;
+  blockNumber_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  blockNumber_lt?: InputMaybe<Scalars['BigInt']>;
+  blockNumber_lte?: InputMaybe<Scalars['BigInt']>;
+  blockNumber_not?: InputMaybe<Scalars['BigInt']>;
+  blockNumber_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  blockTimestamp?: InputMaybe<Scalars['BigInt']>;
+  blockTimestamp_gt?: InputMaybe<Scalars['BigInt']>;
+  blockTimestamp_gte?: InputMaybe<Scalars['BigInt']>;
+  blockTimestamp_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  blockTimestamp_lt?: InputMaybe<Scalars['BigInt']>;
+  blockTimestamp_lte?: InputMaybe<Scalars['BigInt']>;
+  blockTimestamp_not?: InputMaybe<Scalars['BigInt']>;
+  blockTimestamp_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  id?: InputMaybe<Scalars['Bytes']>;
+  id_contains?: InputMaybe<Scalars['Bytes']>;
+  id_gt?: InputMaybe<Scalars['Bytes']>;
+  id_gte?: InputMaybe<Scalars['Bytes']>;
+  id_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  id_lt?: InputMaybe<Scalars['Bytes']>;
+  id_lte?: InputMaybe<Scalars['Bytes']>;
+  id_not?: InputMaybe<Scalars['Bytes']>;
+  id_not_contains?: InputMaybe<Scalars['Bytes']>;
+  id_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  mintAmount?: InputMaybe<Scalars['BigInt']>;
+  mintAmount_gt?: InputMaybe<Scalars['BigInt']>;
+  mintAmount_gte?: InputMaybe<Scalars['BigInt']>;
+  mintAmount_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  mintAmount_lt?: InputMaybe<Scalars['BigInt']>;
+  mintAmount_lte?: InputMaybe<Scalars['BigInt']>;
+  mintAmount_not?: InputMaybe<Scalars['BigInt']>;
+  mintAmount_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  or?: InputMaybe<Array<InputMaybe<ReputationTokenMint_Filter>>>;
+  transactionHash?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_contains?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_gt?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_gte?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  transactionHash_lt?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_lte?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_not?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_not_contains?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
+};
+
+export enum ReputationTokenMint_OrderBy {
+  BlockNumber = 'blockNumber',
+  BlockTimestamp = 'blockTimestamp',
+  Id = 'id',
+  MintAmount = 'mintAmount',
+  TransactionHash = 'transactionHash'
+}
+
 export type Subscription = {
   __typename?: 'Subscription';
   /** Access to subgraph metadata */
   _meta?: Maybe<_Meta_>;
+  collateralTokenReturned?: Maybe<CollateralTokenReturned>;
+  collateralTokenReturneds: Array<CollateralTokenReturned>;
+  collateralTokenStaked?: Maybe<CollateralTokenStaked>;
+  collateralTokenStakeds: Array<CollateralTokenStaked>;
+  communities: Array<Community>;
+  community?: Maybe<Community>;
   communityCreated?: Maybe<CommunityCreated>;
   communityCreateds: Array<CommunityCreated>;
+  member?: Maybe<Member>;
   memberJoinedCommunities: Array<MemberJoinedCommunity>;
   memberJoinedCommunity?: Maybe<MemberJoinedCommunity>;
+  members: Array<Member>;
+  offer?: Maybe<Offer>;
   offerAccepted?: Maybe<OfferAccepted>;
   offerAccepteds: Array<OfferAccepted>;
+  offerClosed?: Maybe<OfferClosed>;
+  offerCloseds: Array<OfferClosed>;
   offerCreated?: Maybe<OfferCreated>;
   offerCreateds: Array<OfferCreated>;
+  offers: Array<Offer>;
   ownershipTransferred?: Maybe<OwnershipTransferred>;
   ownershipTransferreds: Array<OwnershipTransferred>;
+  peerLocalInitalized?: Maybe<PeerLocalInitalized>;
+  peerLocalInitalizeds: Array<PeerLocalInitalized>;
+  reputationTokenBurn?: Maybe<ReputationTokenBurn>;
+  reputationTokenBurns: Array<ReputationTokenBurn>;
+  reputationTokenMint?: Maybe<ReputationTokenMint>;
+  reputationTokenMints: Array<ReputationTokenMint>;
+  reputationTokenReturned?: Maybe<ReputationTokenReturned>;
+  reputationTokenReturneds: Array<ReputationTokenReturned>;
+  reputationTokenStaked?: Maybe<ReputationTokenStaked>;
+  reputationTokenStakeds: Array<ReputationTokenStaked>;
 };
 
 
 export type Subscription_MetaArgs = {
   block?: InputMaybe<Block_Height>;
+};
+
+
+export type SubscriptionCollateralTokenReturnedArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars['ID'];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionCollateralTokenReturnedsArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<CollateralTokenReturned_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars['Int']>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<CollateralTokenReturned_Filter>;
+};
+
+
+export type SubscriptionCollateralTokenStakedArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars['ID'];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionCollateralTokenStakedsArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<CollateralTokenStaked_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars['Int']>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<CollateralTokenStaked_Filter>;
+};
+
+
+export type SubscriptionCommunitiesArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Community_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars['Int']>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<Community_Filter>;
+};
+
+
+export type SubscriptionCommunityArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars['ID'];
+  subgraphError?: _SubgraphErrorPolicy_;
 };
 
 
@@ -682,6 +1738,13 @@ export type SubscriptionCommunityCreatedsArgs = {
 };
 
 
+export type SubscriptionMemberArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars['ID'];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
 export type SubscriptionMemberJoinedCommunitiesArgs = {
   block?: InputMaybe<Block_Height>;
   first?: InputMaybe<Scalars['Int']>;
@@ -694,6 +1757,24 @@ export type SubscriptionMemberJoinedCommunitiesArgs = {
 
 
 export type SubscriptionMemberJoinedCommunityArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars['ID'];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionMembersArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Member_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars['Int']>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<Member_Filter>;
+};
+
+
+export type SubscriptionOfferArgs = {
   block?: InputMaybe<Block_Height>;
   id: Scalars['ID'];
   subgraphError?: _SubgraphErrorPolicy_;
@@ -718,6 +1799,24 @@ export type SubscriptionOfferAcceptedsArgs = {
 };
 
 
+export type SubscriptionOfferClosedArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars['ID'];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionOfferClosedsArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<OfferClosed_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars['Int']>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<OfferClosed_Filter>;
+};
+
+
 export type SubscriptionOfferCreatedArgs = {
   block?: InputMaybe<Block_Height>;
   id: Scalars['ID'];
@@ -736,6 +1835,17 @@ export type SubscriptionOfferCreatedsArgs = {
 };
 
 
+export type SubscriptionOffersArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Offer_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars['Int']>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<Offer_Filter>;
+};
+
+
 export type SubscriptionOwnershipTransferredArgs = {
   block?: InputMaybe<Block_Height>;
   id: Scalars['ID'];
@@ -751,6 +1861,96 @@ export type SubscriptionOwnershipTransferredsArgs = {
   skip?: InputMaybe<Scalars['Int']>;
   subgraphError?: _SubgraphErrorPolicy_;
   where?: InputMaybe<OwnershipTransferred_Filter>;
+};
+
+
+export type SubscriptionPeerLocalInitalizedArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars['ID'];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionPeerLocalInitalizedsArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<PeerLocalInitalized_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars['Int']>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<PeerLocalInitalized_Filter>;
+};
+
+
+export type SubscriptionReputationTokenBurnArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars['ID'];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionReputationTokenBurnsArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<ReputationTokenBurn_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars['Int']>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<ReputationTokenBurn_Filter>;
+};
+
+
+export type SubscriptionReputationTokenMintArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars['ID'];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionReputationTokenMintsArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<ReputationTokenMint_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars['Int']>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<ReputationTokenMint_Filter>;
+};
+
+
+export type SubscriptionReputationTokenReturnedArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars['ID'];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionReputationTokenReturnedsArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<ReputationTokenReturned_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars['Int']>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<ReputationTokenReturned_Filter>;
+};
+
+
+export type SubscriptionReputationTokenStakedArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars['ID'];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionReputationTokenStakedsArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<ReputationTokenStaked_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars['Int']>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<ReputationTokenStaked_Filter>;
 };
 
 export type _Block_ = {
@@ -787,36 +1987,294 @@ export enum _SubgraphErrorPolicy_ {
   Deny = 'deny'
 }
 
+export type CollateralTokenReturned = {
+  __typename?: 'collateralTokenReturned';
+  blockNumber: Scalars['BigInt'];
+  blockTimestamp: Scalars['BigInt'];
+  id: Scalars['Bytes'];
+  stakingRequirementReturned: Scalars['BigInt'];
+  transactionHash: Scalars['Bytes'];
+};
+
+export type CollateralTokenReturned_Filter = {
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<CollateralTokenReturned_Filter>>>;
+  blockNumber?: InputMaybe<Scalars['BigInt']>;
+  blockNumber_gt?: InputMaybe<Scalars['BigInt']>;
+  blockNumber_gte?: InputMaybe<Scalars['BigInt']>;
+  blockNumber_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  blockNumber_lt?: InputMaybe<Scalars['BigInt']>;
+  blockNumber_lte?: InputMaybe<Scalars['BigInt']>;
+  blockNumber_not?: InputMaybe<Scalars['BigInt']>;
+  blockNumber_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  blockTimestamp?: InputMaybe<Scalars['BigInt']>;
+  blockTimestamp_gt?: InputMaybe<Scalars['BigInt']>;
+  blockTimestamp_gte?: InputMaybe<Scalars['BigInt']>;
+  blockTimestamp_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  blockTimestamp_lt?: InputMaybe<Scalars['BigInt']>;
+  blockTimestamp_lte?: InputMaybe<Scalars['BigInt']>;
+  blockTimestamp_not?: InputMaybe<Scalars['BigInt']>;
+  blockTimestamp_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  id?: InputMaybe<Scalars['Bytes']>;
+  id_contains?: InputMaybe<Scalars['Bytes']>;
+  id_gt?: InputMaybe<Scalars['Bytes']>;
+  id_gte?: InputMaybe<Scalars['Bytes']>;
+  id_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  id_lt?: InputMaybe<Scalars['Bytes']>;
+  id_lte?: InputMaybe<Scalars['Bytes']>;
+  id_not?: InputMaybe<Scalars['Bytes']>;
+  id_not_contains?: InputMaybe<Scalars['Bytes']>;
+  id_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  or?: InputMaybe<Array<InputMaybe<CollateralTokenReturned_Filter>>>;
+  stakingRequirementReturned?: InputMaybe<Scalars['BigInt']>;
+  stakingRequirementReturned_gt?: InputMaybe<Scalars['BigInt']>;
+  stakingRequirementReturned_gte?: InputMaybe<Scalars['BigInt']>;
+  stakingRequirementReturned_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  stakingRequirementReturned_lt?: InputMaybe<Scalars['BigInt']>;
+  stakingRequirementReturned_lte?: InputMaybe<Scalars['BigInt']>;
+  stakingRequirementReturned_not?: InputMaybe<Scalars['BigInt']>;
+  stakingRequirementReturned_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  transactionHash?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_contains?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_gt?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_gte?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  transactionHash_lt?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_lte?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_not?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_not_contains?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
+};
+
+export enum CollateralTokenReturned_OrderBy {
+  BlockNumber = 'blockNumber',
+  BlockTimestamp = 'blockTimestamp',
+  Id = 'id',
+  StakingRequirementReturned = 'stakingRequirementReturned',
+  TransactionHash = 'transactionHash'
+}
+
+export type CollateralTokenStaked = {
+  __typename?: 'collateralTokenStaked';
+  blockNumber: Scalars['BigInt'];
+  blockTimestamp: Scalars['BigInt'];
+  id: Scalars['Bytes'];
+  stakingRequirementStaked: Scalars['BigInt'];
+  transactionHash: Scalars['Bytes'];
+};
+
+export type CollateralTokenStaked_Filter = {
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<CollateralTokenStaked_Filter>>>;
+  blockNumber?: InputMaybe<Scalars['BigInt']>;
+  blockNumber_gt?: InputMaybe<Scalars['BigInt']>;
+  blockNumber_gte?: InputMaybe<Scalars['BigInt']>;
+  blockNumber_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  blockNumber_lt?: InputMaybe<Scalars['BigInt']>;
+  blockNumber_lte?: InputMaybe<Scalars['BigInt']>;
+  blockNumber_not?: InputMaybe<Scalars['BigInt']>;
+  blockNumber_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  blockTimestamp?: InputMaybe<Scalars['BigInt']>;
+  blockTimestamp_gt?: InputMaybe<Scalars['BigInt']>;
+  blockTimestamp_gte?: InputMaybe<Scalars['BigInt']>;
+  blockTimestamp_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  blockTimestamp_lt?: InputMaybe<Scalars['BigInt']>;
+  blockTimestamp_lte?: InputMaybe<Scalars['BigInt']>;
+  blockTimestamp_not?: InputMaybe<Scalars['BigInt']>;
+  blockTimestamp_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  id?: InputMaybe<Scalars['Bytes']>;
+  id_contains?: InputMaybe<Scalars['Bytes']>;
+  id_gt?: InputMaybe<Scalars['Bytes']>;
+  id_gte?: InputMaybe<Scalars['Bytes']>;
+  id_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  id_lt?: InputMaybe<Scalars['Bytes']>;
+  id_lte?: InputMaybe<Scalars['Bytes']>;
+  id_not?: InputMaybe<Scalars['Bytes']>;
+  id_not_contains?: InputMaybe<Scalars['Bytes']>;
+  id_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  or?: InputMaybe<Array<InputMaybe<CollateralTokenStaked_Filter>>>;
+  stakingRequirementStaked?: InputMaybe<Scalars['BigInt']>;
+  stakingRequirementStaked_gt?: InputMaybe<Scalars['BigInt']>;
+  stakingRequirementStaked_gte?: InputMaybe<Scalars['BigInt']>;
+  stakingRequirementStaked_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  stakingRequirementStaked_lt?: InputMaybe<Scalars['BigInt']>;
+  stakingRequirementStaked_lte?: InputMaybe<Scalars['BigInt']>;
+  stakingRequirementStaked_not?: InputMaybe<Scalars['BigInt']>;
+  stakingRequirementStaked_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  transactionHash?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_contains?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_gt?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_gte?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  transactionHash_lt?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_lte?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_not?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_not_contains?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
+};
+
+export enum CollateralTokenStaked_OrderBy {
+  BlockNumber = 'blockNumber',
+  BlockTimestamp = 'blockTimestamp',
+  Id = 'id',
+  StakingRequirementStaked = 'stakingRequirementStaked',
+  TransactionHash = 'transactionHash'
+}
+
+export type ReputationTokenReturned = {
+  __typename?: 'reputationTokenReturned';
+  blockNumber: Scalars['BigInt'];
+  blockTimestamp: Scalars['BigInt'];
+  id: Scalars['Bytes'];
+  reputationRequirementReturned: Scalars['BigInt'];
+  transactionHash: Scalars['Bytes'];
+};
+
+export type ReputationTokenReturned_Filter = {
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<ReputationTokenReturned_Filter>>>;
+  blockNumber?: InputMaybe<Scalars['BigInt']>;
+  blockNumber_gt?: InputMaybe<Scalars['BigInt']>;
+  blockNumber_gte?: InputMaybe<Scalars['BigInt']>;
+  blockNumber_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  blockNumber_lt?: InputMaybe<Scalars['BigInt']>;
+  blockNumber_lte?: InputMaybe<Scalars['BigInt']>;
+  blockNumber_not?: InputMaybe<Scalars['BigInt']>;
+  blockNumber_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  blockTimestamp?: InputMaybe<Scalars['BigInt']>;
+  blockTimestamp_gt?: InputMaybe<Scalars['BigInt']>;
+  blockTimestamp_gte?: InputMaybe<Scalars['BigInt']>;
+  blockTimestamp_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  blockTimestamp_lt?: InputMaybe<Scalars['BigInt']>;
+  blockTimestamp_lte?: InputMaybe<Scalars['BigInt']>;
+  blockTimestamp_not?: InputMaybe<Scalars['BigInt']>;
+  blockTimestamp_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  id?: InputMaybe<Scalars['Bytes']>;
+  id_contains?: InputMaybe<Scalars['Bytes']>;
+  id_gt?: InputMaybe<Scalars['Bytes']>;
+  id_gte?: InputMaybe<Scalars['Bytes']>;
+  id_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  id_lt?: InputMaybe<Scalars['Bytes']>;
+  id_lte?: InputMaybe<Scalars['Bytes']>;
+  id_not?: InputMaybe<Scalars['Bytes']>;
+  id_not_contains?: InputMaybe<Scalars['Bytes']>;
+  id_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  or?: InputMaybe<Array<InputMaybe<ReputationTokenReturned_Filter>>>;
+  reputationRequirementReturned?: InputMaybe<Scalars['BigInt']>;
+  reputationRequirementReturned_gt?: InputMaybe<Scalars['BigInt']>;
+  reputationRequirementReturned_gte?: InputMaybe<Scalars['BigInt']>;
+  reputationRequirementReturned_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  reputationRequirementReturned_lt?: InputMaybe<Scalars['BigInt']>;
+  reputationRequirementReturned_lte?: InputMaybe<Scalars['BigInt']>;
+  reputationRequirementReturned_not?: InputMaybe<Scalars['BigInt']>;
+  reputationRequirementReturned_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  transactionHash?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_contains?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_gt?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_gte?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  transactionHash_lt?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_lte?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_not?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_not_contains?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
+};
+
+export enum ReputationTokenReturned_OrderBy {
+  BlockNumber = 'blockNumber',
+  BlockTimestamp = 'blockTimestamp',
+  Id = 'id',
+  ReputationRequirementReturned = 'reputationRequirementReturned',
+  TransactionHash = 'transactionHash'
+}
+
+export type ReputationTokenStaked = {
+  __typename?: 'reputationTokenStaked';
+  blockNumber: Scalars['BigInt'];
+  blockTimestamp: Scalars['BigInt'];
+  id: Scalars['Bytes'];
+  reputationRequirementStaked: Scalars['BigInt'];
+  transactionHash: Scalars['Bytes'];
+};
+
+export type ReputationTokenStaked_Filter = {
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<ReputationTokenStaked_Filter>>>;
+  blockNumber?: InputMaybe<Scalars['BigInt']>;
+  blockNumber_gt?: InputMaybe<Scalars['BigInt']>;
+  blockNumber_gte?: InputMaybe<Scalars['BigInt']>;
+  blockNumber_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  blockNumber_lt?: InputMaybe<Scalars['BigInt']>;
+  blockNumber_lte?: InputMaybe<Scalars['BigInt']>;
+  blockNumber_not?: InputMaybe<Scalars['BigInt']>;
+  blockNumber_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  blockTimestamp?: InputMaybe<Scalars['BigInt']>;
+  blockTimestamp_gt?: InputMaybe<Scalars['BigInt']>;
+  blockTimestamp_gte?: InputMaybe<Scalars['BigInt']>;
+  blockTimestamp_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  blockTimestamp_lt?: InputMaybe<Scalars['BigInt']>;
+  blockTimestamp_lte?: InputMaybe<Scalars['BigInt']>;
+  blockTimestamp_not?: InputMaybe<Scalars['BigInt']>;
+  blockTimestamp_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  id?: InputMaybe<Scalars['Bytes']>;
+  id_contains?: InputMaybe<Scalars['Bytes']>;
+  id_gt?: InputMaybe<Scalars['Bytes']>;
+  id_gte?: InputMaybe<Scalars['Bytes']>;
+  id_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  id_lt?: InputMaybe<Scalars['Bytes']>;
+  id_lte?: InputMaybe<Scalars['Bytes']>;
+  id_not?: InputMaybe<Scalars['Bytes']>;
+  id_not_contains?: InputMaybe<Scalars['Bytes']>;
+  id_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  or?: InputMaybe<Array<InputMaybe<ReputationTokenStaked_Filter>>>;
+  reputationRequirementStaked?: InputMaybe<Scalars['BigInt']>;
+  reputationRequirementStaked_gt?: InputMaybe<Scalars['BigInt']>;
+  reputationRequirementStaked_gte?: InputMaybe<Scalars['BigInt']>;
+  reputationRequirementStaked_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  reputationRequirementStaked_lt?: InputMaybe<Scalars['BigInt']>;
+  reputationRequirementStaked_lte?: InputMaybe<Scalars['BigInt']>;
+  reputationRequirementStaked_not?: InputMaybe<Scalars['BigInt']>;
+  reputationRequirementStaked_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  transactionHash?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_contains?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_gt?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_gte?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  transactionHash_lt?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_lte?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_not?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_not_contains?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
+};
+
+export enum ReputationTokenStaked_OrderBy {
+  BlockNumber = 'blockNumber',
+  BlockTimestamp = 'blockTimestamp',
+  Id = 'id',
+  ReputationRequirementStaked = 'reputationRequirementStaked',
+  TransactionHash = 'transactionHash'
+}
+
 export type SubgraphMetadataQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type SubgraphMetadataQuery = { __typename?: 'Query', _meta?: { __typename?: '_Meta_', block: { __typename?: '_Block_', timestamp?: number | null, number: number } } | null };
 
-export type CommunitesQueryVariables = Exact<{ [key: string]: never; }>;
+export type CommunitiesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type CommunitesQuery = { __typename?: 'Query', communityCreateds: Array<{ __typename?: 'CommunityCreated', id: any, blockNumber: any, blockTimestamp: any, communityId: any, ipfsMetadata: string, owner: any, stakingRequirement: any, transactionHash: any }> };
+export type CommunitiesQuery = { __typename?: 'Query', communities: Array<{ __typename?: 'Community', id: string, owner: any, ipfsMetadata: string, transactionHash: any, communityId: any, stakingRequirement: any, blockTimestamp: any }> };
 
-export type CommunityMembersQueryVariables = Exact<{
-  communityId: Scalars['BigInt'];
+export type CommunityQueryVariables = Exact<{
+  communityId: Scalars['ID'];
 }>;
 
 
-export type CommunityMembersQuery = { __typename?: 'Query', memberJoinedCommunities: Array<{ __typename?: 'MemberJoinedCommunity', communityId: any, transactionHash: any, blockTimestamp: any, id: any, member: any }> };
-
-export type OffersQueryVariables = Exact<{
-  communityId: Scalars['BigInt'];
-}>;
-
-
-export type OffersQuery = { __typename?: 'Query', offerCreateds: Array<{ __typename?: 'OfferCreated', communityId: any, id: any, reputationRequirement: any, metadata: string, stakingRequirement: any }> };
-
-export type OffersAcceptedQueryVariables = Exact<{
-  communityId: Scalars['BigInt'];
-}>;
-
-
-export type OffersAcceptedQuery = { __typename?: 'Query', offerAccepteds: Array<{ __typename?: 'OfferAccepted', communityId: any, id: any, member: any, transactionHash: any }> };
+export type CommunityQuery = { __typename?: 'Query', community?: { __typename?: 'Community', id: string, ipfsMetadata: string, owner: any, stakingRequirement: any, communityId: any, blockTimestamp: any, blockNumber: any, transactionHash: any, members: Array<{ __typename?: 'Member', transactionHash: any, blockNumber: any, id: any }>, offers: Array<{ __typename?: 'Offer', id: string, blockNumber: any, metadata: string, stakingRequirement: any, offerStatus: number, reputationRequirement: any, blockTimestamp: any }> } | null };
 
 
 export const SubgraphMetadataDocument = gql`
@@ -829,48 +2287,45 @@ export const SubgraphMetadataDocument = gql`
   }
 }
     `;
-export const CommunitesDocument = gql`
-    query Communites {
-  communityCreateds {
+export const CommunitiesDocument = gql`
+    query Communities {
+  communities {
     id
-    blockNumber
-    blockTimestamp
+    owner
+    ipfsMetadata
+    transactionHash
     communityId
+    stakingRequirement
+    blockTimestamp
+    ipfsMetadata
+  }
+}
+    `;
+export const CommunityDocument = gql`
+    query Community($communityId: ID!) {
+  community(id: $communityId) {
+    id
     ipfsMetadata
     owner
     stakingRequirement
-    transactionHash
-  }
-}
-    `;
-export const CommunityMembersDocument = gql`
-    query CommunityMembers($communityId: BigInt!) {
-  memberJoinedCommunities(where: {communityId: $communityId}) {
     communityId
-    transactionHash
+    members {
+      transactionHash
+      blockNumber
+      id
+    }
+    offers {
+      id
+      blockNumber
+      metadata
+      stakingRequirement
+      offerStatus
+      reputationRequirement
+      blockNumber
+      blockTimestamp
+    }
     blockTimestamp
-    id
-    member
-  }
-}
-    `;
-export const OffersDocument = gql`
-    query Offers($communityId: BigInt!) {
-  offerCreateds(where: {communityId: $communityId}) {
-    communityId
-    id
-    reputationRequirement
-    metadata
-    stakingRequirement
-  }
-}
-    `;
-export const OffersAcceptedDocument = gql`
-    query OffersAccepted($communityId: BigInt!) {
-  offerAccepteds(where: {communityId: $communityId}) {
-    communityId
-    id
-    member
+    blockNumber
     transactionHash
   }
 }
@@ -886,17 +2341,11 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     SubgraphMetadata(variables?: SubgraphMetadataQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<SubgraphMetadataQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<SubgraphMetadataQuery>(SubgraphMetadataDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'SubgraphMetadata', 'query');
     },
-    Communites(variables?: CommunitesQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<CommunitesQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<CommunitesQuery>(CommunitesDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'Communites', 'query');
+    Communities(variables?: CommunitiesQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<CommunitiesQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<CommunitiesQuery>(CommunitiesDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'Communities', 'query');
     },
-    CommunityMembers(variables: CommunityMembersQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<CommunityMembersQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<CommunityMembersQuery>(CommunityMembersDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'CommunityMembers', 'query');
-    },
-    Offers(variables: OffersQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<OffersQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<OffersQuery>(OffersDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'Offers', 'query');
-    },
-    OffersAccepted(variables: OffersAcceptedQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<OffersAcceptedQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<OffersAcceptedQuery>(OffersAcceptedDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'OffersAccepted', 'query');
+    Community(variables: CommunityQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<CommunityQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<CommunityQuery>(CommunityDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'Community', 'query');
     }
   };
 }

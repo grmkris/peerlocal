@@ -151,6 +151,7 @@ export function handleOfferCreated(event: OfferCreatedEvent): void {
   offer.metadata = event.params.newOffer.metadata;
   offer.reputationRequirement = event.params.newOffer.reputationRequirement;
   offer.stakingRequirement = event.params.newOffer.stakingRequirement;
+  offer.offerId = event.params.offerId;
   offer.offerStatus = event.params.newOffer.offerStatus;
   offer.transactionHash = event.transaction.hash;
   offer.blockNumber = event.block.number;

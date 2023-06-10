@@ -4,7 +4,7 @@
   "extensions": {
     "endpoints": {
       "Default GraphQL Endpoint": {
-        "url": "https://api.thegraph.com/subgraphs/name/grmkris/peerlocal-goerli",
+        "url": "https://api.thegraph.com/subgraphs/name/grmkris/peerlocal-optimism-goerli",
         "headers": {
           "user-agent": "JS GraphQL"
         },

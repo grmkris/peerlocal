@@ -1,51 +1,50 @@
 import { useQuery } from "@tanstack/react-query";
 import { subgraph } from "../../graph-client/graphClient";
+import { z } from "zod";
 
 export const useCommunites = () => {
   return useQuery({
     queryKey: ["useCommunities"],
     queryFn: () => {
-      return subgraph.Communites();
+      return subgraph.Communities();
     },
   });
 };
 
-export const useCommunityMembers = (props: { communityId?: number }) => {
+export const useCommunity = (props: { id: string }) => {
   return useQuery({
-    queryKey: ["useCommunityMembers", props.communityId],
+    queryKey: ["useCommunity", props.id],
     queryFn: () => {
-      return subgraph.CommunityMembers({ communityId: props.communityId });
+      return subgraph.Community({
+        communityId: props.id,
+      });
     },
-    enabled: !!props.communityId,
   });
 };
 
-export const useOffers = (props: { communityId?: string }) => {
-  return useQuery({
-    queryKey: ["useOffers", props.communityId],
-    queryFn: () => {
-      return subgraph.Offers({ communityId: props.communityId });
-    },
-    enabled: !!props.communityId,
-  });
-};
+export const ipfsSchema = z.object({
+  Name: z.string(),
+  Description: z.string(),
+  Availability: z.string().optional(),
+  Pickup: z.string().optional(),
+  Deposit: z.string().optional(),
+  Image: z.string(),
+});
 
-export const useOffersAccepted = (props: { communityId?: number }) => {
-  return useQuery({
-    queryKey: ["useOffers", props.communityId],
-    queryFn: () => {
-      return subgraph.OffersAccepted({ communityId: props.communityId });
-    },
-    enabled: !!props.communityId,
-  });
-};
+export type ipfsSchemaType = z.infer<typeof ipfsSchema>;
 
 export const useIPFS = (props: { ipfsHash?: string }) => {
   return useQuery({
     queryKey: ["useIPFS", props.ipfsHash],
-    queryFn: () => {
-      console.log("https://violet-tremendous-elephant-215.mypinata.cloud/ipfs/"+props.ipfsHash)
-      return fetch("https://violet-tremendous-elephant-215.mypinata.cloud/ipfs/QmNc9hDnhEMXXzRaxY6Q8ag6wa39GFf3gezSyPTgoxB2Wb?_gl=1*64u9hp*rs_ga*MTEyMzc3MTgxMS4xNjg2MzExMzI1*rs_ga_5RMPXG14TE*MTY4NjM0NzYzOC4yLjEuMTY4NjM0OTM3NC42MC4wLjA")
+    queryFn: async () => {
+      console.log(
+        "https://violet-tremendous-elephant-215.mypinata.cloud/ipfs/" +
+          props.ipfsHash
+      );
+      const data = await fetch(
+        "https://violet-tremendous-elephant-215.mypinata.cloud/ipfs/QmNc9hDnhEMXXzRaxY6Q8ag6wa39GFf3gezSyPTgoxB2Wb?_gl=1*64u9hp*rs_ga*MTEyMzc3MTgxMS4xNjg2MzExMzI1*rs_ga_5RMPXG14TE*MTY4NjM0NzYzOC4yLjEuMTY4NjM0OTM3NC42MC4wLjA"
+      );
+      return ipfsSchema.parse(data);
     },
     enabled: !!props.ipfsHash,
   });

@@ -2,8 +2,17 @@ import { task } from "hardhat/config";
 import pinataSdk from "@pinata/sdk";
 import { PeerLocal__factory, TestERC20__factory } from "../typechain";
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
-import { ethers } from "ethers";
 import { TOOLS } from "./tools";
+
+task("send-eth", "Sends eth to address", async (args, hre) => {
+  // send eth to 0x09e626AC7422597415F75946eE39a97d0c281b07 from signer[0]
+  const accounts: SignerWithAddress[] = await hre.ethers.getSigners();
+  const signer = accounts[0];
+  await signer.sendTransaction({
+    to: "0x09e626AC7422597415F75946eE39a97d0c281b07",
+    value: hre.ethers.utils.parseEther("0.5"),
+  });
+});
 
 task("create-community", "Uploads json file to pinata", async (args, hre) => {
   const { deployments, network } = hre;
