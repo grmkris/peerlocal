@@ -5,6 +5,7 @@ import { ConnectWallet } from "../features/ConnectWallet";
 import { Layout } from "../features/Layout";
 import { useModalStore } from "../features/modals/useModalStore";
 import {
+  useCommunityIPFS,
   useCommunites,
   useCommunity,
   useIPFS,
@@ -12,18 +13,20 @@ import {
 import Link from "next/link";
 
 const Landing: NextPage = () => {
-  const comms = useCommunites();
-  console.log(comms.data?.communities);
-  const r = useIPFS({
-    ipfsHash: "QmdARiC5sHPC7sLFWNvMg7BzaFL5LHpxqiTDYhrdyUy42h",
-  });
 
   const community = useCommunity({
     id: "2",
   });
 
-  console.log("qqq2", community.data?.community);
-  console.log(r.data);
+  const h = "QmaVm9U5ZUK8QBajPkyFmZexNjedD28Uz9izZkzt2r7AcM"
+  const commMeta = useCommunityIPFS({
+    ipfsHash: h
+  })
+  {/*
+  console.log(community.data?.community?.ipfsMetadata)
+  console.log('comm meta: QmaVm9U5ZUK8QBajPkyFmZexNjedD28Uz9izZkzt2r7AcM')
+  console.log(commMeta.data)
+*/ }
   return (
     <>
       <Head>

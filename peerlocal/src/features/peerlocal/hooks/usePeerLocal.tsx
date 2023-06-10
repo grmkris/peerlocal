@@ -37,10 +37,6 @@ export const useIPFS = (props: { ipfsHash?: string }) => {
   return useQuery({
     queryKey: ["useIPFS", props.ipfsHash],
     queryFn: async () => {
-      console.log(
-        "https://violet-tremendous-elephant-215.mypinata.cloud/ipfs/" +
-          props.ipfsHash
-      );
       const res = await fetch(
         "https://violet-tremendous-elephant-215.mypinata.cloud/ipfs/QmdARiC5sHPC7sLFWNvMg7BzaFL5LHpxqiTDYhrdyUy42h"
       );
@@ -50,3 +46,25 @@ export const useIPFS = (props: { ipfsHash?: string }) => {
     enabled: !!props.ipfsHash,
   });
 };
+
+export const ipfsCommunitySchema = z.object({
+  name: z.string(),
+  description: z.string(),
+  image: z.string()
+})
+
+export type ipfsCommunitySchemaType = z.infer<typeof ipfsCommunitySchema>
+
+export const useCommunityIPFS = (props: { ipfsHash?: string}) => {
+  return useQuery({
+    queryKey: ["useCommunityIPFS", props.ipfsHash],
+    queryFn: async () => {
+      const res = await fetch(
+        "https://violet-tremendous-elephant-215.mypinata.cloud/ipfs/"+props.ipfsHash
+      );
+      const data = await res.json();
+      return ipfsCommunitySchema.parse(data);
+    },
+    enabled: !!props.ipfsHash,
+  }); 
+}
