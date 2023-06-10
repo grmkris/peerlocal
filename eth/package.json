@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "description": "",
   "devDependencies": {
+    "@aave/core-v3": "^1.17.2",
     "@aave/protocol-v2": "^1.0.1",
     "@matterlabs/hardhat-zksync-deploy": "^0.6.3",
     "@matterlabs/hardhat-zksync-solc": "^0.3.17",
@@ -61,8 +62,5 @@
     "tenderly:push": "node ./_scripts.js tenderly:push",
     "swap:native": "hardhat swap:native",
     "create-community": "pnpm run hardhat pinata-create-community"
-  },
-  "dependencies": {
-    "@aave/core-v3": "^1.17.2"
   }
 }
