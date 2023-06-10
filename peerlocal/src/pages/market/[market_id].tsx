@@ -2,8 +2,24 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import { Layout } from "../../features/Layout";
 import Link from "next/link";
+import { useCommunity } from "src/features/peerlocal/hooks/usePeerLocal";
+import { useRouter } from "next/router";
+import { useOfferIPFS } from "src/features/peerlocal/hooks/usePeerLocal";
 
 const Market: NextPage = () => {
+    const router = useRouter()
+    const offers = useCommunity({id: router.query.market_id ? router.query.market_id.toString() : "0"})
+    console.log('offers')
+    console.log(offers.data?.community?.offers)
+    const offerData = useOfferIPFS({ipfsHash:"QmdfhxuMmDe2qthgNcyaBE9LNd5JS9dUYKaMcXdHFZ5Czh"})
+    console.log(offerData)
+    const oData = offers.data?.community?.offers.map(offer => {
+        return {
+            "offer_id": offer.id
+        }
+    })
+    console.log("oData!:")
+    console.log(oData)
     const listings = [
         {
             "name": "name1",

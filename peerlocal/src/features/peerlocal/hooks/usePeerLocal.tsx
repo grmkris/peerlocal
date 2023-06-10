@@ -68,3 +68,27 @@ export const useCommunityIPFS = (props: { ipfsHash?: string | string [] }) => {
     enabled: !!props.ipfsHash,
   }); 
 }
+
+export const ipfsOfferSchema = z.object({
+  Name: z.string(),
+  Description: z.string(),
+  Availability: z.string(),
+  Pickup: z.string(),
+  Image: z.string()
+})
+
+export type ipfsOfferSchemaType = z.infer<typeof ipfsOfferSchema>
+
+export const useOfferIPFS = (props: { ipfsHash?: string | string [] }) => {
+  return useQuery({
+    queryKey: ["useOfferIPFS", props.ipfsHash],
+    queryFn: async () => {
+      const res = await fetch(
+        "https://violet-tremendous-elephant-215.mypinata.cloud/ipfs/"+props.ipfsHash
+      );
+      const data = await res.json();
+      return ipfsOfferSchema.parse(data);
+    },
+    enabled: !!props.ipfsHash,
+  }); 
+}
