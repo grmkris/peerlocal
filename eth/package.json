@@ -61,6 +61,7 @@
     "fork:test": "node ./_scripts.js fork:test",
     "tenderly:push": "node ./_scripts.js tenderly:push",
     "swap:native": "hardhat swap:native",
-    "create-community": "pnpm run hardhat pinata-create-community"
+    "create-community": "pnpm run hardhat pinata-create-community",
+    "typechain-bla": "typechain --target ethers-v5 --out-dir manual_gen manual/PeerLocalZK.json"
   }
 }

@@ -54,7 +54,10 @@ const Market: NextPage = () => {
           </h1>
           <p className="text-2xl font-extrabold tracking-tight text-white">
             You can{" "}
-            <Link href="/createListing" className="text-accent underline">
+            <Link
+              href={("/createOffer/" + router.query.market_id) as string}
+              className="text-accent underline"
+            >
               List an item
             </Link>
           </p>
@@ -72,7 +75,13 @@ const Market: NextPage = () => {
 
           <ul className="min-w-5/12 flex flex-wrap items-center justify-center ">
             {offers.data?.community?.offers.map((offer, i) => {
-              return <OfferCard offerId={offer.metadata} ipfsHash={offer.metadata} key={offer.id} />;
+              return (
+                <OfferCard
+                  offerId={offer.metadata}
+                  ipfsHash={offer.metadata}
+                  key={offer.id}
+                />
+              );
             })}
           </ul>
         </div>

@@ -10,7 +10,7 @@ export const PeerLocalConfig = {
   280: {
     // ZKSYNC TEST
     peerlocal: {
-      address: "0x5FbDB2315678afecb367f032d93F642f64180aa3",
+      address: "0x5012dd82d53f576fff50097FA6C2Bf4AA2949748",
     },
   },
 } as const;

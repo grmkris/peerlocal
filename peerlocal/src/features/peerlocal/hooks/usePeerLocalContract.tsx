@@ -3,11 +3,15 @@ import { useNetwork, useSigner } from "wagmi";
 import { Signer } from "ethers";
 import { PeerLocal__factory } from "../../../typechain";
 import { Network, PeerLocalConfig } from "../config";
+import { PeerLocalZK__factory } from "../../../typechain/zksync";
 
-const PeerLocal = (props: { network: Network; signer: Signer }) => {
+const getPeerLocal = (props: { network: Network; signer: Signer }) => {
   const address = PeerLocalConfig[props.network].peerlocal.address;
   if (!address)
-    throw new Error("PeerLocal contract not deployed on this network");
+    throw new Error("getPeerLocal contract not deployed on this network");
+  if (props.network === 280) {
+    return PeerLocalZK__factory.connect(address, props.signer);
+  }
   return PeerLocal__factory.connect(address, props.signer);
 };
 
@@ -21,7 +25,7 @@ export const usePeerLocalContract = () => {
       stakingReq: number;
     }) => {
       if (!signer.data || !network.chain?.id) return null;
-      const peerLocal = PeerLocal({
+      const peerLocal = getPeerLocal({
         network: network.chain?.id as Network,
         signer: signer.data,
       });
@@ -38,7 +42,7 @@ export const usePeerLocalContract = () => {
       ownerSignature: string;
     }) => {
       if (!signer.data || !network.chain?.id) return null;
-      const peerLocal = PeerLocal({
+      const peerLocal = getPeerLocal({
         network: network.chain?.id as Network,
         signer: signer.data,
       });
@@ -56,7 +60,7 @@ export const usePeerLocalContract = () => {
       stakingReq: number;
     }) => {
       if (!signer.data || !network.chain?.id) return null;
-      const peerLocal = PeerLocal({
+      const peerLocal = getPeerLocal({
         network: network.chain?.id as Network,
         signer: signer.data,
       });
@@ -71,7 +75,7 @@ export const usePeerLocalContract = () => {
   const acceptOffer = useMutation({
     mutationFn: async (variables: { communityId: string; offerId: string }) => {
       if (!signer.data || !network.chain?.id) return null;
-      const peerLocal = PeerLocal({
+      const peerLocal = getPeerLocal({
         network: network.chain?.id as Network,
         signer: signer.data,
       });
@@ -88,7 +92,7 @@ export const usePeerLocalContract = () => {
       result: boolean;
     }) => {
       if (!signer.data || !network.chain?.id) return null;
-      const peerLocal = PeerLocal({
+      const peerLocal = getPeerLocal({
         network: network.chain?.id as Network,
         signer: signer.data,
       });

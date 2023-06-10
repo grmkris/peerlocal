@@ -83,15 +83,31 @@ export const CreateCommunity: NextPage = () => {
     <div>
       <ConnectWallet />
       <form onSubmit={handleSubmit}>
-        <input type="text" name="Name" onChange={handleInputChange} required />
-        <input
-          type="text"
-          name="Description"
-          onChange={handleInputChange}
-          required
-        />
-        <input type="file" name="Image" onChange={handleFileChange} required />
-        <input type="submit" value="Create Community" />
+        <div className="flex flex-col">
+          <h1>Create Community</h1>
+          <label>Name</label>
+          <input
+            type="text"
+            name="Name"
+            onChange={handleInputChange}
+            required
+          />
+          <label>Description</label>
+          <input
+            type="text"
+            name="Description"
+            onChange={handleInputChange}
+            required
+          />
+          <label>Image</label>
+          <input
+            type="file"
+            name="Image"
+            onChange={handleFileChange}
+            required
+          />
+          <input className={"btn"} type="submit" value="Create Community" />
+        </div>
       </form>
 
       <div>
@@ -150,7 +166,7 @@ export const uploadFile = async (file: any) => {
   return data.IpfsHash;
 };
 
-async function pinJSONtoPinata(json: any) {
+export async function pinJSONtoPinata(json: any) {
   const url = `https://api.pinata.cloud/pinning/pinJSONToIPFS`;
   const body = JSON.stringify(json);
   const options = {
