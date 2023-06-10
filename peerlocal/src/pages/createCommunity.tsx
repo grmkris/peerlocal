@@ -2,8 +2,12 @@ import { NextPage } from "next";
 import { useImmer } from "use-immer";
 import { useMutation } from "@tanstack/react-query";
 import { ConnectWallet } from "../features/ConnectWallet";
+import { useSigner } from "wagmi";
+import { usePeerLocalContract } from "../features/peerlocal/hooks/usePeerLocalContract";
 
 export const CreateCommunity: NextPage = () => {
+  const { createCommunity, joinCommunity } = usePeerLocalContract();
+  const signer = useSigner();
   const [communityData, updateCommunityData] = useImmer({
     Name: "",
     Description: "",
@@ -12,24 +16,37 @@ export const CreateCommunity: NextPage = () => {
 
   const uploadImage = useMutation(async (variables: { file: File }) => {
     const data = new FormData();
-    data.append("file", variables.file);
-
+    console.log("uploadImage", variables.file);
     const result = await uploadFile(variables.file);
+    console.log("result", result);
     if (!result) throw new Error("Error uploading image");
     updateCommunityData((draft) => {
-      draft.Image = result;
+      draft.Image = "https://bear.mypinata.cloud/ipfs/" + result;
     });
   });
 
-  const createCommunity = useMutation({
+  const createCommunityHandler = useMutation({
     mutationFn: async (variables: {}) => {
-      const result = uploadFile(JSON.stringify(communityData));
+      const result = await pinJSONtoPinata(communityData);
       console.log(result);
+      const tx = await createCommunity.mutateAsync({
+        ipfs: result,
+        stakingReq: 0,
+        stakingToken: "0x0000000000000000000000000000000000000000",
+      });
+      const event = await tx.wait();
+      console.log("event", event);
+      console.log("event.events[0]?.args", event.events[0]?.args[0]);
+      const communityId = event.events[0]?.args[0];
+      return communityId;
     },
   });
 
   const handleFileChange = async (e: any) => {
-    await uploadImage.mutateAsync(e.target.files[0]);
+    console.log(e.target.files);
+    const file = e.target.files[0];
+    console.log(file);
+    await uploadImage.mutateAsync({ file });
   };
 
   const handleInputChange = (e: any) => {
@@ -41,9 +58,23 @@ export const CreateCommunity: NextPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await createCommunity.mutateAsync(communityData);
+    await createCommunityHandler.mutateAsync(communityData);
   };
 
+  const createInviteHandler = useMutation({
+    mutationFn: async () => {
+      if (!signer.data) return;
+      const signature = await signer.data.signMessage(
+        "I am the owner of this community"
+      );
+      console.log(signature);
+      const fullstring =
+        `http://localhost:3000/welcome/${createCommunityHandler.data}?signature=` +
+        signature;
+      console.log(fullstring);
+      return fullstring;
+    },
+  });
   return (
     <div>
       <ConnectWallet />
@@ -58,6 +89,28 @@ export const CreateCommunity: NextPage = () => {
         <input type="file" name="Image" onChange={handleFileChange} required />
         <input type="submit" value="Create Community" />
       </form>
+
+      <div>
+        <h2>Community Data</h2>
+        Invite url:
+        <br />
+        <button
+          className={"btn"}
+          disabled={!createCommunityHandler.data}
+          onClick={() => createInviteHandler.mutate()}
+        >
+          Invite
+        </button>
+        <button
+          className={"btn"}
+          disabled={!createInviteHandler.data}
+          onClick={() =>
+            navigator.clipboard.writeText(createInviteHandler.data ?? "")
+          }
+        >
+          Copy
+        </button>
+      </div>
     </div>
   );
 };
@@ -67,26 +120,48 @@ export default CreateCommunity;
 export const uploadFile = async (file: any) => {
   const formData = new FormData();
   formData.append("file", file);
-  const url = `https://api.pinata.cloud/pinning/pinJSONToIPFS`;
+  formData.append("pinataOptions", JSON.stringify({ cidVersion: 1 }));
+  formData.append(
+    "pinataMetadata",
+    JSON.stringify({
+      name: "Project",
+      keyvalues: { company: "Pinata" },
+    })
+  );
 
-  const config = {
-    method: "POST",
-    maxContentLength: Infinity,
-    headers: {
-      pinata_api_key: "ç",
-      pinata_secret_api_key:
-        "fcc42dccdf872e2cad73c610fd456fcba50069ef682877fb6c9d383d927e11ff",
-    },
-    body: formData,
-  };
+  const url = `https://api.pinata.cloud/pinning/pinFileToIPFS`;
   const response = await fetch(url, {
     method: "POST",
     body: formData,
     headers: {
-      "Content-Type": `multipart/form-data; boundary=${formData._boundary}
-      pinata_api_key: "9807e4444c8b18fac587",
-      pinata_secret_api_key:
-        "fcc42dccdf872e2cad73c610fd456fcba50069ef682877fb6c9d383d927e11ff",
+      Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mb3JtYXRpb24iOnsiaWQiOiJmZWI0MDgwNy1kZjI3LTRlZWQtOGE2NS1mNWExYjZmZjQzMzYiLCJlbWFpbCI6ImtyaXN0amFuLmdybTFAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsInBpbl9wb2xpY3kiOnsicmVnaW9ucyI6W3siaWQiOiJGUkExIiwiZGVzaXJlZFJlcGxpY2F0aW9uQ291bnQiOjF9XSwidmVyc2lvbiI6MX0sIm1mYV9lbmFibGVkIjpmYWxzZSwic3RhdHVzIjoiQUNUSVZFIn0sImF1dGhlbnRpY2F0aW9uVHlwZSI6InNjb3BlZEtleSIsInNjb3BlZEtleUtleSI6ImZlMjYyZTExZGVlYzBkZjk2YmFkIiwic2NvcGVkS2V5U2VjcmV0IjoiOTdhOThlOGQ3YjdmNTFiNjg0NzEzMGUzODM0ZTYzZWQyNTYyZjQyNmZkNGY3YmI5MmIxYTA5M2U0OTA4OGU5NCIsImlhdCI6MTY4NjQyMjk2M30.TUvGZ4SEdIPW7-8W6zsJPGDUp2l_gJ5Nr6gppSZu2lI`,
     },
   });
+
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+
+  const data = await response.json();
+  return data.IpfsHash;
 };
+
+async function pinJSONtoPinata(json: any) {
+  const url = `https://api.pinata.cloud/pinning/pinJSONToIPFS`;
+  const body = JSON.stringify(json);
+  const options = {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mb3JtYXRpb24iOnsiaWQiOiJmZWI0MDgwNy1kZjI3LTRlZWQtOGE2NS1mNWExYjZmZjQzMzYiLCJlbWFpbCI6ImtyaXN0amFuLmdybTFAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsInBpbl9wb2xpY3kiOnsicmVnaW9ucyI6W3siaWQiOiJGUkExIiwiZGVzaXJlZFJlcGxpY2F0aW9uQ291bnQiOjF9XSwidmVyc2lvbiI6MX0sIm1mYV9lbmFibGVkIjpmYWxzZSwic3RhdHVzIjoiQUNUSVZFIn0sImF1dGhlbnRpY2F0aW9uVHlwZSI6InNjb3BlZEtleSIsInNjb3BlZEtleUtleSI6ImZlMjYyZTExZGVlYzBkZjk2YmFkIiwic2NvcGVkS2V5U2VjcmV0IjoiOTdhOThlOGQ3YjdmNTFiNjg0NzEzMGUzODM0ZTYzZWQyNTYyZjQyNmZkNGY3YmI5MmIxYTA5M2U0OTA4OGU5NCIsImlhdCI6MTY4NjQyMjk2M30.TUvGZ4SEdIPW7-8W6zsJPGDUp2l_gJ5Nr6gppSZu2lI`,
+      "Content-Type": "application/json",
+    },
+    body,
+  };
+  const response = await fetch(url, options);
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+
+  const data = await response.json();
+  return data.IpfsHash as string;
+}
