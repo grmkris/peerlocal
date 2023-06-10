@@ -1,7 +1,7 @@
 {
   "name": "t3-app-clerk-minimal",
   "version": "1.0.0",
-  "description": "",
+  "description": "this is `pnpm` monorepo...",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -17,5 +17,6 @@
     "@babel/preset-react": "^7.22.5",
     "@babel/preset-typescript": "^7.22.5",
     "@preconstruct/cli": "^2.7.0"
-  }
+  },
+  "devDependencies": {}
 }

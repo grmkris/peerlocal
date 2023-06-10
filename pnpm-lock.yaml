@@ -25,6 +25,10 @@ importers:
         version: 2.7.0
 
   eth:
+    dependencies:
+      '@aave/protocol-v2':
+        specifier: ^1.0.1
+        version: 1.0.1
     devDependencies:
       '@matterlabs/hardhat-zksync-deploy':
         specifier: ^0.6.3
@@ -279,6 +283,10 @@ importers:
         version: 0.5.0
 
 packages:
+
+  /@adraffy/ens-normalize@1.9.0:
+    resolution: {integrity: sha512-iowxq3U30sghZotgl4s/oJRci6WPBfNO5YYgk2cIOMCHr3LeGPcsZjCEr+33Q4N+oV3OABDAtA+pyvWjbvBifQ==}
+    dev: false
 
   /@alloc/quick-lru@5.2.0:
     resolution: {integrity: sha512-UrcABB+4bUrFABwbluTIBErXwvbsU/V7TZWfmbgJfbkwiBuziS9gxdODUyuiecfdGQ85jglMW6juS3+z5TsKLw==}
