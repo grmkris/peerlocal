@@ -1,4 +1,8 @@
-lockfileVersion: '6.0'
+lockfileVersion: '6.1'
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
 
 importers:
 
@@ -19,9 +23,16 @@ importers:
       '@preconstruct/cli':
         specifier: ^2.7.0
         version: 2.7.0
+    devDependencies:
+      ts-node:
+        specifier: ^10.9.1
+        version: 10.9.1(@types/node@20.2.6)(typescript@5.1.3)
 
   eth:
     devDependencies:
+      '@aave/core-v3':
+        specifier: ^1.17.2
+        version: 1.17.2
       '@aave/protocol-v2':
         specifier: ^1.0.1
         version: 1.0.1
@@ -284,6 +295,11 @@ importers:
         version: 0.5.0
 
 packages:
+
+  /@aave/core-v3@1.17.2:
+    resolution: {integrity: sha512-ztCyKTALoeOQy6MlWVRCvHgilh6vT+d6lwjXhIsmlEYlA0v3L6dQBIyTFIzHBUfcpEjs0T3tSmcVxGY+GAUZ1g==}
+    engines: {node: '>=16.0.0'}
+    dev: true
 
   /@aave/protocol-v2@1.0.1:
     resolution: {integrity: sha512-MU3WiigW89DWDpCtvaw4rafih7RbADB45uUM/zqfnOD4g9JNUVfeT6MrjV4/DP/JPA2Iv5ySKSx+a1OfUES0Pg==}
