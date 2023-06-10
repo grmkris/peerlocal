@@ -22,6 +22,18 @@ export const useCommunity = (props: { id: string }) => {
   });
 };
 
+export const useOffer = (props: { metadata: string }) => {
+  return useQuery({
+    queryKey: ["Community", props.metadata],
+    queryFn: async () => {
+      const offer = await subgraph.Offer({
+        metadata: props.metadata,
+      });
+      return offer.offers[0];
+    },
+  });
+};
+
 export const ipfsSchema = z.object({
   Name: z.string(),
   Description: z.string(),
@@ -50,45 +62,47 @@ export const useIPFS = (props: { ipfsHash?: string }) => {
 export const ipfsCommunitySchema = z.object({
   Name: z.string(),
   Description: z.string(),
-  Image: z.string()
-})
+  Image: z.string(),
+});
 
-export type ipfsCommunitySchemaType = z.infer<typeof ipfsCommunitySchema>
+export type ipfsCommunitySchemaType = z.infer<typeof ipfsCommunitySchema>;
 
-export const useCommunityIPFS = (props: { ipfsHash?: string | string [] }) => {
+export const useCommunityIPFS = (props: { ipfsHash?: string | string[] }) => {
   return useQuery({
     queryKey: ["useCommunityIPFS", props.ipfsHash],
     queryFn: async () => {
       const res = await fetch(
-        "https://violet-tremendous-elephant-215.mypinata.cloud/ipfs/"+props.ipfsHash
+        "https://violet-tremendous-elephant-215.mypinata.cloud/ipfs/" +
+          props.ipfsHash
       );
       const data = await res.json();
       return ipfsCommunitySchema.parse(data);
     },
     enabled: !!props.ipfsHash,
-  }); 
-}
+  });
+};
 
 export const ipfsOfferSchema = z.object({
   Name: z.string(),
   Description: z.string(),
   Availability: z.string(),
   Pickup: z.string(),
-  Image: z.string()
-})
+  Image: z.string(),
+});
 
-export type ipfsOfferSchemaType = z.infer<typeof ipfsOfferSchema>
+export type ipfsOfferSchemaType = z.infer<typeof ipfsOfferSchema>;
 
-export const useOfferIPFS = (props: { ipfsHash?: string | string [] }) => {
+export const useOfferIPFS = (props: { ipfsHash?: string | string[] }) => {
   return useQuery({
     queryKey: ["useOfferIPFS", props.ipfsHash],
     queryFn: async () => {
       const res = await fetch(
-        "https://violet-tremendous-elephant-215.mypinata.cloud/ipfs/"+props.ipfsHash
+        "https://violet-tremendous-elephant-215.mypinata.cloud/ipfs/" +
+          props.ipfsHash
       );
       const data = await res.json();
       return ipfsOfferSchema.parse(data);
     },
     enabled: !!props.ipfsHash,
-  }); 
-}
+  });
+};
