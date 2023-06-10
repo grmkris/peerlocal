@@ -4,11 +4,23 @@ import { useRouter } from 'next/router'
 import { ConnectWallet } from "../../features/ConnectWallet";
 import { Layout } from "../../features/Layout";
 import Link from "next/link";
+import { useCommunity, useCommunityIPFS } from "src/features/peerlocal/hooks/usePeerLocal";
+import { usePeerLocalContract } from "src/features/peerlocal/hooks/usePeerLocalContract";
+
 
 const Welcome: NextPage = () => {
     const router = useRouter()
-    
-    console.log(router.query)
+    const c = useCommunity({ id: router.query.welcome_id ? router.query.welcome_id.toString() : "0" })
+    const ci = useCommunityIPFS({ ipfsHash: c.data?.community?.ipfsMetadata })
+    const { joinCommunity } = usePeerLocalContract();
+    const joinHandler = async (e) => {
+        e.preventDefault();
+        joinCommunity.mutateAsync({
+            communityId: router.query.welcome_id ? router.query.welcome_id.toString() : "",
+            ownerSignature: router.query.signer ? router.query.signer?.toString() : ""
+        })
+    }
+
     return (
         <>
             <Head>
@@ -19,10 +31,10 @@ const Welcome: NextPage = () => {
             <Layout>
                 <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
                     <h1 className="text-5xl font-extrabold tracking-tight text-white sm:text-[5rem]">
-                        Welcome to our <span className="text-accent">community</span>, DAO;
+                        Welcome to our <span className="text-accent">{ci.data?.Name}</span>, DAO;
                         Please sign the message to join our community
                     </h1>
-                    <button className="btn mw-50 btn-accent">Connect wallet</button>
+                    <button className="btn mw-50 btn-accent" onClick={joinHandler}>Join</button>
                 </div>
             </Layout>
         </>
