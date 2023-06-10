@@ -6,32 +6,38 @@ import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import NoSSR from "src/features/NoSSR";
 
 import "@rainbow-me/rainbowkit/styles.css";
-import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
-import { configureChains, createConfig, WagmiConfig } from "wagmi";
 import {
-  arbitrumGoerli,
-  optimismGoerli,
-  zkSyncTestnet,
-  zkSync,
-} from "wagmi/chains";
+  connectorsForWallets,
+  RainbowKitProvider,
+} from "@rainbow-me/rainbowkit";
+import { configureChains, createClient, WagmiConfig } from "wagmi";
+import { optimismGoerli, zkSyncTestnet } from "wagmi/chains";
 import { publicProvider } from "wagmi/providers/public";
+import {
+  metaMaskWallet,
+  walletConnectWallet,
+} from "@rainbow-me/rainbowkit/wallets";
 
 const queryClient = new QueryClient();
 
-const { chains, publicClient } = configureChains(
-  [arbitrumGoerli, optimismGoerli, zkSyncTestnet, zkSync],
+const supportedChains = [optimismGoerli, zkSyncTestnet];
+const { provider, chains, webSocketProvider } = configureChains(
+  supportedChains,
   [publicProvider()]
 );
 
-const { connectors } = getDefaultWallets({
-  appName: "PEERUP",
-  chains,
-});
+const connectors = connectorsForWallets([
+  {
+    groupName: "Recommended",
+    wallets: [metaMaskWallet({ chains }), walletConnectWallet({ chains })],
+  },
+]);
 
-const wagmiConfig = createConfig({
+const wagmiClient = createClient({
   autoConnect: true,
+  provider,
+  webSocketProvider,
   connectors,
-  publicClient,
   queryClient,
 });
 
@@ -39,7 +45,7 @@ const MyApp: AppType = ({ Component, pageProps }) => {
   return (
     <NoSSR>
       <div data-theme="peerLocal">
-        <WagmiConfig config={wagmiConfig}>
+        <WagmiConfig client={wagmiClient}>
           <QueryClientProvider client={queryClient}>
             <RainbowKitProvider chains={chains}>
               <Component {...pageProps} />
