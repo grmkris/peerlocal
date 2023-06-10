@@ -125,9 +125,11 @@ type Member @entity {
   blockNumber: BigInt!
   blockTimestamp: BigInt!
   transactionHash: Bytes!
-  reputation: BigInt! # uint256
+  totalReputation: BigInt! # uint256
+  stakedReputation: BigInt! # uint256
   trades: BigInt! # uint256
-  staked: BigInt! # uint256
+  stakedCollateral: BigInt! # uint256
+  allTimeCollateral: BigInt! # uint256
 }
 
 type Offer @entity {
@@ -139,7 +141,7 @@ type Offer @entity {
     metadata: String! # string
     reputationRequirement: BigInt! # uint256
     stakingRequirement: BigInt! # uint256
-    offerStatus: Int! # uint8
+    offerStatus: String! # //created -> 1, active -> 2, finished -> 3
     blockNumber: BigInt!
     blockTimestamp: BigInt!
     transactionHash: Bytes!

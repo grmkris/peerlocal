@@ -38,13 +38,13 @@ contract PeerLocal is Ownable {
     event OfferClosed(uint256 indexed communityId, uint256 indexed offerId, address indexed member, bool result);
     event PeerLocalInitalized(address indexed erc20);
 
-    event reputationTokenStaked(uint256 reputationRequirementStaked);
-    event collateralTokenStaked(uint256 stakingRequirementStaked);
+    event reputationTokenStaked(address indexed member, uint256 reputationRequirementStaked);
+    event collateralTokenStaked(address indexed member, uint256 stakingRequirementStaked);
 
-    event reputationTokenReturned(uint256 reputationRequirementReturned);
-    event collateralTokenReturned(uint256 stakingRequirementReturned);
+    event reputationTokenReturned(address indexed member, uint256 reputationRequirementReturned);
+    event collateralTokenReturned(address indexed member, uint256 stakingRequirementReturned);
 
-    event ReputationTokenMint(uint256 mintAmount);
+    event ReputationTokenMint(address indexed member, uint256 mintAmount);
     event ReputationTokenBurn(uint256 burnAmount);
 
     uint256 communitiesCounter = 0;
@@ -76,11 +76,15 @@ contract PeerLocal is Ownable {
         // transfer from msg.sender to this contract
         if (communities[_communityId].stakingRequirement != 0) {
             (communities[_communityId].stakingToken).transferFrom(msg.sender, address(this), communities[_communityId].stakingRequirement);
+            // emit event
         }
         // add msg.sender to communityMembers
         communityMembers[_communityId].push(msg.sender);
-        // emit event
+
         emit MemberJoinedCommunity(_communityId, msg.sender);
+        if (communities[_communityId].stakingRequirement != 0) {
+            emit collateralTokenStaked(msg.sender, communities[_communityId].stakingRequirement);
+        }
     }
 
     function createOffer(uint256 _communityId, string memory _metadata, uint256 _reputationRequirement, uint256 _stakingRequirement) public {
@@ -105,12 +109,12 @@ contract PeerLocal is Ownable {
         // Transfer staked tokens
         if (offers[_communityId][_offerId].stakingRequirement > 0) {
             (communities[_communityId].stakingToken).transferFrom(msg.sender, address(this), offers[_communityId][_offerId].stakingRequirement);
-            emit collateralTokenStaked(offers[_communityId][_offerId].stakingRequirement);
+            emit collateralTokenStaked(msg.sender, offers[_communityId][_offerId].stakingRequirement);
         }
         //Stake reputation if needed
         if (offers[_communityId][_offerId].reputationRequirement > 0) {
             reputationToken.transferFrom(msg.sender, address(this), offers[_communityId][_offerId].reputationRequirement);
-            emit reputationTokenStaked(offers[_communityId][_offerId].reputationRequirement);
+            emit reputationTokenStaked(msg.sender, offers[_communityId][_offerId].reputationRequirement);
         }
         // Transfer staked tokens to offer owner
         // We should transfer the tokens to the owner util we decide if the return it's ok or no!!!!
@@ -136,12 +140,12 @@ contract PeerLocal is Ownable {
             // Transfer staked tokens back
             if (offers[_communityId][_offerId].stakingRequirement > 0) {
                 (communities[_communityId].stakingToken).transferFrom(address(this), msg.sender, offers[_communityId][_offerId].stakingRequirement);
-                emit collateralTokenReturned(offers[_communityId][_offerId].stakingRequirement);
+                emit collateralTokenReturned(msg.sender, offers[_communityId][_offerId].stakingRequirement);
 
             }
             if (offers[_communityId][_offerId].reputationRequirement > 0) {
                 reputationToken.transferFrom(address(this), msg.sender, offers[_communityId][_offerId].reputationRequirement);
-                emit reputationTokenReturned(offers[_communityId][_offerId].reputationRequirement);
+                emit reputationTokenReturned(msg.sender, offers[_communityId][_offerId].reputationRequirement);
             }
 
             //Return reputation lender and borrower
@@ -150,7 +154,7 @@ contract PeerLocal is Ownable {
             mintTokens(offers[_communityId][_offerId].owner, 1);
 
             offers[_communityId][_offerId].offerStatus = 3;
-            emit OfferClosed(_communityId, _offerId, msg.sender, _finalResult);
+            emit OfferClosed(_communityId, _offerId, msg.sender, true);
 
         }else {
             (communities[_communityId].stakingToken).transferFrom(address(this), offers[_communityId][_offerId].owner, offers[_communityId][_offerId].stakingRequirement);
@@ -158,14 +162,14 @@ contract PeerLocal is Ownable {
                 burnTokens(offers[_communityId][_offerId].reputationRequirement); //the staked ones
             }
             offers[_communityId][_offerId].offerStatus = 3;
-            emit OfferClosed(_communityId, _offerId, msg.sender, _finalResult);
+            emit OfferClosed(_communityId, _offerId, msg.sender, false);
         }
 
     }
 
     function mintTokens(address _recipient, uint256 _amount) private {
         reputationToken.mint(_recipient, _amount);
-        emit ReputationTokenMint(_amount);
+        emit ReputationTokenMint(_recipient, _amount);
     }
      function burnTokens(uint256 _amount) private {
         reputationToken.burn(_amount);

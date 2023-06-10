@@ -247,8 +247,12 @@ export class ReputationTokenMint__Params {
     this._event = event;
   }
 
+  get member(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+
   get mintAmount(): BigInt {
-    return this._event.parameters[0].value.toBigInt();
+    return this._event.parameters[1].value.toBigInt();
   }
 }
 
@@ -265,8 +269,12 @@ export class collateralTokenReturned__Params {
     this._event = event;
   }
 
+  get member(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+
   get stakingRequirementReturned(): BigInt {
-    return this._event.parameters[0].value.toBigInt();
+    return this._event.parameters[1].value.toBigInt();
   }
 }
 
@@ -283,8 +291,12 @@ export class collateralTokenStaked__Params {
     this._event = event;
   }
 
+  get member(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+
   get stakingRequirementStaked(): BigInt {
-    return this._event.parameters[0].value.toBigInt();
+    return this._event.parameters[1].value.toBigInt();
   }
 }
 
@@ -301,8 +313,12 @@ export class reputationTokenReturned__Params {
     this._event = event;
   }
 
+  get member(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+
   get reputationRequirementReturned(): BigInt {
-    return this._event.parameters[0].value.toBigInt();
+    return this._event.parameters[1].value.toBigInt();
   }
 }
 
@@ -319,8 +335,12 @@ export class reputationTokenStaked__Params {
     this._event = event;
   }
 
+  get member(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+
   get reputationRequirementStaked(): BigInt {
-    return this._event.parameters[0].value.toBigInt();
+    return this._event.parameters[1].value.toBigInt();
   }
 }
 

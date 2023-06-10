@@ -7,7 +7,7 @@ dataSources:
     network: optimism-goerli
     source:
       abi: PeerLocal
-      address: "0xE637F3c330B2e08f5d0a5FF43cC314f7d76178E8"
+      address: "0x52a0917c90833af98E37cfE99Ad3c887e96f1069"
       startBlock: 10447246
     mapping:
       kind: ethereum/events
@@ -48,14 +48,14 @@ dataSources:
           handler: handlePeerLocalInitalized
         - event: ReputationTokenBurn(uint256)
           handler: handleReputationTokenBurn
-        - event: ReputationTokenMint(uint256)
+        - event: ReputationTokenMint(indexed address,uint256)
           handler: handleReputationTokenMint
-        - event: collateralTokenReturned(uint256)
+        - event: collateralTokenReturned(indexed address,uint256)
           handler: handlecollateralTokenReturned
-        - event: collateralTokenStaked(uint256)
+        - event: collateralTokenStaked(indexed address,uint256)
           handler: handlecollateralTokenStaked
-        - event: reputationTokenReturned(uint256)
+        - event: reputationTokenReturned(indexed address,uint256)
           handler: handlereputationTokenReturned
-        - event: reputationTokenStaked(uint256)
+        - event: reputationTokenStaked(indexed address,uint256)
           handler: handlereputationTokenStaked
       file: ./src/peer-local.ts
