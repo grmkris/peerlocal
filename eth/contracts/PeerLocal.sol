@@ -57,7 +57,7 @@ contract PeerLocal is Ownable {
     uint256 communitiesCounter = 0;
     uint256 offerCounter = 0;
 
-    //AAVE 
+    //AAVE
     address lendingPool = 0x794a61358D6845594F94dc1DB02A252b5b4814aD;
 
 
@@ -88,9 +88,9 @@ contract PeerLocal is Ownable {
     function joinCommunity(uint256 _communityId, bytes memory _signature) public {
         // signature has to be from the owner of the community
         require(_recoverSigner(_signature) == communities[_communityId].owner, "Invalid signature");
-        require((communities[_communityId].stakingToken).balanceOf(msg.sender) >= communities[_communityId].stakingRequirement, "Insufficient balance to join community");
         // transfer from msg.sender to this contract
         if (communities[_communityId].stakingRequirement != 0) {
+            require((communities[_communityId].stakingToken).balanceOf(msg.sender) >= communities[_communityId].stakingRequirement, "Insufficient balance to join community");
             (communities[_communityId].stakingToken).transferFrom(msg.sender, address(this), communities[_communityId].stakingRequirement);
             // emit event
         }

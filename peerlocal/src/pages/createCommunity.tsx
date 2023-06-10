@@ -32,7 +32,7 @@ export const CreateCommunity: NextPage = () => {
       const tx = await createCommunity.mutateAsync({
         ipfs: result,
         stakingReq: 0,
-        stakingToken: "0x0000000000000000000000000000000000000000",
+        stakingToken: "0xC227A899fF5d27a04F5B1b34dFe487875D85f1e1",
       });
       // @ts-ignore
       const event = await tx.wait();
