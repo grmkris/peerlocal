@@ -61,3 +61,20 @@ query Member($memberId: ID!) {
         trades
     }
 }
+
+query Offer($metadata: String!) {
+    offers(where: { metadata: $metadata }) {
+        id
+        metadata
+        offerId
+        stakingRequirement
+        offerStatus
+        reputationRequirement
+        blockNumber
+        blockTimestamp
+        community {
+            id
+        }
+        transactionHash
+    }
+}
