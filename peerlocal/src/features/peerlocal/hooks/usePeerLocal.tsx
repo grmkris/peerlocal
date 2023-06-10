@@ -55,7 +55,7 @@ export const ipfsCommunitySchema = z.object({
 
 export type ipfsCommunitySchemaType = z.infer<typeof ipfsCommunitySchema>
 
-export const useCommunityIPFS = (props: { ipfsHash?: string}) => {
+export const useCommunityIPFS = (props: { ipfsHash?: string | string [] }) => {
   return useQuery({
     queryKey: ["useCommunityIPFS", props.ipfsHash],
     queryFn: async () => {
