@@ -8,11 +8,11 @@ module.exports = {
   daisyui: {
     themes: [{
       "peerLocal": {
-        "primary": "#000000",
-        "secondary": "#f6d860",
-        "accent": "#37cdbe",
-        "neutral": "#3d4451",
-        "base-100": "#ffffff",
+        "primary": "#0097B2",
+        "secondary": "#7ED957",
+        "accent": "#F652A0",
+        "neutral": "#0097B2",
+        "base-100": "#3d4451",
 
         "--rounded-box": "1rem", // border radius rounded-box utility class, used in card and other large boxes
         "--rounded-btn": "0.5rem", // border radius rounded-btn utility class, used in buttons and similar element

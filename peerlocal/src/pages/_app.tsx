@@ -22,7 +22,7 @@ const config = createConfig({
 const MyApp: AppType = ({ Component, pageProps }) => {
   return (
     <NoSSR>
-      <html data-theme="dark">
+      <html data-theme="peerLocal">
         <WagmiConfig config={config}>
           <Component {...pageProps} />
           <ReactQueryDevtools />

@@ -9,6 +9,7 @@ import {
   useCommunity,
   useIPFS,
 } from "src/features/peerlocal/hooks/usePeerLocal";
+import Link from "next/link";
 
 const Landing: NextPage = () => {
   const comms = useCommunites();
@@ -66,7 +67,7 @@ const Landing: NextPage = () => {
               <h2 className="card-title">Market</h2>
               <p>Lend out unused tools or Borrow tools you need!</p>
               <div className="card-actions">
-                <button className="btn-primary btn">go to Market</button>
+                <Link className="btn btn-accent" href="/market">go to Market</Link>
               </div>
             </div>
           </div>
@@ -82,7 +83,7 @@ const Landing: NextPage = () => {
               <h2 className="card-title">Petitions</h2>
               <p>View and vote for existing Petitions or create a new one!</p>
               <div className="card-actions">
-                <button className="btn-inactive btn">Coming soon...</button>
+                <button className="btn btn-primary">Coming soon...</button>
               </div>
             </div>
           </div>

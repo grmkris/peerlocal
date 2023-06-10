@@ -17,7 +17,7 @@ export const NAVIGATION_ITEMS = [
 
 export const Layout = (props: { children: ReactNode }) => {
   return (
-    <main className="flex min-h-screen flex-col items-center bg-base-100">
+    <main className="flex min-h-screen flex-col items-center bg-gradient-to-br from-primary to-secondary">
       <TopNavigation>{props.children}</TopNavigation>
     </main>
   );
@@ -27,7 +27,7 @@ const TopNavigation = ({ children }: { children: ReactNode }) => {
   const { address, isConnected } = useAccount()
   return (
     <>
-      <div className="navbar bg-base-100">
+      <div className="navbar">
         <div className="navbar-start">
           <div className="dropdown">
             <label tabIndex={0} className="btn btn-ghost btn-circle">
