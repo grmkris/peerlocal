@@ -5,7 +5,6 @@
   "scripts": {
     "build": "next build",
     "dev": "next dev",
-    "postinstall": "prisma generate",
     "lint": "next lint",
     "start": "next start",
     "codegen": "graphql-codegen --config src/features/graph-client/graphql/codegen.ts"

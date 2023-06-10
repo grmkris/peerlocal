@@ -34,11 +34,13 @@ export const CreateCommunity: NextPage = () => {
         stakingReq: 0,
         stakingToken: "0x0000000000000000000000000000000000000000",
       });
+      // @ts-ignore
       const event = await tx.wait();
       console.log("event", event);
+      // @ts-ignore
       console.log("event.events[0]?.args", event.events[0]?.args[0]);
-      const communityId = event.events[0]?.args[0];
-      return communityId;
+      // @ts-ignore
+      return event.events[0]?.args[0];
     },
   });
 
@@ -52,10 +54,12 @@ export const CreateCommunity: NextPage = () => {
   const handleInputChange = (e: any) => {
     const { name, value } = e.target;
     updateCommunityData((draft) => {
+      // @ts-ignore
       draft[name] = value;
     });
   };
 
+  // @ts-ignore
   const handleSubmit = async (e) => {
     e.preventDefault();
     await createCommunityHandler.mutateAsync(communityData);

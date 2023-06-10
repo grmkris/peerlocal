@@ -57,6 +57,10 @@ contract PeerLocal is Ownable {
     uint256 communitiesCounter = 0;
     uint256 offerCounter = 0;
 
+    //AAVE 
+    address lendingPool = 0x794a61358D6845594F94dc1DB02A252b5b4814aD;
+
+
     mapping(uint256 => Community) public communities;
     mapping(uint256 => mapping(uint256 => Offer)) public offers;
 
@@ -71,8 +75,6 @@ contract PeerLocal is Ownable {
         reputationToken = ReputationToken(_reputationTokenAddress);
         emit PeerLocalInitalized(address(_reputationTokenAddress));
 
-        //AAVE Token sypply
-        //create a function to change the ILendingPool
     }
 
 
@@ -97,7 +99,8 @@ contract PeerLocal is Ownable {
 
         emit MemberJoinedCommunity(_communityId, msg.sender);
         if (communities[_communityId].stakingRequirement != 0) {
-            supply((communities[_communityId].stakingToken), communities[_communityId].stakingRequirement, _communityId);
+            //    function supply(address _lendingPool, address  _tokenAddress,  uint256 _amount, uint256 _communityId) public {
+            supply(lendingPool,address(communities[_communityId].stakingToken), communities[_communityId].stakingRequirement, _communityId);
             emit collateralTokenStaked(msg.sender, communities[_communityId].stakingRequirement);
         }
     }
@@ -192,9 +195,9 @@ contract PeerLocal is Ownable {
         emit ReputationTokenBurn(_amount);
     }
 
-    function changeILendingPoolAddress(address lendingPoolAddress) external {
-        lendingPool = ILendingPool(lendingPoolAddress);
-    }
+    // function changeILendingPoolAddress(address lendingPoolAddress) external {
+    //     lendingPool = (lendingPoolAddress);
+    // }
 
 
     // Needs the token address that we want to deposit in AAVE, and the amount, the lendingPool is
@@ -202,13 +205,21 @@ contract PeerLocal is Ownable {
 
     //AAVE Token sypply -> Done for Testnet Optimism
     //address lendingPool = "0x794a61358D6845594F94dc1DB02A252b5b4814aD";
-    function supply(address _lendingPool, address  _tokenAddress,  uint256 _amount, uint256 _communityId) public {
-        IPool(_lendingPool).supply(_tokenAddress, amount, address(this), 0);
+    function supply(address _lendingPool, address  _tokenAddress,  uint256 _amount, uint256 _communityId) private {
+        IPool(_lendingPool).supply(_tokenAddress, _amount, address(this), 0);
 
         aaveTokenSuppliedByCommunity[_communityId][_tokenAddress] += _amount;
         //event TokenDepositAAVE(uint256 communityId, address tokenDepositAAVE, uint256 amountDeposited, uint256 totalAmountInAAVE);
         emit TokenDepositAAVE(_communityId,_tokenAddress,_amount,aaveTokenSuppliedByCommunity[_communityId][_tokenAddress]);
-        }
+    }
+
+    // function withdraw(address asset, uint256 amount, address to) public {
+    //     IPool(_lendingPool).withdraw(_tokenAddress, _amount, address(this), 0);
+
+    //     aaveTokenSuppliedByCommunity[_communityId][_tokenAddress] += _amount;
+    //     //event TokenDepositAAVE(uint256 communityId, address tokenDepositAAVE, uint256 amountDeposited, uint256 totalAmountInAAVE);
+    //     emit TokenDepositAAVE(_communityId,_tokenAddress,_amount,aaveTokenSuppliedByCommunity[_communityId][_tokenAddress]);
+    // }
 
     // function redeemToken(address _tokenAddress, uint256 _amount, uint256 _communityId) external {
     //     require(communities[_communityId].owner == msg.sender);
