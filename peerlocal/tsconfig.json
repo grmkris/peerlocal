@@ -18,5 +18,5 @@
     "baseUrl": "."
   },
   "include": ["next-env.d.ts", "src"],
-  "exclude": ["node_modules", "src/typechain/*"]
+  "exclude": ["node_modules", "src/typechain/*","/src/features/graph-client/graphql/generated"]
 }

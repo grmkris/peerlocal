@@ -1,5 +1,4 @@
 import { type AppType } from "next/app";
-import { api } from "../utils/api";
 
 import "../styles/globals.css";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
@@ -32,4 +31,4 @@ const MyApp: AppType = ({ Component, pageProps }) => {
   );
 };
 
-export default api.withTRPC(MyApp);
+export default MyApp;
