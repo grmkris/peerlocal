@@ -43,7 +43,7 @@ task("create-community", "Uploads json file to pinata", async (args, hre) => {
   const peerERC20Address = peerERC20.address;
 
   //const numberWithDecimals = 0x0000000000000000001;
-  const numberWithDecimals = 1;
+  const numberWithDecimals = 100;
 
   const peerLocalContract = PeerLocal__factory.connect(
     peerLocalAddress,
@@ -96,7 +96,11 @@ task("join-community", "Uploads json file to pinata", async (args, hre) => {
   await tx1.wait();
   console.log("Tx hash approve: " + tx1.hash);
 
+<<<<<<< HEAD
   const tx2 = await peerLocalContract.joinCommunity(0, signature);
+=======
+  const tx2 = await peerLocalContract.joinCommunity(5, signature);
+>>>>>>> 84ff1ee (hello)
   await tx2.wait();
 
   console.log("Tx hash join: " + tx2.hash);
