@@ -4,11 +4,11 @@ schema:
 dataSources:
   - kind: ethereum
     name: PeerLocal
-    network: goerli
+    network: optimism-goerli
     source:
       abi: PeerLocal
-      address: "0x9A90f394b6de7E462669413fEf6D3e644B7Dd0E5"
-      startBlock: 9149165
+      address: "0xE637F3c330B2e08f5d0a5FF43cC314f7d76178E8"
+      startBlock: 10447246
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -17,24 +17,45 @@ dataSources:
         - CommunityCreated
         - MemberJoinedCommunity
         - OfferAccepted
+        - OfferClosed
         - OfferCreated
         - OwnershipTransferred
-        - PeerLocal
+        - PeerLocalInitalized
+        - ReputationTokenBurn
+        - ReputationTokenMint
+        - collateralTokenReturned
+        - collateralTokenStaked
+        - reputationTokenReturned
+        - reputationTokenStaked
       abis:
         - name: PeerLocal
           file: ./abis/PeerLocal.json
       eventHandlers:
-        - event: CommunityCreated(indexed uint256,string,uint256,indexed address)
+        - event: CommunityCreated(indexed uint256,string,indexed address,address,uint256)
           handler: handleCommunityCreated
         - event: MemberJoinedCommunity(indexed uint256,indexed address)
           handler: handleMemberJoinedCommunity
         - event: OfferAccepted(indexed uint256,indexed uint256,indexed address)
           handler: handleOfferAccepted
-        - event: OfferCreated(indexed uint256,uint256,indexed
-            address,string,uint256,uint256)
+        - event: OfferClosed(indexed uint256,indexed uint256,indexed address)
+          handler: handleOfferClosed
+        - event: OfferCreated(indexed
+            uint256,uint256,(address,uint256,string,uint256,uint256,uint8))
           handler: handleOfferCreated
         - event: OwnershipTransferred(indexed address,indexed address)
           handler: handleOwnershipTransferred
         - event: PeerLocalInitalized(indexed address)
-          handler: handlePeerLocal
+          handler: handlePeerLocalInitalized
+        - event: ReputationTokenBurn(uint256)
+          handler: handleReputationTokenBurn
+        - event: ReputationTokenMint(uint256)
+          handler: handleReputationTokenMint
+        - event: collateralTokenReturned(uint256)
+          handler: handlecollateralTokenReturned
+        - event: collateralTokenStaked(uint256)
+          handler: handlecollateralTokenStaked
+        - event: reputationTokenReturned(uint256)
+          handler: handlereputationTokenReturned
+        - event: reputationTokenStaked(uint256)
+          handler: handlereputationTokenStaked
       file: ./src/peer-local.ts

@@ -10,5 +10,11 @@
       "address": "0x9b55074AE5163dAf76EEF3afA1BE62fBA6c60fF1",
       "startBlock": 9149400
     }
+  },
+  "optimism-goerli": {
+    "PeerLocal": {
+      "address": "0xE637F3c330B2e08f5d0a5FF43cC314f7d76178E8",
+      "startBlock": 10447246
+    }
   }
 }

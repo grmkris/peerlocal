@@ -2,8 +2,9 @@ type CommunityCreated @entity(immutable: true) {
   id: Bytes!
   communityId: BigInt! # uint256
   ipfsMetadata: String! # string
-  stakingRequirement: BigInt! # uint256
   owner: Bytes! # address
+  stakingToken: Bytes! # address
+  stakingRequirement: BigInt! # uint256
   blockNumber: BigInt!
   blockTimestamp: BigInt!
   transactionHash: Bytes!
@@ -28,14 +29,26 @@ type OfferAccepted @entity(immutable: true) {
   transactionHash: Bytes!
 }
 
+type OfferClosed @entity(immutable: true) {
+  id: Bytes!
+  communityId: BigInt! # uint256
+  offerId: BigInt! # uint256
+  member: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
 type OfferCreated @entity(immutable: true) {
   id: Bytes!
   communityId: BigInt! # uint256
   offerId: BigInt! # uint256
-  owner: Bytes! # address
-  metadata: String! # string
-  reputationRequirement: BigInt! # uint256
-  stakingRequirement: BigInt! # uint256
+  newOffer_owner: Bytes! # address
+  newOffer_communityId: BigInt! # uint256
+  newOffer_metadata: String! # string
+  newOffer_reputationRequirement: BigInt! # uint256
+  newOffer_stakingRequirement: BigInt! # uint256
+  newOffer_offerStatus: Int! # uint8
   blockNumber: BigInt!
   blockTimestamp: BigInt!
   transactionHash: Bytes!
@@ -50,8 +63,96 @@ type OwnershipTransferred @entity(immutable: true) {
   transactionHash: Bytes!
 }
 
-
-type PeerLocal @entity(immutable: true) {
+type PeerLocalInitalized @entity(immutable: true) {
   id: Bytes!
   erc20: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type ReputationTokenBurn @entity(immutable: true) {
+  id: Bytes!
+  burnAmount: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type ReputationTokenMint @entity(immutable: true) {
+  id: Bytes!
+  mintAmount: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type collateralTokenReturned @entity(immutable: true) {
+  id: Bytes!
+  stakingRequirementReturned: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type collateralTokenStaked @entity(immutable: true) {
+  id: Bytes!
+  stakingRequirementStaked: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type reputationTokenReturned @entity(immutable: true) {
+  id: Bytes!
+  reputationRequirementReturned: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type reputationTokenStaked @entity(immutable: true) {
+  id: Bytes!
+  reputationRequirementStaked: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type Member @entity {
+  id: Bytes!
+  community: Community!
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type Offer @entity {
+    id: String! # string
+    community: Community!
+    offerId: BigInt! # uint256
+    owner: Bytes! # address
+    communityId: BigInt! # uint256
+    metadata: String! # string
+    reputationRequirement: BigInt! # uint256
+    stakingRequirement: BigInt! # uint256
+    offerStatus: Int! # uint8
+    blockNumber: BigInt!
+    blockTimestamp: BigInt!
+    transactionHash: Bytes!
+}
+
+
+type Community @entity {
+  id: String! # string
+  communityId: BigInt! # uint256
+  ipfsMetadata: String! # string
+  owner: Bytes! # address
+  stakingToken: Bytes! # address
+  stakingRequirement: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+  members: [Member!]! @derivedFrom(field: "community")
+  offers: [Offer!]! @derivedFrom(field: "community")
 }

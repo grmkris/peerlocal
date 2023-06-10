@@ -4,15 +4,23 @@ import {
   CommunityCreated,
   MemberJoinedCommunity,
   OfferAccepted,
+  OfferClosed,
   OfferCreated,
-  OwnershipTransferred
+  OwnershipTransferred,
+  PeerLocalInitalized,
+  ReputationTokenBurn,
+  ReputationTokenMint,
+  collateralTokenReturned,
+  collateralTokenStaked,
+  reputationTokenReturned,
+  reputationTokenStaked
 } from "../generated/PeerLocal/PeerLocal"
 
 export function createCommunityCreatedEvent(
   communityId: BigInt,
   ipfsMetadata: string,
-  stakingRequirement: BigInt,
-  owner: Address
+  owner: Address,
+  stakingToken: Address
 ): CommunityCreated {
   let communityCreatedEvent = changetype<CommunityCreated>(newMockEvent())
 
@@ -31,13 +39,13 @@ export function createCommunityCreatedEvent(
     )
   )
   communityCreatedEvent.parameters.push(
-    new ethereum.EventParam(
-      "stakingRequirement",
-      ethereum.Value.fromUnsignedBigInt(stakingRequirement)
-    )
+    new ethereum.EventParam("owner", ethereum.Value.fromAddress(owner))
   )
   communityCreatedEvent.parameters.push(
-    new ethereum.EventParam("owner", ethereum.Value.fromAddress(owner))
+    new ethereum.EventParam(
+      "stakingToken",
+      ethereum.Value.fromAddress(stakingToken)
+    )
   )
 
   return communityCreatedEvent
@@ -94,13 +102,38 @@ export function createOfferAcceptedEvent(
   return offerAcceptedEvent
 }
 
+export function createOfferClosedEvent(
+  communityId: BigInt,
+  offerId: BigInt,
+  member: Address
+): OfferClosed {
+  let offerClosedEvent = changetype<OfferClosed>(newMockEvent())
+
+  offerClosedEvent.parameters = new Array()
+
+  offerClosedEvent.parameters.push(
+    new ethereum.EventParam(
+      "communityId",
+      ethereum.Value.fromUnsignedBigInt(communityId)
+    )
+  )
+  offerClosedEvent.parameters.push(
+    new ethereum.EventParam(
+      "offerId",
+      ethereum.Value.fromUnsignedBigInt(offerId)
+    )
+  )
+  offerClosedEvent.parameters.push(
+    new ethereum.EventParam("member", ethereum.Value.fromAddress(member))
+  )
+
+  return offerClosedEvent
+}
+
 export function createOfferCreatedEvent(
   communityId: BigInt,
   offerId: BigInt,
-  owner: Address,
-  metadata: string,
-  reputationRequirement: BigInt,
-  stakingRequirement: BigInt
+  newOffer: ethereum.Tuple
 ): OfferCreated {
   let offerCreatedEvent = changetype<OfferCreated>(newMockEvent())
 
@@ -119,22 +152,7 @@ export function createOfferCreatedEvent(
     )
   )
   offerCreatedEvent.parameters.push(
-    new ethereum.EventParam("owner", ethereum.Value.fromAddress(owner))
-  )
-  offerCreatedEvent.parameters.push(
-    new ethereum.EventParam("metadata", ethereum.Value.fromString(metadata))
-  )
-  offerCreatedEvent.parameters.push(
-    new ethereum.EventParam(
-      "reputationRequirement",
-      ethereum.Value.fromUnsignedBigInt(reputationRequirement)
-    )
-  )
-  offerCreatedEvent.parameters.push(
-    new ethereum.EventParam(
-      "stakingRequirement",
-      ethereum.Value.fromUnsignedBigInt(stakingRequirement)
-    )
+    new ethereum.EventParam("newOffer", ethereum.Value.fromTuple(newOffer))
   )
 
   return offerCreatedEvent
@@ -161,4 +179,128 @@ export function createOwnershipTransferredEvent(
   )
 
   return ownershipTransferredEvent
+}
+
+export function createPeerLocalInitalizedEvent(
+  erc20: Address
+): PeerLocalInitalized {
+  let peerLocalInitalizedEvent = changetype<PeerLocalInitalized>(newMockEvent())
+
+  peerLocalInitalizedEvent.parameters = new Array()
+
+  peerLocalInitalizedEvent.parameters.push(
+    new ethereum.EventParam("erc20", ethereum.Value.fromAddress(erc20))
+  )
+
+  return peerLocalInitalizedEvent
+}
+
+export function createReputationTokenBurnEvent(
+  burnAmount: BigInt
+): ReputationTokenBurn {
+  let reputationTokenBurnEvent = changetype<ReputationTokenBurn>(newMockEvent())
+
+  reputationTokenBurnEvent.parameters = new Array()
+
+  reputationTokenBurnEvent.parameters.push(
+    new ethereum.EventParam(
+      "burnAmount",
+      ethereum.Value.fromUnsignedBigInt(burnAmount)
+    )
+  )
+
+  return reputationTokenBurnEvent
+}
+
+export function createReputationTokenMintEvent(
+  mintAmount: BigInt
+): ReputationTokenMint {
+  let reputationTokenMintEvent = changetype<ReputationTokenMint>(newMockEvent())
+
+  reputationTokenMintEvent.parameters = new Array()
+
+  reputationTokenMintEvent.parameters.push(
+    new ethereum.EventParam(
+      "mintAmount",
+      ethereum.Value.fromUnsignedBigInt(mintAmount)
+    )
+  )
+
+  return reputationTokenMintEvent
+}
+
+export function createcollateralTokenReturnedEvent(
+  stakingRequirementReturned: BigInt
+): collateralTokenReturned {
+  let collateralTokenReturnedEvent = changetype<collateralTokenReturned>(
+    newMockEvent()
+  )
+
+  collateralTokenReturnedEvent.parameters = new Array()
+
+  collateralTokenReturnedEvent.parameters.push(
+    new ethereum.EventParam(
+      "stakingRequirementReturned",
+      ethereum.Value.fromUnsignedBigInt(stakingRequirementReturned)
+    )
+  )
+
+  return collateralTokenReturnedEvent
+}
+
+export function createcollateralTokenStakedEvent(
+  stakingRequirementStaked: BigInt
+): collateralTokenStaked {
+  let collateralTokenStakedEvent = changetype<collateralTokenStaked>(
+    newMockEvent()
+  )
+
+  collateralTokenStakedEvent.parameters = new Array()
+
+  collateralTokenStakedEvent.parameters.push(
+    new ethereum.EventParam(
+      "stakingRequirementStaked",
+      ethereum.Value.fromUnsignedBigInt(stakingRequirementStaked)
+    )
+  )
+
+  return collateralTokenStakedEvent
+}
+
+export function createreputationTokenReturnedEvent(
+  reputationRequirementReturned: BigInt
+): reputationTokenReturned {
+  let reputationTokenReturnedEvent = changetype<reputationTokenReturned>(
+    newMockEvent()
+  )
+
+  reputationTokenReturnedEvent.parameters = new Array()
+
+  reputationTokenReturnedEvent.parameters.push(
+    new ethereum.EventParam(
+      "reputationRequirementReturned",
+      ethereum.Value.fromUnsignedBigInt(reputationRequirementReturned)
+    )
+  )
+
+  return reputationTokenReturnedEvent
+}
+
+export function createreputationTokenStakedEvent(
+  reputationRequirementStaked: BigInt
+): reputationTokenStaked {
+  let reputationTokenStakedEvent = changetype<reputationTokenStaked>(
+    newMockEvent()
+  )
+
+  reputationTokenStakedEvent.parameters = new Array()
+
+  reputationTokenStakedEvent.parameters.push(
+    new ethereum.EventParam(
+      "reputationRequirementStaked",
+      ethereum.Value.fromUnsignedBigInt(reputationRequirementStaked)
+    )
+  )
+
+  return reputationTokenStakedEvent
 }
