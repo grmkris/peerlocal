@@ -71,7 +71,7 @@ const Landing: NextPage = () => {
                             <h2 className="card-title">Market</h2>
                             <p>Lend out unused tools or Borrow tools you need!</p>
                             <div className="card-actions">
-                                <Link className="btn btn-accent" href="/market">go to Market</Link>
+                                <Link className="btn btn-accent" href="/market/">go to Market</Link>
                             </div>
                         </div>
                     </div>
