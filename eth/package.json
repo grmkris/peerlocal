@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "description": "",
   "devDependencies": {
+    "@aave/protocol-v2": "^1.0.1",
     "@matterlabs/hardhat-zksync-deploy": "^0.6.3",
     "@matterlabs/hardhat-zksync-solc": "^0.3.17",
     "@matterlabs/zksync-contracts": "^0.6.1",
@@ -39,7 +40,7 @@
   "scripts": {
     "format": "prettier --check \"**/*.{ts,js,sol}\"",
     "format:fix": "prettier --write \"**/*.{ts,js,sol}\"",
-    "compile": "hardhat compile && cp -r typechain ../peerlocal/src/typechain",
+    "compile": "hardhat compile",
     "void:deploy": "hardhat deploy --report-gas",
     "test": "cross-env HARDHAT_DEPLOY_FIXTURE=true HARDHAT_COMPILE=true mocha --bail --recursive test",
     "gas": "cross-env REPORT_GAS=true hardhat test",
@@ -60,8 +61,5 @@
     "tenderly:push": "node ./_scripts.js tenderly:push",
     "swap:native": "hardhat swap:native",
     "create-community": "pnpm run hardhat pinata-create-community"
-  },
-  "dependencies": {
-    "@aave/protocol-v2": "^1.0.1"
   }
 }

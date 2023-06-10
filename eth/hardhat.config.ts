@@ -10,7 +10,7 @@ import "solidity-coverage";
 import "hardhat-deploy-tenderly";
 import { accounts, addForkConfiguration, node_url } from "./utils/network";
 import "./tasks/accounts";
-import "./tasks/peerlocal";     
+import "./tasks/peerlocal";
 
 const config: HardhatUserConfig = {
   zksolc: {

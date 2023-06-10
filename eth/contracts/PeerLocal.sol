@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity >=0.8.0 <0.9.0;
+pragma solidity >=0.6.12 <0.9.0;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
@@ -10,7 +10,8 @@ import "./ReputationToken.sol";  // Import the ReputationToken contract's ABI
 
 //AAVE Token sypply
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
-import { ILendingPool, IERC20 as AaveERC20 } from "@aave/protocol-v2/contracts/interfaces";
+import "@aave/protocol-v2/contracts/interfaces/IERC20WithPermit.sol";
+import "@aave/protocol-v2/contracts/interfaces/ILendingPool.sol";
 
 contract PeerLocal is Ownable {
 
@@ -21,7 +22,7 @@ contract PeerLocal is Ownable {
     //AAVE Token sypply -> Done for Testnet Optimism
     using SafeERC20 for IERC20;
     ILendingPool private lendingPool;
-    
+
 
     struct Community {
         string ipfsMetadata;
@@ -69,7 +70,7 @@ contract PeerLocal is Ownable {
     mapping(uint256 => address[]) public communityMembers;
 
     //Mapping for the tokens deposited in AAVE
-    //communityId, tokenAddress, amount deposited. 
+    //communityId, tokenAddress, amount deposited.
     mapping(uint256 => mapping(address => uint256)) public aaveTokenSuppliedByCommunity;
 
 
@@ -204,7 +205,7 @@ contract PeerLocal is Ownable {
     }
 
 
-    // Needs the token address that we want to deposit in AAVE, and the amount, the lendingPool is 
+    // Needs the token address that we want to deposit in AAVE, and the amount, the lendingPool is
     // configured in the constructor for Goerli Optimism testnet
    function supplyToken(address _tokenAddress, uint256 _amount, uint256 _communityId) private {
         // Approve the lending pool to spend the tokens
