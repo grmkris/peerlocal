@@ -41,6 +41,7 @@ const Landing: NextPage = () => {
                         Welcome to your Community DAO{" "}
                         <span className="text-accent">{commMeta.data?.Name}</span>
                     </h1>
+                    <p>{commMeta.data?.Description}</p>
                 </div>
                 <div className="flex justify-between">
                     <div className="card w-96 bg-base-100 shadow-xl">
@@ -71,7 +72,7 @@ const Landing: NextPage = () => {
                             <h2 className="card-title">Market</h2>
                             <p>Lend out unused tools or Borrow tools you need!</p>
                             <div className="card-actions">
-                                <Link className="btn btn-accent" href="/market/">go to Market</Link>
+                                <Link className="btn btn-accent" href={"/market/"+router.query.landing_id}>go to Market</Link>
                             </div>
                         </div>
                     </div>
