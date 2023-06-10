@@ -31,6 +31,7 @@ query Community($communityId: ID!) {
             id
             blockNumber
             metadata
+            offerId
             stakingRequirement
             offerStatus
             reputationRequirement
