@@ -5,18 +5,30 @@ import Link from "next/link";
 import { useCommunity } from "src/features/peerlocal/hooks/usePeerLocal";
 import { useRouter } from "next/router";
 import { useOfferIPFS } from "src/features/peerlocal/hooks/usePeerLocal";
-import Image from "next/image";
+import { Loading } from "../../features/Loading";
 
 function OfferCard(props: { ipfsHash: string; offerId: string }) {
   const offer = useOfferIPFS({ ipfsHash: props.ipfsHash });
   if (offer.isLoading) {
-    return <div>Loading...</div>; // TODO add loader
+    return (
+      <>
+        {props.offerId}
+        <Loading />;
+      </>
+    );
   }
   return (
     <li>
       <div className="card-compact card mx-5 my-2 w-96 bg-base-100 shadow-xl">
         <figure>
-          <img src="/drill.jpg" alt="a Drill, jo" />
+          <img
+            src={
+              offer.data?.Image.startsWith("http")
+                ? offer.data.Image
+                : "/drill.jpg"
+            }
+            alt="a Drill, jo"
+          />
         </figure>
         <div className="card-body">
           <h2 className="card-title">{offer.data?.Name}</h2>
@@ -24,7 +36,7 @@ function OfferCard(props: { ipfsHash: string; offerId: string }) {
           <div className="card-actions justify-end">
             <Link
               className="btn-primary btn"
-              href={"/listing/" + props.offerId}
+              href={"/listing/" + props.ipfsHash}
             >
               Borrow now!
             </Link>
@@ -77,7 +89,7 @@ const Market: NextPage = () => {
             {offers.data?.community?.offers.map((offer, i) => {
               return (
                 <OfferCard
-                  offerId={offer.metadata}
+                  offerId={offer.offerId}
                   ipfsHash={offer.metadata}
                   key={offer.id}
                 />

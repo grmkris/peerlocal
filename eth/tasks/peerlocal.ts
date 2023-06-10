@@ -72,12 +72,11 @@ task("join-community", "Uploads json file to pinata", async (args, hre) => {
   const { deployments, network } = hre;
   const signer = await hre.ethers.provider.getSigner();
 
-  const signature = await signer.signMessage(
-    "I am the owner of this community"
-  );
+  const signature =
+    "0x496b3d6abab4f515b6de5c05aecf00d6f6a8ba3792b6ce0858aef6958aea68590b3ad5463ce8724df0b43da1f8789486f8825f1e1891f9fc420ee1a6a2bd0b3a1c";
 
   const peerLocal = await deployments.get("PeerLocal");
-  const peerLocalAddress = peerLocal.address;
+  const peerLocalAddress = "0xF687aEe26F1083891710e82cCE07aBc014b93e5d";
 
   const peerERC20 = await deployments.get("TestERC20");
   const peerERC20Address = peerERC20.address;
@@ -97,7 +96,7 @@ task("join-community", "Uploads json file to pinata", async (args, hre) => {
   );
   await tx1.wait();
 
-  const tx2 = await peerLocalContract.joinCommunity(0, signature);
+  const tx2 = await peerLocalContract.joinCommunity(14, signature);
   await tx2.wait();
 
   console.log("Tx hash: " + tx2.hash);
@@ -218,7 +217,6 @@ task(
   }
 );
 
-
 task(
   "increase-allowance-erc20test",
   "Increase allowance of erc20test to account[1]",
@@ -267,14 +265,14 @@ task("create-offer-batch", "Uploads json file to pinata", async (args, hre) => {
 
     // get PeerLocal contract from deployments
     const peerLocal = await deployments.get("PeerLocal");
-    const peerLocalAddress = peerLocal.address;
+    const peerLocalAddress = "0xF687aEe26F1083891710e82cCE07aBc014b93e5d";
     const peerLocalContract = PeerLocal__factory.connect(
       peerLocalAddress,
       signer
     );
 
     const offerTx = await peerLocalContract.createOffer(
-      0,
+      14,
       ipfs.IpfsHash,
       0,
       counter % 2 === 0 ? 0 : 1
@@ -282,6 +280,4 @@ task("create-offer-batch", "Uploads json file to pinata", async (args, hre) => {
     counter++;
     console.log("offerTx", offerTx);
   }
-}
-
-);
+});

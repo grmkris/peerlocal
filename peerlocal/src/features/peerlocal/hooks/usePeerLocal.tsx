@@ -72,8 +72,7 @@ export const useCommunityIPFS = (props: { ipfsHash?: string | string[] }) => {
     queryKey: ["useCommunityIPFS", props.ipfsHash],
     queryFn: async () => {
       const res = await fetch(
-        "https://bear.mypinata.cloud/ipfs/" +
-          props.ipfsHash
+        "https://bear.mypinata.cloud/ipfs/" + props.ipfsHash
       );
       const data = await res.json();
       return ipfsCommunitySchema.parse(data);
@@ -97,8 +96,7 @@ export const useOfferIPFS = (props: { ipfsHash?: string | string[] }) => {
     queryKey: ["useOfferIPFS", props.ipfsHash],
     queryFn: async () => {
       const res = await fetch(
-        "https://violet-tremendous-elephant-215.mypinata.cloud/ipfs/" +
-          props.ipfsHash
+        "https://bear.mypinata.cloud/ipfs/" + props.ipfsHash
       );
       const data = await res.json();
       return ipfsOfferSchema.parse(data);
