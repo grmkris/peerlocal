@@ -12,12 +12,13 @@ const Welcome: NextPage = () => {
     const router = useRouter()
     const c = useCommunity({ id: router.query.welcome_id ? router.query.welcome_id.toString() : "0" })
     const ci = useCommunityIPFS({ ipfsHash: c.data?.community?.ipfsMetadata })
+    const sig = router.query.signature ? router.query.signature?.toString() : ""
     const { joinCommunity } = usePeerLocalContract();
     const joinHandler = async (e) => {
         e.preventDefault();
         joinCommunity.mutateAsync({
             communityId: router.query.welcome_id ? router.query.welcome_id.toString() : "",
-            ownerSignature: router.query.signer ? router.query.signer?.toString() : ""
+            ownerSignature: sig
         })
     }
 
