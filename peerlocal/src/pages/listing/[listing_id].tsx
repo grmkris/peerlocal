@@ -4,11 +4,15 @@ import Head from "next/head";
 import { useRouter } from 'next/router'
 import { Layout } from "../../features/Layout";
 import { useIPFS } from "src/features/peerlocal/hooks/usePeerLocal";
+import { useOfferIPFS } from "src/features/peerlocal/hooks/usePeerLocal";
 
 const Listing: NextPage = () => {
     const router = useRouter()
     const ifps = useIPFS({ ipfsHash: "QmNc9hDnhEMXXzRaxY6Q8ag6wa39GFf3gezSyPTgoxB2Wb?_gl=1*64u9hp*rs_ga*MTEyMzc3MTgxMS4xNjg2MzExMzI1*rs_ga_5RMPXG14TE*MTY4NjM0NzYzOC4yLjEuMTY4NjM0OTM3NC42MC4wLjA" })
     console.log(ifps)
+    const hash = router.query.listing_id
+    const nIFPS = useOfferIPFS({ipfsHash: hash})
+    console.log("DDDD:" + nIFPS)
     const listing = {
         "name": "Drill",
         "available": true,
