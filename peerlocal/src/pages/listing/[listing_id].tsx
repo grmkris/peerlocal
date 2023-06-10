@@ -12,8 +12,14 @@ const Listing: NextPage = () => {
     const hash = router.query.listing_id ? router.query.listing_id.toString() : "0"
     const nIFPS = useOfferIPFS({ ipfsHash: hash })
     const cOffer = useOffer({ "metadata": hash, })
-    console.log(cOffer.data)
     const { acceptOffer } = usePeerLocalContract()
+    const cId = cOffer.data?.community.id ? cOffer.data?.community.id.toString() : ""
+    const borrowHandler = async (e) => {
+        acceptOffer.mutateAsync({
+            communityId: cId,
+            offerId: cOffer.data?.offerId
+        }).then((r)=>console.log(r))
+    }
     return (
         <>
             <Head>
@@ -30,7 +36,7 @@ const Listing: NextPage = () => {
                         <p className="mt-5"> min. Reputation: <p className="text-accent"> {cOffer.data?.reputationRequirement} </p> </p>
                         <div className="flex flex-row">
                             <button className="btn btn-neutral" onClick={() => router.back()}>Back</button>
-                            <button className="btn btn-primary" onClick={() => acceptOffer.mutate({ communityId: "0", offerId: "1" })}>Borrow for {cOffer.data?.stakingRequirement} GHO</button>
+                            <button className="btn btn-primary" onClick={borrowHandler}>Borrow for {cOffer.data?.stakingRequirement} GHO</button>
                         </div>
 
                     </div>
