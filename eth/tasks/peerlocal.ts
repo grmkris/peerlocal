@@ -60,7 +60,8 @@ task("create-community", "Uploads json file to pinata", async (args, hre) => {
   } else {
     const tx = await peerLocalContract.createCommunity(
       ipfs.IpfsHash,
-      peerERC20Address,
+      //peerERC20Address,
+      "0xDA10009cBd5D07dd0CeCc66161FC93D7c9000da1", //DAI contract address
       numberWithDecimals
     );
     console.log("Tx hash: " + tx.hash);
@@ -70,7 +71,7 @@ task("create-community", "Uploads json file to pinata", async (args, hre) => {
 
 task("join-community", "Uploads json file to pinata", async (args, hre) => {
   const { deployments, network } = hre;
-  const signer = await hre.ethers.provider.getSigner();
+  const signer: SignerWithAddress = (await hre.ethers.getSigners())[0];
 
   const signature = await signer.signMessage(
     "I am the owner of this community"
@@ -79,15 +80,16 @@ task("join-community", "Uploads json file to pinata", async (args, hre) => {
   const peerLocal = await deployments.get("PeerLocal");
   const peerLocalAddress = peerLocal.address;
 
+  //For the test I need a token supported for the AAVE Pool like DAI
   const peerERC20 = await deployments.get("TestERC20");
   const peerERC20Address = peerERC20.address;
 
   const peerLocalContract = PeerLocal__factory.connect(
-    peerLocalAddress,
+    "0x8145eddDf43f50276641b55bd3AD95944510021E", //Pool address
     signer
   );
   const peerERC20Contract = TestERC20__factory.connect(
-    peerERC20Address,
+    "0xDA10009cBd5D07dd0CeCc66161FC93D7c9000da1",
     signer
   );
 
@@ -97,7 +99,7 @@ task("join-community", "Uploads json file to pinata", async (args, hre) => {
   );
   await tx1.wait();
 
-  const tx2 = await peerLocalContract.joinCommunity(0, signature);
+  const tx2 = await peerLocalContract.joinCommunity(1, signature);
   await tx2.wait();
 
   console.log("Tx hash: " + tx2.hash);
