@@ -208,3 +208,15 @@ task(
     console.log("tx", tx);
   }
 );
+
+task("extract-signer", "Extract signer from signature", async (args, hre) => {
+  const messageHash = ethers.utils.hashMessage(
+    "I am the owner of this community"
+  );
+  const ethSignedMessageHash = ethers.utils.arrayify(messageHash);
+  const address = ethers.utils.recoverAddress(
+    ethSignedMessageHash,
+    "0x6f585527643ebb3e7a2f838132fa76b18d3588023748d27f62a14d0b0f8d69f1051fe24d75c06ae4fbf9a468a9ff8aa3b1724783350e0f39ddb293d4021420c31c"
+  );
+  console.log("address", address);
+});
