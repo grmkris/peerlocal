@@ -1,4 +1,8 @@
-lockfileVersion: '6.0'
+lockfileVersion: '6.1'
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
 
 importers:
 
@@ -21,6 +25,10 @@ importers:
         version: 2.7.0
 
   eth:
+    dependencies:
+      '@aave/protocol-v2':
+        specifier: ^1.0.1
+        version: 1.0.1
     devDependencies:
       '@matterlabs/hardhat-zksync-deploy':
         specifier: ^0.6.3
@@ -272,6 +280,12 @@ importers:
         version: 0.5.0
 
 packages:
+
+  /@aave/protocol-v2@1.0.1:
+    resolution: {integrity: sha512-MU3WiigW89DWDpCtvaw4rafih7RbADB45uUM/zqfnOD4g9JNUVfeT6MrjV4/DP/JPA2Iv5ySKSx+a1OfUES0Pg==}
+    dependencies:
+      tmp-promise: 3.0.3
+    dev: false
 
   /@adraffy/ens-normalize@1.9.0:
     resolution: {integrity: sha512-iowxq3U30sghZotgl4s/oJRci6WPBfNO5YYgk2cIOMCHr3LeGPcsZjCEr+33Q4N+oV3OABDAtA+pyvWjbvBifQ==}
