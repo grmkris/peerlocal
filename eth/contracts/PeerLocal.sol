@@ -89,11 +89,6 @@ contract PeerLocal is Ownable {
         // signature has to be from the owner of the community
         require(_recoverSigner(_signature) == communities[_communityId].owner, "Invalid signature");
         // transfer from msg.sender to this contract
-        if (communities[_communityId].stakingRequirement != 0) {
-            require((communities[_communityId].stakingToken).balanceOf(msg.sender) >= communities[_communityId].stakingRequirement, "Insufficient balance to join community");
-            (communities[_communityId].stakingToken).transferFrom(msg.sender, address(this), communities[_communityId].stakingRequirement);
-            // emit event
-        }
         // add msg.sender to communityMembers
         communityMembers[_communityId].push(msg.sender);
 
