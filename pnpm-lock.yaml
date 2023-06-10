@@ -1,8 +1,4 @@
-lockfileVersion: '6.1'
-
-settings:
-  autoInstallPeers: true
-  excludeLinksFromLockfile: false
+lockfileVersion: '6.0'
 
 importers:
 
@@ -289,6 +285,19 @@ importers:
       '@graphprotocol/graph-ts':
         specifier: ^0.31.0
         version: 0.31.0
+    devDependencies:
+      matchstick-as:
+        specifier: 0.5.0
+        version: 0.5.0
+
+  peerlocal-zksync-testnet:
+    dependencies:
+      '@graphprotocol/graph-cli':
+        specifier: 0.51.0
+        version: 0.51.0(@types/node@20.2.6)(node-fetch@3.3.1)(typescript@5.1.3)
+      '@graphprotocol/graph-ts':
+        specifier: 0.30.0
+        version: 0.30.0
     devDependencies:
       matchstick-as:
         specifier: 0.5.0
@@ -2137,6 +2146,12 @@ packages:
       assemblyscript: 0.19.10
     dev: true
 
+  /@graphprotocol/graph-ts@0.30.0:
+    resolution: {integrity: sha512-h5tJqlsZXglGYM0PcBsBOqof4PT0Fr4Z3QBTYN/IjMF3VvRX2A8/bdpqaAnva+2N0uAfXXwRcwcOcW5O35yzXw==}
+    dependencies:
+      assemblyscript: 0.19.10
+    dev: false
+
   /@graphprotocol/graph-ts@0.31.0:
     resolution: {integrity: sha512-xreRVM6ho2BtolyOh2flDkNoGZximybnzUnF53zJVp0+Ed0KnAlO1/KOCUYw06euVI9tk0c9nA2Z/D5SIQV2Rg==}
     dependencies:
@@ -3509,7 +3524,7 @@ packages:
       natural-orderby: 2.0.3
       object-treeify: 1.1.33
       password-prompt: 1.1.2
-      semver: 7.4.0
+      semver: 7.5.1
       string-width: 4.2.3
       strip-ansi: 6.0.1
       supports-color: 8.1.1
