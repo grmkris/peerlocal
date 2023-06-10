@@ -76,7 +76,6 @@ contract PeerLocal is Ownable {
         // transfer from msg.sender to this contract
         if (communities[_communityId].stakingRequirement != 0) {
             (communities[_communityId].stakingToken).transferFrom(msg.sender, address(this), communities[_communityId].stakingRequirement);
-
         }
         // add msg.sender to communityMembers
         communityMembers[_communityId].push(msg.sender);

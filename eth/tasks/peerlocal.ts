@@ -38,6 +38,10 @@ task("create-community", "Uploads json file to pinata", async (args, hre) => {
   const peerERC20 = await deployments.get("TestERC20");
   const peerERC20Address = peerERC20.address;
 
+  //const numberWithDecimals = 0x0000000000000000001;
+  const numberWithDecimals = 1;
+
+
   const peerLocalContract = PeerLocal__factory.connect(
     peerLocalAddress,
     signer
@@ -47,30 +51,27 @@ task("create-community", "Uploads json file to pinata", async (args, hre) => {
     const tx = await peerLocalContract.createCommunity(
       ipfs.IpfsHash,
       "0xcbE9771eD31e761b744D3cB9eF78A1f32DD99211",
-      0
+      numberWithDecimals
     );
     console.log("Tx hash: " + tx.hash);
   } else {
     const tx = await peerLocalContract.createCommunity(
       ipfs.IpfsHash,
       peerERC20Address,
-      0
+      numberWithDecimals
     );
     console.log("Tx hash: " + tx.hash);
   }
   console.log("Pinata project uploaded: " + ipfs.IpfsHash);
 });
 
+
+
 task("join-community", "Uploads json file to pinata", async (args, hre) => {
   const { deployments, network } = hre;
+  const signer = await hre.ethers.provider.getSigner();
 
-  const signer: SignerWithAddress = (await hre.ethers.getSigners())[0];
-
-  // get PeerLocal contract from deployments
-
-  const signature = await signer.signMessage(
-    "I am the owner of this community"
-  );
+  const signature = await signer.signMessage("I am the owner of this community");
 
   const peerLocal = await deployments.get("PeerLocal");
   const peerLocalAddress = peerLocal.address;
@@ -78,14 +79,16 @@ task("join-community", "Uploads json file to pinata", async (args, hre) => {
   const peerERC20 = await deployments.get("TestERC20");
   const peerERC20Address = peerERC20.address;
 
-  const peerLocalContract = PeerLocal__factory.connect(
-    peerLocalAddress,
-    signer
-  );
+  const peerLocalContract = PeerLocal__factory.connect(peerLocalAddress, signer);
+  const peerERC20Contract = TestERC20__factory.connect(peerERC20Address, signer);
 
-  const tx = await peerLocalContract.joinCommunity(2, signature);
+  const tx1 = await peerERC20Contract.approve(peerLocalAddress, ethers.constants.MaxUint256);
+  await tx1.wait();
 
-  console.log("Tx hash: " + tx.hash);
+  const tx2 = await peerLocalContract.joinCommunity(5, signature);
+  await tx2.wait();
+
+  console.log("Tx hash: " + tx2.hash);
 });
 
 task(
