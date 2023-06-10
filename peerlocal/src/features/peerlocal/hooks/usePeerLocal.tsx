@@ -44,6 +44,7 @@ export const useIPFS = (props: { ipfsHash?: string }) => {
   return useQuery({
     queryKey: ["useIPFS", props.ipfsHash],
     queryFn: () => {
+      console.log("https://violet-tremendous-elephant-215.mypinata.cloud/ipfs/"+props.ipfsHash)
       return fetch("https://violet-tremendous-elephant-215.mypinata.cloud/ipfs/"+props.ipfsHash)
     },
     enabled: !!props.ipfsHash,
