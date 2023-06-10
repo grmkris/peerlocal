@@ -3,26 +3,15 @@ import Link from "next/link";
 import Head from "next/head";
 import { useRouter } from 'next/router'
 import { Layout } from "../../features/Layout";
-import { useIPFS } from "src/features/peerlocal/hooks/usePeerLocal";
-import { useOfferIPFS } from "src/features/peerlocal/hooks/usePeerLocal";
+import { useCommunity, useOfferIPFS } from "src/features/peerlocal/hooks/usePeerLocal";
+import { useOffer } from "src/features/peerlocal/hooks/usePeerLocal";
 
 const Listing: NextPage = () => {
     const router = useRouter()
-    const ifps = useIPFS({ ipfsHash: "QmNc9hDnhEMXXzRaxY6Q8ag6wa39GFf3gezSyPTgoxB2Wb?_gl=1*64u9hp*rs_ga*MTEyMzc3MTgxMS4xNjg2MzExMzI1*rs_ga_5RMPXG14TE*MTY4NjM0NzYzOC4yLjEuMTY4NjM0OTM3NC42MC4wLjA" })
-    console.log(ifps)
-    const hash = router.query.listing_id
+    const hash = router.query.listing_id ? router.query.listing_id.toString() : "0"
     const nIFPS = useOfferIPFS({ipfsHash: hash})
-    console.log("DDDD:" + nIFPS)
-    const listing = {
-        "name": "Drill",
-        "available": true,
-        "availability": "6/5 - 7/8",
-        "img": "/drill.jpg",
-        "description": "Large bosh industrial drill",
-        "pickup": "afternoon",
-        "deposit": 200,
-        "deposit_coin": "GHO"
-    }
+    const cOffer = useOffer({"metadata": hash,})
+    console.log(cOffer.data)
     return (
         <>
             <Head>
@@ -33,12 +22,13 @@ const Listing: NextPage = () => {
             <Layout>
                 <div className="card w-96 bg-base-100 min-h-[90%] shadow-xl">
                     <div className="container flex flex-col items-center justify-center gap-2 px-4 py-5 ">
-                        <figure><img src={listing.img} alt={listing.name} /></figure>
-                        <h2 className="">{listing.name}</h2>
-                        <p className="mt-5">{listing.description}</p>
+                        <figure><img src={"/drill.jpg"} alt={"thomas"} /></figure>
+                        <h2 className="">{nIFPS.data?.Name}</h2>
+                        <p className="mt-5">{nIFPS.data?.Description}</p>
+                        <p className="mt-5"> min. Reputation: <p className="text-accent"> {cOffer.data?.reputationRequirement} </p> </p>
                         <div className="flex flex-row">
-                            <Link className="btn btn-neutral" href={"/market/"+router.query.listing_id}>Back</Link>
-                            <Link className="btn btn-primary" href={"/market"}>Borrow for {listing.deposit} {listing.deposit_coin}</Link>
+                            <button className="btn btn-neutral" onClick={()=> router.back()}>Back</button>
+                            <Link className="btn btn-primary" href={"/market"}>Borrow for {cOffer.data?.stakingRequirement} GHO</Link>
                         </div>
 
                     </div>
