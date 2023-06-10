@@ -22,6 +22,10 @@ query Community($communityId: ID!) {
             transactionHash
             blockNumber
             id
+            allTimeCollateral
+            stakedCollateral
+            stakedReputation
+            totalReputation
         }
         offers {
             id
@@ -36,5 +40,23 @@ query Community($communityId: ID!) {
         blockTimestamp
         blockNumber
         transactionHash
+    }
+}
+
+
+query Member($memberId: ID!) {
+    member(id: $memberId) {
+        id
+        totalReputation
+        stakedReputation
+        stakedCollateral
+        allTimeCollateral
+        blockTimestamp
+        blockNumber
+        transactionHash
+        community {
+            id
+        }
+        trades
     }
 }

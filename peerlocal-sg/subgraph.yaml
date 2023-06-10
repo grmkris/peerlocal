@@ -37,7 +37,7 @@ dataSources:
           handler: handleMemberJoinedCommunity
         - event: OfferAccepted(indexed uint256,indexed uint256,indexed address)
           handler: handleOfferAccepted
-        - event: OfferClosed(indexed uint256,indexed uint256,indexed address)
+        - event: OfferClosed(indexed uint256,indexed uint256,indexed address,bool)
           handler: handleOfferClosed
         - event: OfferCreated(indexed
             uint256,uint256,(address,uint256,string,uint256,uint256,uint8))

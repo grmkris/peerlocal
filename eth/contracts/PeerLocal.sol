@@ -35,7 +35,7 @@ contract PeerLocal is Ownable {
     event MemberJoinedCommunity(uint256 indexed communityId, address indexed member);
     event OfferCreated(uint256 indexed communityId, uint256 offerId, Offer newOffer);
     event OfferAccepted(uint256 indexed communityId, uint256 indexed offerId, address indexed member);
-    event OfferClosed(uint256 indexed communityId, uint256 indexed offerId, address indexed member);
+    event OfferClosed(uint256 indexed communityId, uint256 indexed offerId, address indexed member, bool result);
     event PeerLocalInitalized(address indexed erc20);
 
     event reputationTokenStaked(uint256 reputationRequirementStaked);
@@ -150,7 +150,7 @@ contract PeerLocal is Ownable {
             mintTokens(offers[_communityId][_offerId].owner, 1);
 
             offers[_communityId][_offerId].offerStatus = 3;
-            emit OfferClosed(_communityId, _offerId, msg.sender);
+            emit OfferClosed(_communityId, _offerId, msg.sender, _finalResult);
 
         }else {
             (communities[_communityId].stakingToken).transferFrom(address(this), offers[_communityId][_offerId].owner, offers[_communityId][_offerId].stakingRequirement);
@@ -158,7 +158,7 @@ contract PeerLocal is Ownable {
                 burnTokens(offers[_communityId][_offerId].reputationRequirement); //the staked ones
             }
             offers[_communityId][_offerId].offerStatus = 3;
-            emit OfferClosed(_communityId, _offerId, msg.sender);
+            emit OfferClosed(_communityId, _offerId, msg.sender, _finalResult);
         }
 
     }

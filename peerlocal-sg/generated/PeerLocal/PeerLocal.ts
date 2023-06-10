@@ -116,6 +116,10 @@ export class OfferClosed__Params {
   get member(): Address {
     return this._event.parameters[2].value.toAddress();
   }
+
+  get result(): boolean {
+    return this._event.parameters[3].value.toBoolean();
+  }
 }
 
 export class OfferCreated extends ethereum.Event {

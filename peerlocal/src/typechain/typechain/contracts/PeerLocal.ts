@@ -189,16 +189,16 @@ export interface PeerLocalInterface extends utils.Interface {
     "CommunityCreated(uint256,string,address,address,uint256)": EventFragment;
     "MemberJoinedCommunity(uint256,address)": EventFragment;
     "OfferAccepted(uint256,uint256,address)": EventFragment;
-    "OfferClosed(uint256,uint256,address)": EventFragment;
+    "OfferClosed(uint256,uint256,address,bool)": EventFragment;
     "OfferCreated(uint256,uint256,tuple)": EventFragment;
     "OwnershipTransferred(address,address)": EventFragment;
     "PeerLocalInitalized(address)": EventFragment;
     "ReputationTokenBurn(uint256)": EventFragment;
-    "ReputationTokenMint(uint256)": EventFragment;
-    "collateralTokenReturned(uint256)": EventFragment;
-    "collateralTokenStaked(uint256)": EventFragment;
-    "reputationTokenReturned(uint256)": EventFragment;
-    "reputationTokenStaked(uint256)": EventFragment;
+    "ReputationTokenMint(address,uint256)": EventFragment;
+    "collateralTokenReturned(address,uint256)": EventFragment;
+    "collateralTokenStaked(address,uint256)": EventFragment;
+    "reputationTokenReturned(address,uint256)": EventFragment;
+    "reputationTokenStaked(address,uint256)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "CommunityCreated"): EventFragment;
@@ -259,9 +259,10 @@ export interface OfferClosedEventObject {
   communityId: BigNumber;
   offerId: BigNumber;
   member: string;
+  result: boolean;
 }
 export type OfferClosedEvent = TypedEvent<
-  [BigNumber, BigNumber, string],
+  [BigNumber, BigNumber, string, boolean],
   OfferClosedEventObject
 >;
 
@@ -314,10 +315,11 @@ export type ReputationTokenBurnEventFilter =
   TypedEventFilter<ReputationTokenBurnEvent>;
 
 export interface ReputationTokenMintEventObject {
+  member: string;
   mintAmount: BigNumber;
 }
 export type ReputationTokenMintEvent = TypedEvent<
-  [BigNumber],
+  [string, BigNumber],
   ReputationTokenMintEventObject
 >;
 
@@ -325,10 +327,11 @@ export type ReputationTokenMintEventFilter =
   TypedEventFilter<ReputationTokenMintEvent>;
 
 export interface collateralTokenReturnedEventObject {
+  member: string;
   stakingRequirementReturned: BigNumber;
 }
 export type collateralTokenReturnedEvent = TypedEvent<
-  [BigNumber],
+  [string, BigNumber],
   collateralTokenReturnedEventObject
 >;
 
@@ -336,10 +339,11 @@ export type collateralTokenReturnedEventFilter =
   TypedEventFilter<collateralTokenReturnedEvent>;
 
 export interface collateralTokenStakedEventObject {
+  member: string;
   stakingRequirementStaked: BigNumber;
 }
 export type collateralTokenStakedEvent = TypedEvent<
-  [BigNumber],
+  [string, BigNumber],
   collateralTokenStakedEventObject
 >;
 
@@ -347,10 +351,11 @@ export type collateralTokenStakedEventFilter =
   TypedEventFilter<collateralTokenStakedEvent>;
 
 export interface reputationTokenReturnedEventObject {
+  member: string;
   reputationRequirementReturned: BigNumber;
 }
 export type reputationTokenReturnedEvent = TypedEvent<
-  [BigNumber],
+  [string, BigNumber],
   reputationTokenReturnedEventObject
 >;
 
@@ -358,10 +363,11 @@ export type reputationTokenReturnedEventFilter =
   TypedEventFilter<reputationTokenReturnedEvent>;
 
 export interface reputationTokenStakedEventObject {
+  member: string;
   reputationRequirementStaked: BigNumber;
 }
 export type reputationTokenStakedEvent = TypedEvent<
-  [BigNumber],
+  [string, BigNumber],
   reputationTokenStakedEventObject
 >;
 
@@ -672,15 +678,17 @@ export interface PeerLocal extends BaseContract {
       member?: PromiseOrValue<string> | null
     ): OfferAcceptedEventFilter;
 
-    "OfferClosed(uint256,uint256,address)"(
+    "OfferClosed(uint256,uint256,address,bool)"(
       communityId?: PromiseOrValue<BigNumberish> | null,
       offerId?: PromiseOrValue<BigNumberish> | null,
-      member?: PromiseOrValue<string> | null
+      member?: PromiseOrValue<string> | null,
+      result?: null
     ): OfferClosedEventFilter;
     OfferClosed(
       communityId?: PromiseOrValue<BigNumberish> | null,
       offerId?: PromiseOrValue<BigNumberish> | null,
-      member?: PromiseOrValue<string> | null
+      member?: PromiseOrValue<string> | null,
+      result?: null
     ): OfferClosedEventFilter;
 
     "OfferCreated(uint256,uint256,tuple)"(
@@ -715,36 +723,48 @@ export interface PeerLocal extends BaseContract {
     ): ReputationTokenBurnEventFilter;
     ReputationTokenBurn(burnAmount?: null): ReputationTokenBurnEventFilter;
 
-    "ReputationTokenMint(uint256)"(
+    "ReputationTokenMint(address,uint256)"(
+      member?: PromiseOrValue<string> | null,
       mintAmount?: null
     ): ReputationTokenMintEventFilter;
-    ReputationTokenMint(mintAmount?: null): ReputationTokenMintEventFilter;
+    ReputationTokenMint(
+      member?: PromiseOrValue<string> | null,
+      mintAmount?: null
+    ): ReputationTokenMintEventFilter;
 
-    "collateralTokenReturned(uint256)"(
+    "collateralTokenReturned(address,uint256)"(
+      member?: PromiseOrValue<string> | null,
       stakingRequirementReturned?: null
     ): collateralTokenReturnedEventFilter;
     collateralTokenReturned(
+      member?: PromiseOrValue<string> | null,
       stakingRequirementReturned?: null
     ): collateralTokenReturnedEventFilter;
 
-    "collateralTokenStaked(uint256)"(
+    "collateralTokenStaked(address,uint256)"(
+      member?: PromiseOrValue<string> | null,
       stakingRequirementStaked?: null
     ): collateralTokenStakedEventFilter;
     collateralTokenStaked(
+      member?: PromiseOrValue<string> | null,
       stakingRequirementStaked?: null
     ): collateralTokenStakedEventFilter;
 
-    "reputationTokenReturned(uint256)"(
+    "reputationTokenReturned(address,uint256)"(
+      member?: PromiseOrValue<string> | null,
       reputationRequirementReturned?: null
     ): reputationTokenReturnedEventFilter;
     reputationTokenReturned(
+      member?: PromiseOrValue<string> | null,
       reputationRequirementReturned?: null
     ): reputationTokenReturnedEventFilter;
 
-    "reputationTokenStaked(uint256)"(
+    "reputationTokenStaked(address,uint256)"(
+      member?: PromiseOrValue<string> | null,
       reputationRequirementStaked?: null
     ): reputationTokenStakedEventFilter;
     reputationTokenStaked(
+      member?: PromiseOrValue<string> | null,
       reputationRequirementStaked?: null
     ): reputationTokenStakedEventFilter;
   };

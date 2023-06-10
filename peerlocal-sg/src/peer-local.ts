@@ -117,6 +117,12 @@ export function handleOfferClosed(event: OfferClosedEvent): void {
   entity.transactionHash = event.transaction.hash;
 
   entity.save();
+
+  let offer = Offer.load(event.params.offerId.toString());
+  if (offer == null) {
+    return;
+  }
+  offer.offerStatus = event.params.offerId;
 }
 
 export function handleOfferCreated(event: OfferCreatedEvent): void {

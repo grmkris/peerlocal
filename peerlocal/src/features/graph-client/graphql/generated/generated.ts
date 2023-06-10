@@ -313,10 +313,15 @@ export enum Community_OrderBy {
 
 export type Member = {
   __typename?: 'Member';
+  allTimeCollateral: Scalars['BigInt'];
   blockNumber: Scalars['BigInt'];
   blockTimestamp: Scalars['BigInt'];
   community: Community;
   id: Scalars['Bytes'];
+  stakedCollateral: Scalars['BigInt'];
+  stakedReputation: Scalars['BigInt'];
+  totalReputation: Scalars['BigInt'];
+  trades: Scalars['BigInt'];
   transactionHash: Scalars['Bytes'];
 };
 
@@ -403,6 +408,14 @@ export enum MemberJoinedCommunity_OrderBy {
 export type Member_Filter = {
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
+  allTimeCollateral?: InputMaybe<Scalars['BigInt']>;
+  allTimeCollateral_gt?: InputMaybe<Scalars['BigInt']>;
+  allTimeCollateral_gte?: InputMaybe<Scalars['BigInt']>;
+  allTimeCollateral_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  allTimeCollateral_lt?: InputMaybe<Scalars['BigInt']>;
+  allTimeCollateral_lte?: InputMaybe<Scalars['BigInt']>;
+  allTimeCollateral_not?: InputMaybe<Scalars['BigInt']>;
+  allTimeCollateral_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   and?: InputMaybe<Array<InputMaybe<Member_Filter>>>;
   blockNumber?: InputMaybe<Scalars['BigInt']>;
   blockNumber_gt?: InputMaybe<Scalars['BigInt']>;
@@ -452,6 +465,38 @@ export type Member_Filter = {
   id_not_contains?: InputMaybe<Scalars['Bytes']>;
   id_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
   or?: InputMaybe<Array<InputMaybe<Member_Filter>>>;
+  stakedCollateral?: InputMaybe<Scalars['BigInt']>;
+  stakedCollateral_gt?: InputMaybe<Scalars['BigInt']>;
+  stakedCollateral_gte?: InputMaybe<Scalars['BigInt']>;
+  stakedCollateral_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  stakedCollateral_lt?: InputMaybe<Scalars['BigInt']>;
+  stakedCollateral_lte?: InputMaybe<Scalars['BigInt']>;
+  stakedCollateral_not?: InputMaybe<Scalars['BigInt']>;
+  stakedCollateral_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  stakedReputation?: InputMaybe<Scalars['BigInt']>;
+  stakedReputation_gt?: InputMaybe<Scalars['BigInt']>;
+  stakedReputation_gte?: InputMaybe<Scalars['BigInt']>;
+  stakedReputation_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  stakedReputation_lt?: InputMaybe<Scalars['BigInt']>;
+  stakedReputation_lte?: InputMaybe<Scalars['BigInt']>;
+  stakedReputation_not?: InputMaybe<Scalars['BigInt']>;
+  stakedReputation_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  totalReputation?: InputMaybe<Scalars['BigInt']>;
+  totalReputation_gt?: InputMaybe<Scalars['BigInt']>;
+  totalReputation_gte?: InputMaybe<Scalars['BigInt']>;
+  totalReputation_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  totalReputation_lt?: InputMaybe<Scalars['BigInt']>;
+  totalReputation_lte?: InputMaybe<Scalars['BigInt']>;
+  totalReputation_not?: InputMaybe<Scalars['BigInt']>;
+  totalReputation_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  trades?: InputMaybe<Scalars['BigInt']>;
+  trades_gt?: InputMaybe<Scalars['BigInt']>;
+  trades_gte?: InputMaybe<Scalars['BigInt']>;
+  trades_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  trades_lt?: InputMaybe<Scalars['BigInt']>;
+  trades_lte?: InputMaybe<Scalars['BigInt']>;
+  trades_not?: InputMaybe<Scalars['BigInt']>;
+  trades_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   transactionHash?: InputMaybe<Scalars['Bytes']>;
   transactionHash_contains?: InputMaybe<Scalars['Bytes']>;
   transactionHash_gt?: InputMaybe<Scalars['Bytes']>;
@@ -465,6 +510,7 @@ export type Member_Filter = {
 };
 
 export enum Member_OrderBy {
+  AllTimeCollateral = 'allTimeCollateral',
   BlockNumber = 'blockNumber',
   BlockTimestamp = 'blockTimestamp',
   Community = 'community',
@@ -478,6 +524,10 @@ export enum Member_OrderBy {
   CommunityStakingToken = 'community__stakingToken',
   CommunityTransactionHash = 'community__transactionHash',
   Id = 'id',
+  StakedCollateral = 'stakedCollateral',
+  StakedReputation = 'stakedReputation',
+  TotalReputation = 'totalReputation',
+  Trades = 'trades',
   TransactionHash = 'transactionHash'
 }
 
@@ -490,7 +540,7 @@ export type Offer = {
   id: Scalars['String'];
   metadata: Scalars['String'];
   offerId: Scalars['BigInt'];
-  offerStatus: Scalars['Int'];
+  offerStatus: Scalars['String'];
   owner: Scalars['Bytes'];
   reputationRequirement: Scalars['BigInt'];
   stakingRequirement: Scalars['BigInt'];
@@ -926,14 +976,26 @@ export type Offer_Filter = {
   offerId_lte?: InputMaybe<Scalars['BigInt']>;
   offerId_not?: InputMaybe<Scalars['BigInt']>;
   offerId_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  offerStatus?: InputMaybe<Scalars['Int']>;
-  offerStatus_gt?: InputMaybe<Scalars['Int']>;
-  offerStatus_gte?: InputMaybe<Scalars['Int']>;
-  offerStatus_in?: InputMaybe<Array<Scalars['Int']>>;
-  offerStatus_lt?: InputMaybe<Scalars['Int']>;
-  offerStatus_lte?: InputMaybe<Scalars['Int']>;
-  offerStatus_not?: InputMaybe<Scalars['Int']>;
-  offerStatus_not_in?: InputMaybe<Array<Scalars['Int']>>;
+  offerStatus?: InputMaybe<Scalars['String']>;
+  offerStatus_contains?: InputMaybe<Scalars['String']>;
+  offerStatus_contains_nocase?: InputMaybe<Scalars['String']>;
+  offerStatus_ends_with?: InputMaybe<Scalars['String']>;
+  offerStatus_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  offerStatus_gt?: InputMaybe<Scalars['String']>;
+  offerStatus_gte?: InputMaybe<Scalars['String']>;
+  offerStatus_in?: InputMaybe<Array<Scalars['String']>>;
+  offerStatus_lt?: InputMaybe<Scalars['String']>;
+  offerStatus_lte?: InputMaybe<Scalars['String']>;
+  offerStatus_not?: InputMaybe<Scalars['String']>;
+  offerStatus_not_contains?: InputMaybe<Scalars['String']>;
+  offerStatus_not_contains_nocase?: InputMaybe<Scalars['String']>;
+  offerStatus_not_ends_with?: InputMaybe<Scalars['String']>;
+  offerStatus_not_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  offerStatus_not_in?: InputMaybe<Array<Scalars['String']>>;
+  offerStatus_not_starts_with?: InputMaybe<Scalars['String']>;
+  offerStatus_not_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  offerStatus_starts_with?: InputMaybe<Scalars['String']>;
+  offerStatus_starts_with_nocase?: InputMaybe<Scalars['String']>;
   or?: InputMaybe<Array<InputMaybe<Offer_Filter>>>;
   owner?: InputMaybe<Scalars['Bytes']>;
   owner_contains?: InputMaybe<Scalars['Bytes']>;
@@ -2274,7 +2336,14 @@ export type CommunityQueryVariables = Exact<{
 }>;
 
 
-export type CommunityQuery = { __typename?: 'Query', community?: { __typename?: 'Community', id: string, ipfsMetadata: string, owner: any, stakingRequirement: any, communityId: any, blockTimestamp: any, blockNumber: any, transactionHash: any, members: Array<{ __typename?: 'Member', transactionHash: any, blockNumber: any, id: any }>, offers: Array<{ __typename?: 'Offer', id: string, blockNumber: any, metadata: string, stakingRequirement: any, offerStatus: number, reputationRequirement: any, blockTimestamp: any }> } | null };
+export type CommunityQuery = { __typename?: 'Query', community?: { __typename?: 'Community', id: string, ipfsMetadata: string, owner: any, stakingRequirement: any, communityId: any, blockTimestamp: any, blockNumber: any, transactionHash: any, members: Array<{ __typename?: 'Member', transactionHash: any, blockNumber: any, id: any, allTimeCollateral: any, stakedCollateral: any, stakedReputation: any, totalReputation: any }>, offers: Array<{ __typename?: 'Offer', id: string, blockNumber: any, metadata: string, stakingRequirement: any, offerStatus: string, reputationRequirement: any, blockTimestamp: any }> } | null };
+
+export type MemberQueryVariables = Exact<{
+  memberId: Scalars['ID'];
+}>;
+
+
+export type MemberQuery = { __typename?: 'Query', member?: { __typename?: 'Member', id: any, totalReputation: any, stakedReputation: any, stakedCollateral: any, allTimeCollateral: any, blockTimestamp: any, blockNumber: any, transactionHash: any, trades: any, community: { __typename?: 'Community', id: string } } | null };
 
 
 export const SubgraphMetadataDocument = gql`
@@ -2313,6 +2382,10 @@ export const CommunityDocument = gql`
       transactionHash
       blockNumber
       id
+      allTimeCollateral
+      stakedCollateral
+      stakedReputation
+      totalReputation
     }
     offers {
       id
@@ -2327,6 +2400,24 @@ export const CommunityDocument = gql`
     blockTimestamp
     blockNumber
     transactionHash
+  }
+}
+    `;
+export const MemberDocument = gql`
+    query Member($memberId: ID!) {
+  member(id: $memberId) {
+    id
+    totalReputation
+    stakedReputation
+    stakedCollateral
+    allTimeCollateral
+    blockTimestamp
+    blockNumber
+    transactionHash
+    community {
+      id
+    }
+    trades
   }
 }
     `;
@@ -2346,6 +2437,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     Community(variables: CommunityQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<CommunityQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<CommunityQuery>(CommunityDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'Community', 'query');
+    },
+    Member(variables: MemberQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<MemberQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<MemberQuery>(MemberDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'Member', 'query');
     }
   };
 }

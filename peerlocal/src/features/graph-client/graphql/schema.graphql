@@ -41,10 +41,15 @@ type CommunityCreated {
 }
 
 type Member {
+    allTimeCollateral: BigInt!
     blockNumber: BigInt!
     blockTimestamp: BigInt!
     community: Community!
     id: Bytes!
+    stakedCollateral: BigInt!
+    stakedReputation: BigInt!
+    totalReputation: BigInt!
+    trades: BigInt!
     transactionHash: Bytes!
 }
 
@@ -65,7 +70,7 @@ type Offer {
     id: String!
     metadata: String!
     offerId: BigInt!
-    offerStatus: Int!
+    offerStatus: String!
     owner: Bytes!
     reputationRequirement: BigInt!
     stakingRequirement: BigInt!
@@ -819,6 +824,7 @@ enum MemberJoinedCommunity_orderBy {
 }
 
 enum Member_orderBy {
+    allTimeCollateral
     blockNumber
     blockTimestamp
     community
@@ -832,6 +838,10 @@ enum Member_orderBy {
     community__stakingToken
     community__transactionHash
     id
+    stakedCollateral
+    stakedReputation
+    totalReputation
+    trades
     transactionHash
 }
 
@@ -1268,6 +1278,14 @@ input MemberJoinedCommunity_filter {
 input Member_filter {
     "Filter for the block changed event."
     _change_block: BlockChangedFilter
+    allTimeCollateral: BigInt
+    allTimeCollateral_gt: BigInt
+    allTimeCollateral_gte: BigInt
+    allTimeCollateral_in: [BigInt!]
+    allTimeCollateral_lt: BigInt
+    allTimeCollateral_lte: BigInt
+    allTimeCollateral_not: BigInt
+    allTimeCollateral_not_in: [BigInt!]
     and: [Member_filter]
     blockNumber: BigInt
     blockNumber_gt: BigInt
@@ -1317,6 +1335,38 @@ input Member_filter {
     id_not_contains: Bytes
     id_not_in: [Bytes!]
     or: [Member_filter]
+    stakedCollateral: BigInt
+    stakedCollateral_gt: BigInt
+    stakedCollateral_gte: BigInt
+    stakedCollateral_in: [BigInt!]
+    stakedCollateral_lt: BigInt
+    stakedCollateral_lte: BigInt
+    stakedCollateral_not: BigInt
+    stakedCollateral_not_in: [BigInt!]
+    stakedReputation: BigInt
+    stakedReputation_gt: BigInt
+    stakedReputation_gte: BigInt
+    stakedReputation_in: [BigInt!]
+    stakedReputation_lt: BigInt
+    stakedReputation_lte: BigInt
+    stakedReputation_not: BigInt
+    stakedReputation_not_in: [BigInt!]
+    totalReputation: BigInt
+    totalReputation_gt: BigInt
+    totalReputation_gte: BigInt
+    totalReputation_in: [BigInt!]
+    totalReputation_lt: BigInt
+    totalReputation_lte: BigInt
+    totalReputation_not: BigInt
+    totalReputation_not_in: [BigInt!]
+    trades: BigInt
+    trades_gt: BigInt
+    trades_gte: BigInt
+    trades_in: [BigInt!]
+    trades_lt: BigInt
+    trades_lte: BigInt
+    trades_not: BigInt
+    trades_not_in: [BigInt!]
     transactionHash: Bytes
     transactionHash_contains: Bytes
     transactionHash_gt: Bytes
@@ -1685,14 +1735,26 @@ input Offer_filter {
     offerId_lte: BigInt
     offerId_not: BigInt
     offerId_not_in: [BigInt!]
-    offerStatus: Int
-    offerStatus_gt: Int
-    offerStatus_gte: Int
-    offerStatus_in: [Int!]
-    offerStatus_lt: Int
-    offerStatus_lte: Int
-    offerStatus_not: Int
-    offerStatus_not_in: [Int!]
+    offerStatus: String
+    offerStatus_contains: String
+    offerStatus_contains_nocase: String
+    offerStatus_ends_with: String
+    offerStatus_ends_with_nocase: String
+    offerStatus_gt: String
+    offerStatus_gte: String
+    offerStatus_in: [String!]
+    offerStatus_lt: String
+    offerStatus_lte: String
+    offerStatus_not: String
+    offerStatus_not_contains: String
+    offerStatus_not_contains_nocase: String
+    offerStatus_not_ends_with: String
+    offerStatus_not_ends_with_nocase: String
+    offerStatus_not_in: [String!]
+    offerStatus_not_starts_with: String
+    offerStatus_not_starts_with_nocase: String
+    offerStatus_starts_with: String
+    offerStatus_starts_with_nocase: String
     or: [Offer_filter]
     owner: Bytes
     owner_contains: Bytes
