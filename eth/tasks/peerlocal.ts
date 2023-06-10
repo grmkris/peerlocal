@@ -3,6 +3,7 @@ import pinataSdk from "@pinata/sdk";
 import { PeerLocal__factory, TestERC20__factory } from "../typechain";
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 import { ethers } from "ethers";
+import { TOOLS } from "./tools";
 
 task("create-community", "Uploads json file to pinata", async (args, hre) => {
   const { deployments, network } = hre;
@@ -219,4 +220,37 @@ task("extract-signer", "Extract signer from signature", async (args, hre) => {
     "0x6f585527643ebb3e7a2f838132fa76b18d3588023748d27f62a14d0b0f8d69f1051fe24d75c06ae4fbf9a468a9ff8aa3b1724783350e0f39ddb293d4021420c31c"
   );
   console.log("address", address);
+});
+
+task("create-offer-batch", "Uploads json file to pinata", async (args, hre) => {
+  const { deployments, network } = hre;
+
+  const pinata = new pinataSdk(
+    "9807e4444c8b18fac587",
+    "fcc42dccdf872e2cad73c610fd456fcba50069ef682877fb6c9d383d927e11ff"
+  );
+  let counter = 0;
+  for (const object of TOOLS) {
+    const ipfs = await pinata.pinJSONToIPFS(object);
+    const signer: SignerWithAddress = (await hre.ethers.getSigners())[
+      counter + 1
+    ];
+
+    // get PeerLocal contract from deployments
+    const peerLocal = await deployments.get("PeerLocal");
+    const peerLocalAddress = peerLocal.address;
+    const peerLocalContract = PeerLocal__factory.connect(
+      peerLocalAddress,
+      signer
+    );
+
+    const offerTx = await peerLocalContract.createOffer(
+      2,
+      ipfs.IpfsHash,
+      0,
+      counter % 2 === 0 ? 0 : 1
+    );
+    counter++;
+    console.log("offerTx", offerTx);
+  }
 });
