@@ -218,6 +218,7 @@ task(
   }
 );
 
+
 task(
   "increase-allowance-erc20test",
   "Increase allowance of erc20test to account[1]",
@@ -281,4 +282,6 @@ task("create-offer-batch", "Uploads json file to pinata", async (args, hre) => {
     counter++;
     console.log("offerTx", offerTx);
   }
-});
+}
+
+);
