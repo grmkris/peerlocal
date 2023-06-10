@@ -13,8 +13,8 @@ export const useCommunites = () => {
 
 export const useCommunity = (props: { id: string }) => {
   return useQuery({
-    queryKey: ["useCommunity", props.id],
-    queryFn: () => {
+    queryKey: ["Community", props.id],
+    queryFn: async () => {
       return subgraph.Community({
         communityId: props.id,
       });
@@ -48,9 +48,9 @@ export const useIPFS = (props: { ipfsHash?: string }) => {
 };
 
 export const ipfsCommunitySchema = z.object({
-  name: z.string(),
-  description: z.string(),
-  image: z.string()
+  Name: z.string(),
+  Description: z.string(),
+  Image: z.string()
 })
 
 export type ipfsCommunitySchemaType = z.infer<typeof ipfsCommunitySchema>

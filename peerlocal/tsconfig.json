@@ -17,6 +17,6 @@
     "noUncheckedIndexedAccess": true,
     "baseUrl": "."
   },
-  "include": ["next-env.d.ts"],
+  "include": ["next-env.d.ts", "src"],
   "exclude": ["node_modules", "src/typechain/*"]
 }
