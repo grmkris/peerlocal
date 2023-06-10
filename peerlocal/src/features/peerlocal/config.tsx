@@ -1,22 +1,18 @@
-export const PeerLocal = {
-  "optimism-goerli": {
+import { optimismGoerli, zkSyncTestnet } from "wagmi/chains";
+
+export const PeerLocalConfig = {
+  420: {
+    // OP GOERLI
     peerlocal: {
       address: "0x5FbDB2315678afecb367f032d93F642f64180aa3",
     },
   },
-  "zksync-testnet": {
+  280: {
+    // ZKSYNC TEST
     peerlocal: {
       address: "0x5FbDB2315678afecb367f032d93F642f64180aa3",
     },
   },
-  optimism: {
-    peerlocal: {
-      address: undefined,
-    },
-  },
-  zkSync: {
-    peerlocal: {
-      address: undefined,
-    },
-  },
-};
+} as const;
+
+export type Network = keyof typeof PeerLocalConfig;
