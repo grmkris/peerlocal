@@ -3,6 +3,7 @@ import Head from "next/head";
 import { useRouter } from 'next/router'
 import { ConnectWallet } from "../../features/ConnectWallet";
 import { Layout } from "../../features/Layout";
+import Link from "next/link";
 
 const Welcome: NextPage = () => {
     const router = useRouter()
@@ -24,9 +25,7 @@ const Welcome: NextPage = () => {
                     <h2>
                         <span className="text-accent">100 </span> GHO
                     </h2>
-                    <h3>
-                        H3 Ja
-                    </h3>
+                    <button className="btn mw-50 btn-accent">Connect wallet</button>
                 </div>
             </Layout>
         </>
