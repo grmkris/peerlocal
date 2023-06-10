@@ -9,20 +9,13 @@ import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 import "./ReputationToken.sol";  // Import the ReputationToken contract's ABI
 
 //AAVE Token sypply
-import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
-import "@aave/protocol-v2/contracts/interfaces/IERC20WithPermit.sol";
-import "@aave/protocol-v2/contracts/interfaces/ILendingPool.sol";
+import {IPool} from "@aave/core-v3/contracts/interfaces/IPool.sol";
 
 contract PeerLocal is Ownable {
 
     bytes32 MESSAGE_TO_BE_SIGNED_BY_COMMUNIT_OWNER = "I am the owner of this community";
 
     ReputationToken public reputationToken;
-
-    //AAVE Token sypply -> Done for Testnet Optimism
-    using SafeERC20 for IERC20;
-    ILendingPool private lendingPool;
-
 
     struct Community {
         string ipfsMetadata;
@@ -80,7 +73,6 @@ contract PeerLocal is Ownable {
 
         //AAVE Token sypply
         //create a function to change the ILendingPool
-        lendingPool = ILendingPool("0xCAd01dAdb7E97ae45b89791D986470F3dfC256f7"); //Pool-Proxy-Optimistic │ '0xCAd01dAdb7E97ae45b89791D986470F3dfC256f7' │
     }
 
 
@@ -105,7 +97,7 @@ contract PeerLocal is Ownable {
 
         emit MemberJoinedCommunity(_communityId, msg.sender);
         if (communities[_communityId].stakingRequirement != 0) {
-            supplyToken((communities[_communityId].stakingToken), communities[_communityId].stakingRequirement, _communityId);
+            supply((communities[_communityId].stakingToken), communities[_communityId].stakingRequirement, _communityId);
             emit collateralTokenStaked(msg.sender, communities[_communityId].stakingRequirement);
         }
     }
@@ -207,26 +199,27 @@ contract PeerLocal is Ownable {
 
     // Needs the token address that we want to deposit in AAVE, and the amount, the lendingPool is
     // configured in the constructor for Goerli Optimism testnet
-   function supplyToken(address _tokenAddress, uint256 _amount, uint256 _communityId) private {
-        // Approve the lending pool to spend the tokens
-        IERC20(_tokenAddress).approve(address(lendingPool), _amount);
 
-        // Deposit the tokens into the lending pool
-        lendingPool.deposit(_tokenAddress, _amount, address(this), 0);
+    //AAVE Token sypply -> Done for Testnet Optimism
+    //address lendingPool = "0x794a61358D6845594F94dc1DB02A252b5b4814aD";
+    function supply(address _lendingPool, address  _tokenAddress,  uint256 _amount, uint256 _communityId) public {
+        IPool(_lendingPool).supply(_tokenAddress, amount, address(this), 0);
+
         aaveTokenSuppliedByCommunity[_communityId][_tokenAddress] += _amount;
         //event TokenDepositAAVE(uint256 communityId, address tokenDepositAAVE, uint256 amountDeposited, uint256 totalAmountInAAVE);
         emit TokenDepositAAVE(_communityId,_tokenAddress,_amount,aaveTokenSuppliedByCommunity[_communityId][_tokenAddress]);
-    }
-    function redeemToken(address _tokenAddress, uint256 _amount, uint256 _communityId) external {
-        require(communities[_communityId].owner == msg.sender);
-        // Redeem the tokens from the lending pool
-        lendingPool.withdraw(_tokenAddress, _amount, address(this));
-        aaveTokenSuppliedByCommunity[_communityId][_tokenAddress] -= _amount;
-        // event TokenRedeemAAVE(uint256 communityId, address tokenRemovedAAVE, uint256 amountRedeem, uint256 totalAmountInAAVE);
-        emit TokenRedeemAAVE(_communityId,_tokenAddress,_amount,aaveTokenSuppliedByCommunity[_communityId][_tokenAddress]);
+        }
 
-        // Transfer the redeemed tokens back to the user
-        IERC20(_tokenAddress).transfer(msg.sender, _amount);
-    }
+    // function redeemToken(address _tokenAddress, uint256 _amount, uint256 _communityId) external {
+    //     require(communities[_communityId].owner == msg.sender);
+    //     // Redeem the tokens from the lending pool
+    //     lendingPool.withdraw(_tokenAddress, _amount, address(this));
+    //     aaveTokenSuppliedByCommunity[_communityId][_tokenAddress] -= _amount;
+    //     // event TokenRedeemAAVE(uint256 communityId, address tokenRemovedAAVE, uint256 amountRedeem, uint256 totalAmountInAAVE);
+    //     emit TokenRedeemAAVE(_communityId,_tokenAddress,_amount,aaveTokenSuppliedByCommunity[_communityId][_tokenAddress]);
+
+    //     // Transfer the redeemed tokens back to the user
+    //     IERC20(_tokenAddress).transfer(msg.sender, _amount);
+    // }
 
 }

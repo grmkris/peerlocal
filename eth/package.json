@@ -61,5 +61,8 @@
     "tenderly:push": "node ./_scripts.js tenderly:push",
     "swap:native": "hardhat swap:native",
     "create-community": "pnpm run hardhat pinata-create-community"
+  },
+  "dependencies": {
+    "@aave/core-v3": "^1.17.2"
   }
 }
