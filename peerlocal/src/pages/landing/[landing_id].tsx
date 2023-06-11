@@ -14,9 +14,10 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 
 
+
 const Landing: NextPage = () => {
     const router = useRouter()
-    const activeCommunity = useCommunity({id: router.query.landing_id ? router.query.landing_id.toString() : "0"})
+    const activeCommunity = useCommunity({ id: router.query.landing_id ? router.query.landing_id.toString() : "0" })
     const commMeta = useCommunityIPFS({
         ipfsHash: activeCommunity.data?.community?.ipfsMetadata
     })
@@ -33,11 +34,10 @@ const Landing: NextPage = () => {
                         Welcome to your Community DAO{" "}
                         <span className="text-accent">{commMeta.data?.Name}</span>
                     </h1>
-                    <p>{commMeta.data?.Description}</p>
                 </div>
                 <div className="flex justify-between">
-                    <div className="card w-96 bg-base-100 shadow-xl">
-                        <figure className="px-10 pt-10">
+                    <div className="flex-col items-center card w-96 bg-base-100 shadow-xl">
+                        <figure className="px-10 pt-10 min-h-max">
                             <img
                                 src="/decision.svg"
                                 alt="Shoes"
@@ -64,7 +64,7 @@ const Landing: NextPage = () => {
                             <h2 className="card-title">Market</h2>
                             <p>Lend out unused tools or Borrow tools you need!</p>
                             <div className="card-actions">
-                                <Link className="btn btn-accent" href={"/market/"+router.query.landing_id}>go to Market</Link>
+                                <Link className="btn btn-accent" href={"/market/" + router.query.landing_id}>go to Market</Link>
                             </div>
                         </div>
                     </div>

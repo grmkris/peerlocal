@@ -67,33 +67,6 @@ const Market: NextPage = () => {
                         Or Browse active listings below:
                     </p>
                 </div>
-                <div className="container flex items-center justify-center">
-                    {/*
-                    Fields:
-                    Name
-                    Price
-                    Availablility
-                    */}
-
-                    <ul className="flex flex-wrap min-w-5/12 items-center justify-center ">
-                        {listings.map((listing, i) => {
-                            return (
-                                <li key={i}>
-                                    <div className="card card-compact mx-5 my-2 w-96 bg-base-100 shadow-xl">
-                                        <figure><img src="https://placeholder.pics/svg/300" alt="Shoes" /></figure>
-                                        <div className="card-body">
-                                            <h2 className="card-title">{listing.name}</h2>
-                                            <p>If a dog chews shoes whose shoes does he choose?</p>
-                                            <div className="card-actions justify-end">
-                                                <Link className="btn btn-primary" href={"/listing/"+listing.name}>Borrow now!</Link>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                            );
-                        })}
-                    </ul>
-                </div>
             </Layout>
         </div>
     )

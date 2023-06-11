@@ -2,8 +2,11 @@ import { type NextPage } from "next";
 import Head from "next/head";
 import { Layout } from "../features/Layout";
 import { useCommunites } from "../features/peerlocal/hooks/usePeerLocal";
+import { useAccount } from "wagmi";
 
 const Home: NextPage = () => {
+
+  const { address, connector, isConnected } = useAccount()
   return (
     <>
       <Head>
@@ -17,6 +20,7 @@ const Home: NextPage = () => {
             Welcome to
             <span className="text-accent">community</span>
           </h1>
+          asd {isConnected ? "1": "2"}
         </div>
       </Layout>
     </>
