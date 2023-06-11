@@ -179,7 +179,7 @@ contract PeerLocal is Ownable {
     function endOffer(uint256 _communityId, uint256 _offerId, bool _finalResult) public {
         require((offers[_communityId][_offerId]).offerStatus == 2, "Invalid offer");
 
-        //         
+        // If the lending went well, and it's true the token and reputation stake is returned        
         if (_finalResult == true){
             // Transfer staked tokens back
             if (offers[_communityId][_offerId].stakingRequirement > 0) {
@@ -191,8 +191,6 @@ contract PeerLocal is Ownable {
                 reputationToken.transfer(msg.sender, offers[_communityId][_offerId].reputationRequirement);
                 emit reputationTokenReturned(msg.sender, offers[_communityId][_offerId].reputationRequirement);
             }
-
-            //Return reputation lender and borrower
             //The lender and the borrower gets 1 Reputation Token
             mintTokens(msg.sender, 1);
             mintTokens(offers[_communityId][_offerId].owner, 1);
@@ -201,6 +199,7 @@ contract PeerLocal is Ownable {
             emit OfferClosed(_communityId, _offerId, msg.sender, true);
 
         }else {
+            // In case didn't went erll, the reputation token is burned, and the collateral is send to the lender
             (communities[_communityId].stakingToken).transfer(offers[_communityId][_offerId].owner, offers[_communityId][_offerId].stakingRequirement);
             if (offers[_communityId][_offerId].reputationRequirement > 0) {
                 burnTokens(offers[_communityId][_offerId].reputationRequirement); //the staked ones
@@ -219,10 +218,6 @@ contract PeerLocal is Ownable {
         reputationToken.burn(_amount);
         emit ReputationTokenBurn(_amount);
     }
-
-    // function changeILendingPoolAddress(address lendingPoolAddress) external {
-    //     lendingPool = (lendingPoolAddress);
-    // }
 
 
     // Needs the token address that we want to deposit in AAVE, and the amount, the lendingPool is
