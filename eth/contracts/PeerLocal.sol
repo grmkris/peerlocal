@@ -212,24 +212,4 @@ contract PeerLocal is Ownable {
         emit TokenDepositAAVE(_communityId,_tokenAddress,_amount,aaveTokenSuppliedByCommunity[_communityId][_tokenAddress]);
     }
 
-    // function withdraw(address asset, uint256 amount, address to) public {
-    //     IPool(_lendingPool).withdraw(_tokenAddress, _amount, address(this), 0);
-
-    //     aaveTokenSuppliedByCommunity[_communityId][_tokenAddress] += _amount;
-    //     //event TokenDepositAAVE(uint256 communityId, address tokenDepositAAVE, uint256 amountDeposited, uint256 totalAmountInAAVE);
-    //     emit TokenDepositAAVE(_communityId,_tokenAddress,_amount,aaveTokenSuppliedByCommunity[_communityId][_tokenAddress]);
-    // }
-
-    // function redeemToken(address _tokenAddress, uint256 _amount, uint256 _communityId) external {
-    //     require(communities[_communityId].owner == msg.sender);
-    //     // Redeem the tokens from the lending pool
-    //     lendingPool.withdraw(_tokenAddress, _amount, address(this));
-    //     aaveTokenSuppliedByCommunity[_communityId][_tokenAddress] -= _amount;
-    //     // event TokenRedeemAAVE(uint256 communityId, address tokenRemovedAAVE, uint256 amountRedeem, uint256 totalAmountInAAVE);
-    //     emit TokenRedeemAAVE(_communityId,_tokenAddress,_amount,aaveTokenSuppliedByCommunity[_communityId][_tokenAddress]);
-
-    //     // Transfer the redeemed tokens back to the user
-    //     IERC20(_tokenAddress).transfer(msg.sender, _amount);
-    // }
-
 }
