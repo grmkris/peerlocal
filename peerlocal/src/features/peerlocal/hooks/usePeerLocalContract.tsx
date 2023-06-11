@@ -9,9 +9,6 @@ const getPeerLocal = (props: { network: Network; signer: Signer }) => {
   const address = PeerLocalConfig[props.network].peerlocal.address;
   if (!address)
     throw new Error("getPeerLocal contract not deployed on this network");
-  if (props.network === 280) {
-    return PeerLocalZK__factory.connect(address, props.signer);
-  }
   return PeerLocal__factory.connect(address, props.signer);
 };
 

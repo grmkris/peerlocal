@@ -55,7 +55,7 @@ const Listing: NextPage = () => {
       // @ts-ignore
       console.log("event.events[0]?.args", event.events[0]?.args[0]);
       // @ts-ignore
-      return event.events[0]?.args[0];
+      await router.back();
     },
   });
 

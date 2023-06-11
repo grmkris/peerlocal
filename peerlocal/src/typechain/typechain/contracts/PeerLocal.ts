@@ -56,6 +56,7 @@ export declare namespace PeerLocal {
 
 export interface PeerLocalInterface extends utils.Interface {
   functions: {
+    "aaveTokenSuppliedByCommunity(uint256,address)": FunctionFragment;
     "acceptOffer(uint256,uint256)": FunctionFragment;
     "communities(uint256)": FunctionFragment;
     "communityMembers(uint256,uint256)": FunctionFragment;
@@ -72,6 +73,7 @@ export interface PeerLocalInterface extends utils.Interface {
 
   getFunction(
     nameOrSignatureOrTopic:
+      | "aaveTokenSuppliedByCommunity"
       | "acceptOffer"
       | "communities"
       | "communityMembers"
@@ -86,6 +88,10 @@ export interface PeerLocalInterface extends utils.Interface {
       | "transferOwnership"
   ): FunctionFragment;
 
+  encodeFunctionData(
+    functionFragment: "aaveTokenSuppliedByCommunity",
+    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<string>]
+  ): string;
   encodeFunctionData(
     functionFragment: "acceptOffer",
     values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>]
@@ -146,6 +152,10 @@ export interface PeerLocalInterface extends utils.Interface {
   ): string;
 
   decodeFunctionResult(
+    functionFragment: "aaveTokenSuppliedByCommunity",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "acceptOffer",
     data: BytesLike
   ): Result;
@@ -195,6 +205,8 @@ export interface PeerLocalInterface extends utils.Interface {
     "PeerLocalInitalized(address)": EventFragment;
     "ReputationTokenBurn(uint256)": EventFragment;
     "ReputationTokenMint(address,uint256)": EventFragment;
+    "TokenDepositAAVE(uint256,address,uint256,uint256)": EventFragment;
+    "TokenRedeemAAVE(uint256,address,uint256,uint256)": EventFragment;
     "collateralTokenReturned(address,uint256)": EventFragment;
     "collateralTokenStaked(address,uint256)": EventFragment;
     "reputationTokenReturned(address,uint256)": EventFragment;
@@ -210,6 +222,8 @@ export interface PeerLocalInterface extends utils.Interface {
   getEvent(nameOrSignatureOrTopic: "PeerLocalInitalized"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "ReputationTokenBurn"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "ReputationTokenMint"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "TokenDepositAAVE"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "TokenRedeemAAVE"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "collateralTokenReturned"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "collateralTokenStaked"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "reputationTokenReturned"): EventFragment;
@@ -326,6 +340,33 @@ export type ReputationTokenMintEvent = TypedEvent<
 export type ReputationTokenMintEventFilter =
   TypedEventFilter<ReputationTokenMintEvent>;
 
+export interface TokenDepositAAVEEventObject {
+  communityId: BigNumber;
+  tokenDepositAAVE: string;
+  amountDeposited: BigNumber;
+  totalAmountInAAVE: BigNumber;
+}
+export type TokenDepositAAVEEvent = TypedEvent<
+  [BigNumber, string, BigNumber, BigNumber],
+  TokenDepositAAVEEventObject
+>;
+
+export type TokenDepositAAVEEventFilter =
+  TypedEventFilter<TokenDepositAAVEEvent>;
+
+export interface TokenRedeemAAVEEventObject {
+  communityId: BigNumber;
+  tokenRedeemAAVE: string;
+  amountRedeem: BigNumber;
+  totalAmountInAAVE: BigNumber;
+}
+export type TokenRedeemAAVEEvent = TypedEvent<
+  [BigNumber, string, BigNumber, BigNumber],
+  TokenRedeemAAVEEventObject
+>;
+
+export type TokenRedeemAAVEEventFilter = TypedEventFilter<TokenRedeemAAVEEvent>;
+
 export interface collateralTokenReturnedEventObject {
   member: string;
   stakingRequirementReturned: BigNumber;
@@ -401,6 +442,12 @@ export interface PeerLocal extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
+    aaveTokenSuppliedByCommunity(
+      arg0: PromiseOrValue<BigNumberish>,
+      arg1: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
     acceptOffer(
       _communityId: PromiseOrValue<BigNumberish>,
       _offerId: PromiseOrValue<BigNumberish>,
@@ -481,6 +528,12 @@ export interface PeerLocal extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
   };
+
+  aaveTokenSuppliedByCommunity(
+    arg0: PromiseOrValue<BigNumberish>,
+    arg1: PromiseOrValue<string>,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
 
   acceptOffer(
     _communityId: PromiseOrValue<BigNumberish>,
@@ -563,6 +616,12 @@ export interface PeerLocal extends BaseContract {
   ): Promise<ContractTransaction>;
 
   callStatic: {
+    aaveTokenSuppliedByCommunity(
+      arg0: PromiseOrValue<BigNumberish>,
+      arg1: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     acceptOffer(
       _communityId: PromiseOrValue<BigNumberish>,
       _offerId: PromiseOrValue<BigNumberish>,
@@ -732,6 +791,32 @@ export interface PeerLocal extends BaseContract {
       mintAmount?: null
     ): ReputationTokenMintEventFilter;
 
+    "TokenDepositAAVE(uint256,address,uint256,uint256)"(
+      communityId?: null,
+      tokenDepositAAVE?: null,
+      amountDeposited?: null,
+      totalAmountInAAVE?: null
+    ): TokenDepositAAVEEventFilter;
+    TokenDepositAAVE(
+      communityId?: null,
+      tokenDepositAAVE?: null,
+      amountDeposited?: null,
+      totalAmountInAAVE?: null
+    ): TokenDepositAAVEEventFilter;
+
+    "TokenRedeemAAVE(uint256,address,uint256,uint256)"(
+      communityId?: null,
+      tokenRedeemAAVE?: null,
+      amountRedeem?: null,
+      totalAmountInAAVE?: null
+    ): TokenRedeemAAVEEventFilter;
+    TokenRedeemAAVE(
+      communityId?: null,
+      tokenRedeemAAVE?: null,
+      amountRedeem?: null,
+      totalAmountInAAVE?: null
+    ): TokenRedeemAAVEEventFilter;
+
     "collateralTokenReturned(address,uint256)"(
       member?: PromiseOrValue<string> | null,
       stakingRequirementReturned?: null
@@ -770,6 +855,12 @@ export interface PeerLocal extends BaseContract {
   };
 
   estimateGas: {
+    aaveTokenSuppliedByCommunity(
+      arg0: PromiseOrValue<BigNumberish>,
+      arg1: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     acceptOffer(
       _communityId: PromiseOrValue<BigNumberish>,
       _offerId: PromiseOrValue<BigNumberish>,
@@ -836,6 +927,12 @@ export interface PeerLocal extends BaseContract {
   };
 
   populateTransaction: {
+    aaveTokenSuppliedByCommunity(
+      arg0: PromiseOrValue<BigNumberish>,
+      arg1: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     acceptOffer(
       _communityId: PromiseOrValue<BigNumberish>,
       _offerId: PromiseOrValue<BigNumberish>,

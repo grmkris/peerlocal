@@ -4,7 +4,7 @@ export const PeerLocalConfig = {
   420: {
     // OP GOERLI
     peerlocal: {
-      address: "0xF687aEe26F1083891710e82cCE07aBc014b93e5d",
+      address: "0x3FB2B8E670187d2587f8C03652F2072CaaD15745",
     },
   },
   280: {

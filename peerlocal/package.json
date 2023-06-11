@@ -10,6 +10,8 @@
     "codegen": "graphql-codegen --config src/features/graph-client/graphql/codegen.ts"
   },
   "dependencies": {
+    "@ethersproject/abi": "^5.7.0",
+    "@ethersproject/providers": "^5.7.2",
     "@heroicons/react": "^2.0.18",
     "@prisma/client": "^4.15.0",
     "@rainbow-me/rainbowkit": "0.12.13",

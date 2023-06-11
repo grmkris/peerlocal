@@ -8,7 +8,7 @@ export const getSgClient = (config: {
   if (config.chain != "optimism-goerli")
     throw new Error(`Network ${config.chain} not yet enabled`);
   const sgUrl =
-    "https://api.thegraph.com/subgraphs/name/grmkris/peerlocal-optimism-goerli";
+    "https://api.thegraph.com/subgraphs/name/grmkris/peerlocal-optimism-goerli-1";
   const wrapperGQL = new GraphQLClient(sgUrl);
   return getSdk(wrapperGQL);
 };

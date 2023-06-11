@@ -31,8 +31,8 @@ export const CreateCommunity: NextPage = () => {
       console.log(result);
       const tx = await createCommunity.mutateAsync({
         ipfs: result,
-        stakingReq: 0,
-        stakingToken: "0xC227A899fF5d27a04F5B1b34dFe487875D85f1e1",
+        stakingReq: 1,
+        stakingToken: "0xD9662ae38fB577a3F6843b6b8EB5af3410889f3A", //DAI contract address
       });
       // @ts-ignore
       const event = await tx.wait();

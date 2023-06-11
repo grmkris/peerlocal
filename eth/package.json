@@ -41,7 +41,7 @@
   "scripts": {
     "format": "prettier --check \"**/*.{ts,js,sol}\"",
     "format:fix": "prettier --write \"**/*.{ts,js,sol}\"",
-    "compile": "hardhat compile",
+    "compile": "hardhat compile && cp -r typechain ../peerlocal/src/typechain",
     "void:deploy": "hardhat deploy --report-gas",
     "test": "cross-env HARDHAT_DEPLOY_FIXTURE=true HARDHAT_COMPILE=true mocha --bail --recursive test",
     "gas": "cross-env REPORT_GAS=true hardhat test",
