@@ -13,6 +13,7 @@ import { useSigner } from "wagmi";
 import { useImmer } from "use-immer";
 import { useMutation } from "@tanstack/react-query";
 import { pinJSONtoPinata, uploadFile } from "../createCommunity";
+import { Loading } from "../../features/Loading";
 
 const Listing: NextPage = () => {
   const router = useRouter();
@@ -134,10 +135,24 @@ const Listing: NextPage = () => {
                 required
               />
             </div>
-            <input className={"btn"} type="submit" value="Create Listing" />
-            <button className="btn-neutral btn" onClick={() => router.back()}>
-              Back
-            </button>
+            {createofferHandler.isLoading || uploadImage.isLoading ? (
+              <Loading />
+            ) : (
+              <>
+                <input
+                  className={"btn"}
+                  type="submit"
+                  value="Create Listing"
+                  disabled={uploadImage.isLoading}
+                />
+                <button
+                  className="btn-neutral btn"
+                  onClick={() => router.back()}
+                >
+                  Back
+                </button>
+              </>
+            )}
           </form>
         </div>
       </Layout>

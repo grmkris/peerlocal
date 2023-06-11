@@ -5,6 +5,7 @@ import { Layout } from "../../features/Layout";
 import { useOfferIPFS } from "src/features/peerlocal/hooks/usePeerLocal";
 import { useOffer } from "src/features/peerlocal/hooks/usePeerLocal";
 import { usePeerLocalContract } from "src/features/peerlocal/hooks/usePeerLocalContract";
+import { Loading } from "../../features/Loading";
 
 const Listing: NextPage = () => {
   const router = useRouter();
@@ -18,12 +19,12 @@ const Listing: NextPage = () => {
     ? cOffer.data?.community.id.toString()
     : "";
   const borrowHandler = async () => {
-    acceptOffer
-      .mutateAsync({
-        communityId: cId,
-        offerId: cOffer.data?.offerId,
-      })
-      .then((r) => console.log(r));
+    const res = await acceptOffer.mutateAsync({
+      communityId: cId,
+      offerId: cOffer.data?.offerId,
+    });
+    console.log("res", res);
+    await router.back();
   };
   return (
     <>
@@ -49,11 +50,23 @@ const Listing: NextPage = () => {
               </p>{" "}
             </p>
             <div className="flex flex-row">
-              <button className="btn-neutral btn" onClick={() => router.back()}>
+              <button
+                className="btn-neutral btn"
+                onClick={() => router.back()}
+                disabled={acceptOffer.isLoading}
+              >
                 Back
               </button>
-              <button className="btn-primary btn" onClick={borrowHandler}>
-                Borrow for {cOffer.data?.stakingRequirement} GHO
+              <button
+                className="btn-primary btn"
+                onClick={borrowHandler}
+                disabled={acceptOffer.isLoading}
+              >
+                {acceptOffer.isLoading ? (
+                  <Loading />
+                ) : (
+                  `Borrow for ${cOffer.data?.stakingRequirement} GHO`
+                )}
               </button>
             </div>
           </div>

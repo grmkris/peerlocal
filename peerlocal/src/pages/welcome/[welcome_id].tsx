@@ -1,9 +1,7 @@
 import { type NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { ConnectWallet } from "../../features/ConnectWallet";
 import { Layout } from "../../features/Layout";
-import Link from "next/link";
 import {
   useCommunity,
   useCommunityIPFS,
@@ -13,6 +11,7 @@ import { useMutation } from "@tanstack/react-query";
 import { TestERC20__factory } from "../../typechain";
 import { useSigner } from "wagmi";
 import { ethers } from "ethers";
+import { Loading } from "../../features/Loading";
 
 const Welcome: NextPage = () => {
   const router = useRouter();
@@ -64,7 +63,11 @@ const Welcome: NextPage = () => {
         : "",
       ownerSignature: sig,
     });
-    await router.push("/communities");
+    await router.push(
+      `/landing/${
+        router.query.welcome_id ? router.query.welcome_id.toString() : ""
+      }`
+    );
   };
 
   return (
@@ -76,13 +79,35 @@ const Welcome: NextPage = () => {
       </Head>
       <Layout>
         <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
-          <h1 className="text-5xl font-extrabold tracking-tight text-white sm:text-[5rem]">
-            Welcome to our <span className="text-accent">{ci.data?.Name}</span>,
-            DAO; Please sign the message to join our community
-          </h1>
-          <button className="mw-50 btn-accent btn" onClick={joinHandler}>
-            Join
-          </button>
+          {c.isLoading || ci.isLoading ? (
+            <Loading />
+          ) : (
+            <>
+              <h1 className="text-5xl font-extrabold tracking-tight text-white sm:text-[5rem]">
+                Welcome to our{" "}
+                <span className="text-accent">{ci.data?.Name}</span>, DAO;
+                Please stake{" "}
+                <span className="text-accent">
+                  {c.data?.community?.stakingRequirement} DAI
+                </span>
+                , into our community pool to generate yield for local
+                development
+              </h1>
+              <button
+                className="mw-50 btn-accent btn"
+                onClick={joinHandler}
+                disabled={
+                  increaseAllowance.isLoading || joinCommunity.isLoading
+                }
+              >
+                {increaseAllowance.isLoading || joinCommunity.isLoading ? (
+                  <Loading />
+                ) : (
+                  "Join"
+                )}
+              </button>
+            </>
+          )}
         </div>
       </Layout>
     </>

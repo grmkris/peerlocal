@@ -76,10 +76,11 @@ export const usePeerLocalContract = () => {
         network: network.chain?.id as Network,
         signer: signer.data,
       });
-      return await peerLocal.acceptOffer(
+      const tx = await peerLocal.acceptOffer(
         variables.communityId,
         variables.offerId
       );
+      return tx.wait();
     },
   });
   const endOffer = useMutation({
