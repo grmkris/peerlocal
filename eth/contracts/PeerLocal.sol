@@ -5,10 +5,10 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 
-
+// We use the ReputationToken in order to reward or punish (burning ReputationToken staked) for the tool borrow/lending system. 
 import "./ReputationToken.sol";  // Import the ReputationToken contract's ABI
 
-//AAVE Token sypply
+//We import the IPool function from AAVE V3
 import {IPool} from "@aave/core-v3/contracts/interfaces/IPool.sol";
 
 contract PeerLocal is Ownable {
@@ -17,22 +17,24 @@ contract PeerLocal is Ownable {
 
     ReputationToken public reputationToken;
 
+    //The Community struct is used in the communities mapping to define the Community characteristics
     struct Community {
         string ipfsMetadata;
         uint256 stakingRequirement;
         address owner;
         IERC20 stakingToken;
     }
-
+    // The Offer struct is used in the 
     struct Offer {
         address owner;
         uint256 communityId;
         string metadata;
         uint256 reputationRequirement;
         uint256 stakingRequirement;
-        uint8 offerStatus; //created -> 1, active -> 2, finished -> 3
+        uint8 offerStatus; //created -> 1, active -> 2, finished -> 3; we use numbers to avoid conversion using the == operator. 
     }
 
+    //Events used to keep tack of the different communities and offers in The Graph dashboard
     event CommunityCreated(uint256 indexed communityId, string ipfsMetadata, address indexed owner, IERC20 stakingToken, uint256 stakingRequirement);
     event MemberJoinedCommunity(uint256 indexed communityId, address indexed member);
     event OfferCreated(uint256 indexed communityId, uint256 offerId, Offer newOffer);
@@ -49,21 +51,28 @@ contract PeerLocal is Ownable {
     event ReputationTokenMint(address indexed member, uint256 mintAmount);
     event ReputationTokenBurn(uint256 burnAmount);
 
-    //AAVE events
     event TokenDepositAAVE(uint256 communityId, address tokenDepositAAVE, uint256 amountDeposited, uint256 totalAmountInAAVE);
     event TokenRedeemAAVE(uint256 communityId, address tokenRedeemAAVE, uint256 amountRedeem, uint256 totalAmountInAAVE);
 
-
+    //Counter that generates the communityId
     uint256 communitiesCounter = 0;
+    //Counter that generates the offerId
     uint256 offerCounter = 0;
 
-    //AAVE
+    //Address of the V3 AAVE IPool in Göerli Optimism Testnet
     address lendingPool = 0xCAd01dAdb7E97ae45b89791D986470F3dfC256f7;
 
-
+    // communities map keeps track of the different communities created and it's characteristics
+    // We use the community Id, generated with the communitiesCounter, as key, and the Community struct as value. 
     mapping(uint256 => Community) public communities;
+
+    // offers map keeps track of the different offers created, in the different communities, and it's characteristics. 
+    // We use the community Id, generated with the communitiesCounter, as first key, 
+    // the offernId, generated with the counter offerCounter, as second key, and the Offer struct as value. 
     mapping(uint256 => mapping(uint256 => Offer)) public offers;
 
+    // communityMembers map keeps stores an address array of all the community members
+    //We use the communityId as key, and an address array as value. 
     mapping(uint256 => address[]) public communityMembers;
 
     //Mapping for the tokens deposited in AAVE
@@ -72,6 +81,7 @@ contract PeerLocal is Ownable {
 
 
     constructor(address _reputationTokenAddress) public {
+        
         reputationToken = ReputationToken(_reputationTokenAddress);
         emit PeerLocalInitalized(address(_reputationTokenAddress));
 
@@ -211,25 +221,5 @@ contract PeerLocal is Ownable {
         //event TokenDepositAAVE(uint256 communityId, address tokenDepositAAVE, uint256 amountDeposited, uint256 totalAmountInAAVE);
         emit TokenDepositAAVE(_communityId,_tokenAddress,_amount,aaveTokenSuppliedByCommunity[_communityId][_tokenAddress]);
     }
-
-    // function withdraw(address asset, uint256 amount, address to) public {
-    //     IPool(_lendingPool).withdraw(_tokenAddress, _amount, address(this), 0);
-
-    //     aaveTokenSuppliedByCommunity[_communityId][_tokenAddress] += _amount;
-    //     //event TokenDepositAAVE(uint256 communityId, address tokenDepositAAVE, uint256 amountDeposited, uint256 totalAmountInAAVE);
-    //     emit TokenDepositAAVE(_communityId,_tokenAddress,_amount,aaveTokenSuppliedByCommunity[_communityId][_tokenAddress]);
-    // }
-
-    // function redeemToken(address _tokenAddress, uint256 _amount, uint256 _communityId) external {
-    //     require(communities[_communityId].owner == msg.sender);
-    //     // Redeem the tokens from the lending pool
-    //     lendingPool.withdraw(_tokenAddress, _amount, address(this));
-    //     aaveTokenSuppliedByCommunity[_communityId][_tokenAddress] -= _amount;
-    //     // event TokenRedeemAAVE(uint256 communityId, address tokenRemovedAAVE, uint256 amountRedeem, uint256 totalAmountInAAVE);
-    //     emit TokenRedeemAAVE(_communityId,_tokenAddress,_amount,aaveTokenSuppliedByCommunity[_communityId][_tokenAddress]);
-
-    //     // Transfer the redeemed tokens back to the user
-    //     IERC20(_tokenAddress).transfer(msg.sender, _amount);
-    // }
 
 }
