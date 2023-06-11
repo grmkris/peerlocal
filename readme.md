@@ -1,3 +1,7 @@
+
+
+# For the smart contract scripts we use: 
+
 this is `pnpm` monorepo...
 
 ```shell
