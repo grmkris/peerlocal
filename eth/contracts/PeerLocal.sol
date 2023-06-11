@@ -94,8 +94,12 @@ contract PeerLocal is Ownable {
 
         emit MemberJoinedCommunity(_communityId, msg.sender);
         if (communities[_communityId].stakingRequirement != 0) {
+            // transferfrom user to this contract
+            IERC20 token = communities[_communityId].stakingToken;
+            token.transferFrom(msg.sender, address(this), communities[_communityId].stakingRequirement);
+            token.approve(lendingPool, communities[_communityId].stakingRequirement);
             //    function supply(address _lendingPool, address  _tokenAddress,  uint256 _amount, uint256 _communityId) public {
-            supply(lendingPool,address(communities[_communityId].stakingToken), communities[_communityId].stakingRequirement, _communityId);
+            supply(lendingPool,address(communities[_communityId].stakingToken), communities[_communityId].stakingRequirement, _communityId, msg.sender);
             emit collateralTokenStaked(msg.sender, communities[_communityId].stakingRequirement);
         }
     }
@@ -200,8 +204,8 @@ contract PeerLocal is Ownable {
 
     //AAVE Token sypply -> Done for Testnet Optimism
     //address lendingPool = "0x794a61358D6845594F94dc1DB02A252b5b4814aD";
-    function supply(address _lendingPool, address  _tokenAddress,  uint256 _amount, uint256 _communityId) private {
-        IPool(_lendingPool).supply(_tokenAddress, _amount, msg.sender, 0);
+    function supply(address _lendingPool, address  _tokenAddress,  uint256 _amount, uint256 _communityId, address _user) private {
+        IPool(_lendingPool).supply(_tokenAddress, _amount, _user, 0);
 
         aaveTokenSuppliedByCommunity[_communityId][_tokenAddress] += _amount;
         //event TokenDepositAAVE(uint256 communityId, address tokenDepositAAVE, uint256 amountDeposited, uint256 totalAmountInAAVE);

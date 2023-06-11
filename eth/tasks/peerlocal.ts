@@ -39,39 +39,27 @@ task("create-community", "Uploads json file to pinata", async (args, hre) => {
   const peerNetwork = await deployments.getNetworkName(); //To check if its goerli
   const peerLocalAddress = peerLocal.address;
 
-  const peerERC20 = await deployments.get("TestERC20");
-  const peerERC20Address = peerERC20.address;
-
-  //const numberWithDecimals = 0x0000000000000000001;
-  const numberWithDecimals = 100;
+  const numberWithDecimals = 1;
 
   const peerLocalContract = PeerLocal__factory.connect(
     peerLocalAddress,
     signer
   );
-  if (peerNetwork == "goerli") {
-    //Then we use Go
-    const tx = await peerLocalContract.createCommunity(
-      ipfs.IpfsHash,
-      "0xcbE9771eD31e761b744D3cB9eF78A1f32DD99211",
-      numberWithDecimals
-    );
-    console.log("Tx hash: " + tx.hash);
-  } else {
-    const tx = await peerLocalContract.createCommunity(
-      ipfs.IpfsHash,
-      //peerERC20Address,
-      "0xDA10009cBd5D07dd0CeCc66161FC93D7c9000da1", //DAI contract address
-      numberWithDecimals
-    );
-    console.log("Tx hash: " + tx.hash);
-  }
+  const tx = await peerLocalContract.createCommunity(
+    ipfs.IpfsHash,
+    //peerERC20Address,
+    "0xD9662ae38fB577a3F6843b6b8EB5af3410889f3A", //DAI contract address
+    numberWithDecimals
+  );
+  console.log("Tx hash: " + tx.hash);
   console.log("Pinata project uploaded: " + ipfs.IpfsHash);
 });
 
 task("join-community", "Uploads json file to pinata", async (args, hre) => {
   const { deployments, network } = hre;
   const signer: SignerWithAddress = (await hre.ethers.getSigners())[0];
+
+  console.log("Signer: " + signer.address);
 
   const signature = await signer.signMessage(
     "I am the owner of this community"
@@ -84,15 +72,15 @@ task("join-community", "Uploads json file to pinata", async (args, hre) => {
     peerLocalAddress,
     signer
   );
-  const peerERC20Contract = TestERC20__factory.connect(
-    "0xDA10009cBd5D07dd0CeCc66161FC93D7c9000da1",
+  const dai = TestERC20__factory.connect(
+    "0xd9662ae38fb577a3f6843b6b8eb5af3410889f3a",
     signer
   );
 
-  const tx1 = await peerERC20Contract.approve(
-    "0xCAd01dAdb7E97ae45b89791D986470F3dfC256f7",
-    ethers.constants.MaxUint256
-  );
+  const balance = await dai.balanceOf(signer.address);
+  console.log("Balance: " + balance.toString());
+
+  const tx1 = await dai.approve(peerLocalAddress, ethers.constants.MaxUint256);
   await tx1.wait();
   console.log("Tx hash approve: " + tx1.hash);
 
