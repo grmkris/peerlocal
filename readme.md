@@ -1,4 +1,4 @@
-#PEER UP
+# PEER UP
 Empowering Local Communities: Share, Invest, Thrive. Peer Up: Decentralized resource sharing, P2P tools & equipment lending, yield farming, activism, and governance.
 
 ## Technologies we used / sponsors
