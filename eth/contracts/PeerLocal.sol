@@ -71,6 +71,8 @@ contract PeerLocal is Ownable {
     // the offernId, generated with the counter offerCounter, as second key, and the Offer struct as value. 
     mapping(uint256 => mapping(uint256 => Offer)) public offers;
 
+    // communityMembers map keeps stores an address array of all the community members
+    //We use the communityId as key, and an address array as value. 
     mapping(uint256 => address[]) public communityMembers;
 
     //Mapping for the tokens deposited in AAVE
@@ -79,6 +81,7 @@ contract PeerLocal is Ownable {
 
 
     constructor(address _reputationTokenAddress) public {
+        
         reputationToken = ReputationToken(_reputationTokenAddress);
         emit PeerLocalInitalized(address(_reputationTokenAddress));
 
