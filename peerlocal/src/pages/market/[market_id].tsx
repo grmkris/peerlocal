@@ -2,13 +2,24 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import { Layout } from "../../features/Layout";
 import Link from "next/link";
-import { useCommunity } from "src/features/peerlocal/hooks/usePeerLocal";
+import { useCommunity, useOffer } from "src/features/peerlocal/hooks/usePeerLocal";
 import { useRouter } from "next/router";
 import { useOfferIPFS } from "src/features/peerlocal/hooks/usePeerLocal";
 import { Loading } from "../../features/Loading";
 
 function OfferCard(props: { ipfsHash: string; offerId: string }) {
   const offer = useOfferIPFS({ ipfsHash: props.ipfsHash });
+  const cOffer = useOffer({ metadata: props.ipfsHash })
+  const s = () => {
+    switch (cOffer.data?.offerStatus) {
+      case "CREATE":
+        return <div className="badge badge-secondary">ACTIVE</div>
+      case "ACTIVE":
+        return <div className="badge badge-primary">BORROWED</div>
+      default:
+        return <div className="badge badge-outline">UNKNOWN</div>;
+    }
+  }
   if (offer.isLoading) {
     return (
       <>
@@ -32,8 +43,9 @@ function OfferCard(props: { ipfsHash: string; offerId: string }) {
         </figure>
         <div className="card-body">
           <div className="flex flex-col">
-            <h2 className="card-title">{offer.data?.Name} 
-            <span>Deposit</span></h2>
+            <h2 className="card-title">{offer.data?.Name}
+            {s()}
+            </h2>
           </div>
           <p>{offer.data?.Description}</p>
           <div className="card-actions justify-end">
