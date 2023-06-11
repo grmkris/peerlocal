@@ -40,7 +40,7 @@ export const ipfsSchema = z.object({
   Availability: z.string().optional(),
   Pickup: z.string().optional(),
   Deposit: z.string().optional(),
-  Image: z.string(),
+  Img: z.string(),
 });
 
 export type ipfsSchemaType = z.infer<typeof ipfsSchema>;
