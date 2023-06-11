@@ -87,11 +87,18 @@ contract PeerLocal is Ownable {
 
     }
 
-
+    // The function createCommunity stores the _ipfsMetadata, _stakingToken and _stakingRequirement in the communities map. 
     function createCommunity(string memory _ipfsMetadata, IERC20 _stakingToken, uint256 _stakingRequirement) public {
+        // We store the arguments in the communities map, using the communitiesCounter as key to create a community.
         communities[communitiesCounter] = Community({ipfsMetadata: _ipfsMetadata, owner: msg.sender, stakingToken: _stakingToken , stakingRequirement: _stakingRequirement});
-        communitiesCounter++;
+        
+        // We store the creator of the community as a member of the community OfferCreated
+        // We store the msg.sender address in an array, with a key value the communitiesCounter that it's also the communityId. 
         communityMembers[communitiesCounter].push(msg.sender);
+    
+        // We increase the communitiesCounter. 
+        communitiesCounter++;
+        
         emit CommunityCreated(communitiesCounter - 1, _ipfsMetadata, msg.sender, _stakingToken, _stakingRequirement);
     }
 
