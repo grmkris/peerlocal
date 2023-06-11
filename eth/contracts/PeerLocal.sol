@@ -5,10 +5,10 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 
-
+// We use the ReputationToken in order to reward or punish (burning ReputationToken staked) for the tool borrow/lending system. 
 import "./ReputationToken.sol";  // Import the ReputationToken contract's ABI
 
-//AAVE Token sypply
+//We import the IPool function from AAVE V3
 import {IPool} from "@aave/core-v3/contracts/interfaces/IPool.sol";
 
 contract PeerLocal is Ownable {
@@ -17,6 +17,7 @@ contract PeerLocal is Ownable {
 
     ReputationToken public reputationToken;
 
+    //The Community struct is used in the communities mapping to define the Community characteristics
     struct Community {
         string ipfsMetadata;
         uint256 stakingRequirement;
