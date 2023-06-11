@@ -102,6 +102,8 @@ contract PeerLocal is Ownable {
         emit CommunityCreated(communitiesCounter - 1, _ipfsMetadata, msg.sender, _stakingToken, _stakingRequirement);
     }
 
+    //The function joinCommunity allows user to join a community, to do it we call the function with the arguments _communityId, 
+    //and the community creator, owner, signature.
     function joinCommunity(uint256 _communityId, bytes memory _signature) public {
         // signature has to be from the owner of the community
         require(_recoverSigner(_signature) == communities[_communityId].owner, "Invalid signature");
@@ -110,13 +112,18 @@ contract PeerLocal is Ownable {
         communityMembers[_communityId].push(msg.sender);
 
         emit MemberJoinedCommunity(_communityId, msg.sender);
+
+        // We chack if the community has stakingRequirement to transfer the required tokens to the contract, 
+        // and following deposit them to the AAVE V3 token Pool
         if (communities[_communityId].stakingRequirement != 0) {
             // transferfrom user to this contract
             IERC20 token = communities[_communityId].stakingToken;
             token.transferFrom(msg.sender, address(this), communities[_communityId].stakingRequirement);
             token.approve(lendingPool, communities[_communityId].stakingRequirement);
-            //    function supply(address _lendingPool, address  _tokenAddress,  uint256 _amount, uint256 _communityId) public {
+            // We use a wrap funtion that uses the AAVE IPool funtion IPool(_lendingPool).supply(_tokenAddress, _amount, _user, 0);
+            // In out wrap function we add also the _communityId argument that we use to keep track of the deposits. 
             supply(lendingPool,address(communities[_communityId].stakingToken), communities[_communityId].stakingRequirement, _communityId, msg.sender);
+            
             emit collateralTokenStaked(msg.sender, communities[_communityId].stakingRequirement);
         }
     }
