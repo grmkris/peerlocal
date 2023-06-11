@@ -18,6 +18,8 @@ And deployed our subgraph there
 Smart wallet (AA) implementation for lending and borrowing market so we automize the collateral holding and disbursement for user 
 And deployed our subgraph there
 
+Go to peerlocal-zksync-contracts to test our Multisig implentation using the ZkSync's Account Abstraction. We use the Multisig when the borrower and lender agreed to end the transaction
+
 ### Graph
 All activity on our platform is indexed using new graph (Optimism and ZKsync) and then we use the data for trigering actions in the smart wallet and  all front end dynamic information
 
