@@ -59,11 +59,16 @@ contract PeerLocal is Ownable {
     //Counter that generates the offerId
     uint256 offerCounter = 0;
 
-    //AAVE
+    //Address of the V3 AAVE IPool in Göerli Optimism Testnet
     address lendingPool = 0xCAd01dAdb7E97ae45b89791D986470F3dfC256f7;
 
-
+    // communities map keeps track of the different communities created and it's characteristics
+    // We use the community Id, generated with the communitiesCounter, as key, and the Community struct as value. 
     mapping(uint256 => Community) public communities;
+
+    // offers map keeps track of the different offers created, in the different communities, and it's characteristics. 
+    // We use the community Id, generated with the communitiesCounter, as first key, 
+    // the offernId, generated with the counter offerCounter, as second key, and the Offer struct as value. 
     mapping(uint256 => mapping(uint256 => Offer)) public offers;
 
     mapping(uint256 => address[]) public communityMembers;
