@@ -24,16 +24,17 @@ contract PeerLocal is Ownable {
         address owner;
         IERC20 stakingToken;
     }
-
+    // The Offer struct is used in the 
     struct Offer {
         address owner;
         uint256 communityId;
         string metadata;
         uint256 reputationRequirement;
         uint256 stakingRequirement;
-        uint8 offerStatus; //created -> 1, active -> 2, finished -> 3
+        uint8 offerStatus; //created -> 1, active -> 2, finished -> 3; we use numbers to avoid conversion using the == operator. 
     }
 
+    //Events used to keep tack of the different communities and offers in The Graph dashboard
     event CommunityCreated(uint256 indexed communityId, string ipfsMetadata, address indexed owner, IERC20 stakingToken, uint256 stakingRequirement);
     event MemberJoinedCommunity(uint256 indexed communityId, address indexed member);
     event OfferCreated(uint256 indexed communityId, uint256 offerId, Offer newOffer);
@@ -50,12 +51,12 @@ contract PeerLocal is Ownable {
     event ReputationTokenMint(address indexed member, uint256 mintAmount);
     event ReputationTokenBurn(uint256 burnAmount);
 
-    //AAVE events
     event TokenDepositAAVE(uint256 communityId, address tokenDepositAAVE, uint256 amountDeposited, uint256 totalAmountInAAVE);
     event TokenRedeemAAVE(uint256 communityId, address tokenRedeemAAVE, uint256 amountRedeem, uint256 totalAmountInAAVE);
 
-
+    //Counter that generates the communityId
     uint256 communitiesCounter = 0;
+    //Counter that generates the offerId
     uint256 offerCounter = 0;
 
     //AAVE
