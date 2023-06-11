@@ -128,40 +128,40 @@ contract PeerLocal is Ownable {
         }
     }
 
+    // The function createOffer allowes community members to create offers inside of a community.  
     function createOffer(uint256 _communityId, string memory _metadata, uint256 _reputationRequirement, uint256 _stakingRequirement) public {
-        //require(reputation[msg.sender] >= reputationRequirement, "Insufficient reputation to create offer");
-
         //We add one to the offerCounter
         offerCounter += 1;
 
+        // We store the arguments in a new variable newOffer of type Offer struct 
         Offer memory newOffer = Offer(msg.sender, _communityId, _metadata, _reputationRequirement, _stakingRequirement, 1);
 
+        // We store the variable new Offer in the offer map with the communityId and the OfferId (offerCounter) as keys. 
         offers[_communityId][offerCounter] = newOffer;
         // set the status of the offer to 1, created, not accept
         emit OfferCreated(_communityId, offerCounter, newOffer);
     }
 
+    // The acceptOffer functions allow community members to accept one offer.
     function acceptOffer(uint256 _communityId, uint256 _offerId) public {
+        // We check the member balance of Reputation and stake Token necessary to accept the offer, determined by the offer creator. 
         require((communities[_communityId].stakingToken).balanceOf(msg.sender) >= offers[_communityId][_offerId].stakingRequirement, "Insufficient balance to accept offer");
         require((communities[_communityId].stakingToken).allowance(msg.sender, address(this)) >= offers[_communityId][_offerId].stakingRequirement, "Insufficient allowance to accept offer");
 
-        //We need to check the status of the offer is 1
+        //We need to check the status of the offer is 1, so has not been yet accepted by any other user. 
         require((offers[_communityId][_offerId]).offerStatus == 1);
-        // Transfer staked tokens
+        // Transfer staked tokens to the contract, if there is staking requirements.
         if (offers[_communityId][_offerId].stakingRequirement > 0) {
             (communities[_communityId].stakingToken).transferFrom(msg.sender, address(this), offers[_communityId][_offerId].stakingRequirement);
             emit collateralTokenStaked(msg.sender, offers[_communityId][_offerId].stakingRequirement);
         }
-        //Stake reputation if needed
+        //Stake reputation if needed to the contract, if there is reputation requirements. 
         if (offers[_communityId][_offerId].reputationRequirement > 0) {
             reputationToken.transferFrom(msg.sender, address(this), offers[_communityId][_offerId].reputationRequirement);
             emit reputationTokenStaked(msg.sender, offers[_communityId][_offerId].reputationRequirement);
         }
-        // Transfer staked tokens to offer owner
-        // We should transfer the tokens to the owner util we decide if the return it's ok or no!!!!
-        //token.transfer(offers[communityId][offerId].owner, offers[communityId][offerId].stakingRequirement);
-        //We also have to stake some
-
+        
+        // We change the offerStatus to 2, that is the "active" status, that means that an offer has been accepted, but yet not closed.
         offers[_communityId][_offerId].offerStatus = 2;
 
         // emit event
@@ -174,10 +174,12 @@ contract PeerLocal is Ownable {
         return ECDSA.recover(ECDSA.toEthSignedMessageHash(MESSAGE_TO_BE_SIGNED_BY_COMMUNIT_OWNER), signature);
     }
 
+    // The function endOffer is called when the borrower returns the tool, and we use a bool type, to determine if the 
+    // lending went ok or not. 
     function endOffer(uint256 _communityId, uint256 _offerId, bool _finalResult) public {
         require((offers[_communityId][_offerId]).offerStatus == 2, "Invalid offer");
-        //Error because there is no offer created in the community, but it enters anyway to the transaction!! should try to do it.
 
+        //         
         if (_finalResult == true){
             // Transfer staked tokens back
             if (offers[_communityId][_offerId].stakingRequirement > 0) {
