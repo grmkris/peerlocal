@@ -2,24 +2,29 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import { Layout } from "../../features/Layout";
 import Link from "next/link";
-import { useCommunity, useOffer } from "src/features/peerlocal/hooks/usePeerLocal";
+import {
+  useCommunity,
+  useOffer,
+} from "src/features/peerlocal/hooks/usePeerLocal";
 import { useRouter } from "next/router";
 import { useOfferIPFS } from "src/features/peerlocal/hooks/usePeerLocal";
 import { Loading } from "../../features/Loading";
 
 function OfferCard(props: { ipfsHash: string; offerId: string }) {
   const offer = useOfferIPFS({ ipfsHash: props.ipfsHash });
-  const cOffer = useOffer({ metadata: props.ipfsHash })
+  const cOffer = useOffer({ metadata: props.ipfsHash });
   const s = () => {
     switch (cOffer.data?.offerStatus) {
       case "CREATED":
-        return <div className="badge badge-secondary">ACTIVE</div>
+        return <div className="badge-secondary badge">ACTIVE</div>;
       case "ACTIVE":
-        return <div className="badge badge-primary">BORROWED</div>
+        return <div className="badge-primary badge">BORROWED</div>;
+      case "FINISHED":
+        return <div className="badge-outline badge">FINISHED</div>;
       default:
-        return <div className="badge badge-outline">UNKNOWN</div>;
+        return <div className="badge-outline badge">UNKNOWN</div>;
     }
-  }
+  };
   if (offer.isLoading) {
     return (
       <>
@@ -30,7 +35,7 @@ function OfferCard(props: { ipfsHash: string; offerId: string }) {
   }
   return (
     <li>
-      <div className="card-compact min-h-[50vh] card mx-5 my-2 w-96 bg-base-100 shadow-xl pt-5">
+      <div className="card-compact card mx-5 my-2 min-h-[50vh] w-96 bg-base-100 pt-5 shadow-xl">
         <figure className="mt-15">
           <img
             src={
@@ -43,8 +48,9 @@ function OfferCard(props: { ipfsHash: string; offerId: string }) {
         </figure>
         <div className="card-body">
           <div className="flex flex-col">
-            <h2 className="card-title">{offer.data?.Name}
-            {s()}
+            <h2 className="card-title">
+              {offer.data?.Name}
+              {s()}
             </h2>
           </div>
           <p>{offer.data?.Description}</p>
@@ -58,11 +64,12 @@ function OfferCard(props: { ipfsHash: string; offerId: string }) {
           </div>
         </div>
       </div>
-    </li >
+    </li>
   );
 }
 
-{/*
+{
+  /*
 <div className="card w-96 bg-base-100 shadow-xl">
   <figure><img src="/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg" alt="Shoes" /></figure>
   <div className="card-body">
@@ -72,12 +79,13 @@ function OfferCard(props: { ipfsHash: string; offerId: string }) {
     </h2>
     <p>If a dog chews shoes whose shoes does he choose?</p>
     <div className="card-actions justify-end">
-      <div className="badge badge-outline">Fashion</div> 
+      <div className="badge badge-outline">Fashion</div>
       <div className="badge badge-outline">Products</div>
     </div>
   </div>
 </div>
-*/}
+*/
+}
 
 const Market: NextPage = () => {
   const router = useRouter();
@@ -110,17 +118,23 @@ const Market: NextPage = () => {
           </p>
         </div>
         <div className="container flex items-center justify-center">
-
           <ul className="min-w-5/12 flex flex-wrap items-center justify-center ">
-            {offers.data?.community?.offers.map((offer, i) => {
-              return (
-                <OfferCard
-                  offerId={offer.offerId}
-                  ipfsHash={offer.metadata}
-                  key={offer.id}
-                />
-              );
-            })}
+            {offers.data?.community?.offers
+              .sort((x) => {
+                if (x.offerStatus === "FINISHED") {
+                  return 1;
+                }
+                return -1;
+              })
+              .map((offer, i) => {
+                return (
+                  <OfferCard
+                    offerId={offer.offerId}
+                    ipfsHash={offer.metadata}
+                    key={offer.id}
+                  />
+                );
+              })}
           </ul>
         </div>
       </Layout>

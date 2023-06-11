@@ -19,11 +19,21 @@ const Listing: NextPage = () => {
     ? cOffer.data?.community.id.toString()
     : "";
   const borrowHandler = async () => {
-    const res = await acceptOffer.mutateAsync({
-      communityId: cId,
-      offerId: cOffer.data?.offerId,
-    });
-    console.log("res", res);
+    if (cOffer.data?.offerStatus === "ACTIVE") {
+      console.log("endOffer", cOffer.data?.offerId);
+      await endOffer.mutateAsync({
+        communityId: cId,
+        offerId: cOffer.data?.offerId,
+        result: true,
+      });
+    } else {
+      console.log("acceptOffer", cOffer.data?.offerId);
+      const res = await acceptOffer.mutateAsync({
+        communityId: cId,
+        offerId: cOffer.data?.offerId,
+      });
+      console.log("res", res);
+    }
     await router.back();
   };
 
@@ -57,10 +67,20 @@ const Listing: NextPage = () => {
               >
                 {acceptOffer.isLoading ? (
                   <Loading />
+                ) : cOffer?.data?.offerStatus === "ACTIVE" ? (
+                  "End"
                 ) : (
                   `Borrow for ${cOffer.data?.stakingRequirement} GHO`
                 )}
               </button>
+              {cOffer?.data?.offerStatus === "ACTIVE" && (
+                <div className="flex flex-col">
+                  Confirmed by owner
+                  <input type="checkbox" checked={false} className="checkbox" />
+                  Confirmed by borrower
+                  <input type="checkbox" checked={false} className="checkbox" />
+                </div>
+              )}
             </div>
           </div>
         </div>
