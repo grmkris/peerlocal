@@ -14,7 +14,7 @@ const Listing: NextPage = () => {
     : "0";
   const nIFPS = useOfferIPFS({ ipfsHash: hash });
   const cOffer = useOffer({ metadata: hash });
-  const { acceptOffer } = usePeerLocalContract();
+  const { acceptOffer, endOffer } = usePeerLocalContract();
   const cId = cOffer.data?.community.id
     ? cOffer.data?.community.id.toString()
     : "";
@@ -26,6 +26,7 @@ const Listing: NextPage = () => {
     console.log("res", res);
     await router.back();
   };
+
   return (
     <>
       <Head>
