@@ -204,6 +204,7 @@ contract PeerLocal is Ownable {
             if (offers[_communityId][_offerId].reputationRequirement > 0) {
                 burnTokens(offers[_communityId][_offerId].reputationRequirement); //the staked ones
             }
+            // We actualize the offerStatus to 3 that fixes the offer status as completed, and inactive
             offers[_communityId][_offerId].offerStatus = 3;
             emit OfferClosed(_communityId, _offerId, msg.sender, false);
         }
