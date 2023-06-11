@@ -87,6 +87,7 @@ export const ipfsOfferSchema = z.object({
   Availability: z.string(),
   Pickup: z.string(),
   Image: z.string(),
+  Deposit: z.string()
 });
 
 export type ipfsOfferSchemaType = z.infer<typeof ipfsOfferSchema>;

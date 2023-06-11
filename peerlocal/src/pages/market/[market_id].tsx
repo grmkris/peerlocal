@@ -19,8 +19,8 @@ function OfferCard(props: { ipfsHash: string; offerId: string }) {
   }
   return (
     <li>
-      <div className="card-compact card mx-5 my-2 w-96 bg-base-100 shadow-xl">
-        <figure>
+      <div className="card-compact min-h-[50vh] card mx-5 my-2 w-96 bg-base-100 shadow-xl pt-5">
+        <figure className="mt-15">
           <img
             src={
               offer.data?.Image.startsWith("http")
@@ -31,7 +31,10 @@ function OfferCard(props: { ipfsHash: string; offerId: string }) {
           />
         </figure>
         <div className="card-body">
-          <h2 className="card-title">{offer.data?.Name}</h2>
+          <div className="flex flex-col">
+            <h2 className="card-title">{offer.data?.Name} 
+            <span>Deposit</span></h2>
+          </div>
           <p>{offer.data?.Description}</p>
           <div className="card-actions justify-end">
             <Link
@@ -43,9 +46,26 @@ function OfferCard(props: { ipfsHash: string; offerId: string }) {
           </div>
         </div>
       </div>
-    </li>
+    </li >
   );
 }
+
+{/*
+<div className="card w-96 bg-base-100 shadow-xl">
+  <figure><img src="/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg" alt="Shoes" /></figure>
+  <div className="card-body">
+    <h2 className="card-title">
+      Shoes!
+      <div className="badge badge-secondary">NEW</div>
+    </h2>
+    <p>If a dog chews shoes whose shoes does he choose?</p>
+    <div className="card-actions justify-end">
+      <div className="badge badge-outline">Fashion</div> 
+      <div className="badge badge-outline">Products</div>
+    </div>
+  </div>
+</div>
+*/}
 
 const Market: NextPage = () => {
   const router = useRouter();
@@ -78,12 +98,6 @@ const Market: NextPage = () => {
           </p>
         </div>
         <div className="container flex items-center justify-center">
-          {/*
-                    Fields:
-                    Name
-                    Price
-                    Availablility
-                    */}
 
           <ul className="min-w-5/12 flex flex-wrap items-center justify-center ">
             {offers.data?.community?.offers.map((offer, i) => {
