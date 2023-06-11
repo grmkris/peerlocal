@@ -37,18 +37,10 @@ const Listing: NextPage = () => {
         <div className="card min-h-[90%] w-96 bg-base-100 shadow-xl">
           <div className="container flex flex-col items-center justify-center gap-2 px-4 py-5 ">
             <figure>
-              <img src={"/drill.jpg"} alt={"thomas"} />
+              <img src={"/drill.jpg"} alt={nIFPS.data?.Name} />
             </figure>
             <h2 className="">{nIFPS.data?.Name}</h2>
             <p className="mt-5">{nIFPS.data?.Description}</p>
-            <p className="mt-5">
-              {" "}
-              min. Reputation:{" "}
-              <p className="text-accent">
-                {" "}
-                {cOffer.data?.reputationRequirement}{" "}
-              </p>{" "}
-            </p>
             <div className="flex flex-row">
               <button
                 className="btn-neutral btn"

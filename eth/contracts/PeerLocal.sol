@@ -87,14 +87,23 @@ contract PeerLocal is Ownable {
 
     }
 
-
+    // The function createCommunity stores the _ipfsMetadata, _stakingToken and _stakingRequirement in the communities map. 
     function createCommunity(string memory _ipfsMetadata, IERC20 _stakingToken, uint256 _stakingRequirement) public {
+        // We store the arguments in the communities map, using the communitiesCounter as key to create a community.
         communities[communitiesCounter] = Community({ipfsMetadata: _ipfsMetadata, owner: msg.sender, stakingToken: _stakingToken , stakingRequirement: _stakingRequirement});
-        communitiesCounter++;
+        
+        // We store the creator of the community as a member of the community OfferCreated
+        // We store the msg.sender address in an array, with a key value the communitiesCounter that it's also the communityId. 
         communityMembers[communitiesCounter].push(msg.sender);
+    
+        // We increase the communitiesCounter. 
+        communitiesCounter++;
+        
         emit CommunityCreated(communitiesCounter - 1, _ipfsMetadata, msg.sender, _stakingToken, _stakingRequirement);
     }
 
+    //The function joinCommunity allows user to join a community, to do it we call the function with the arguments _communityId, 
+    //and the community creator, owner, signature.
     function joinCommunity(uint256 _communityId, bytes memory _signature) public {
         // signature has to be from the owner of the community
         require(_recoverSigner(_signature) == communities[_communityId].owner, "Invalid signature");
@@ -103,51 +112,56 @@ contract PeerLocal is Ownable {
         communityMembers[_communityId].push(msg.sender);
 
         emit MemberJoinedCommunity(_communityId, msg.sender);
+
+        // We chack if the community has stakingRequirement to transfer the required tokens to the contract, 
+        // and following deposit them to the AAVE V3 token Pool
         if (communities[_communityId].stakingRequirement != 0) {
             // transferfrom user to this contract
             IERC20 token = communities[_communityId].stakingToken;
             token.transferFrom(msg.sender, address(this), communities[_communityId].stakingRequirement);
             token.approve(lendingPool, communities[_communityId].stakingRequirement);
-            //    function supply(address _lendingPool, address  _tokenAddress,  uint256 _amount, uint256 _communityId) public {
+            // We use a wrap funtion that uses the AAVE IPool funtion IPool(_lendingPool).supply(_tokenAddress, _amount, _user, 0);
+            // In out wrap function we add also the _communityId argument that we use to keep track of the deposits. 
             supply(lendingPool,address(communities[_communityId].stakingToken), communities[_communityId].stakingRequirement, _communityId, msg.sender);
+            
             emit collateralTokenStaked(msg.sender, communities[_communityId].stakingRequirement);
         }
     }
 
+    // The function createOffer allowes community members to create offers inside of a community.  
     function createOffer(uint256 _communityId, string memory _metadata, uint256 _reputationRequirement, uint256 _stakingRequirement) public {
-        //require(reputation[msg.sender] >= reputationRequirement, "Insufficient reputation to create offer");
-
         //We add one to the offerCounter
         offerCounter += 1;
 
+        // We store the arguments in a new variable newOffer of type Offer struct 
         Offer memory newOffer = Offer(msg.sender, _communityId, _metadata, _reputationRequirement, _stakingRequirement, 1);
 
+        // We store the variable new Offer in the offer map with the communityId and the OfferId (offerCounter) as keys. 
         offers[_communityId][offerCounter] = newOffer;
         // set the status of the offer to 1, created, not accept
         emit OfferCreated(_communityId, offerCounter, newOffer);
     }
 
+    // The acceptOffer functions allow community members to accept one offer.
     function acceptOffer(uint256 _communityId, uint256 _offerId) public {
+        // We check the member balance of Reputation and stake Token necessary to accept the offer, determined by the offer creator. 
         require((communities[_communityId].stakingToken).balanceOf(msg.sender) >= offers[_communityId][_offerId].stakingRequirement, "Insufficient balance to accept offer");
         require((communities[_communityId].stakingToken).allowance(msg.sender, address(this)) >= offers[_communityId][_offerId].stakingRequirement, "Insufficient allowance to accept offer");
 
-        //We need to check the status of the offer is 1
+        //We need to check the status of the offer is 1, so has not been yet accepted by any other user. 
         require((offers[_communityId][_offerId]).offerStatus == 1);
-        // Transfer staked tokens
+        // Transfer staked tokens to the contract, if there is staking requirements.
         if (offers[_communityId][_offerId].stakingRequirement > 0) {
             (communities[_communityId].stakingToken).transferFrom(msg.sender, address(this), offers[_communityId][_offerId].stakingRequirement);
             emit collateralTokenStaked(msg.sender, offers[_communityId][_offerId].stakingRequirement);
         }
-        //Stake reputation if needed
+        //Stake reputation if needed to the contract, if there is reputation requirements. 
         if (offers[_communityId][_offerId].reputationRequirement > 0) {
             reputationToken.transferFrom(msg.sender, address(this), offers[_communityId][_offerId].reputationRequirement);
             emit reputationTokenStaked(msg.sender, offers[_communityId][_offerId].reputationRequirement);
         }
-        // Transfer staked tokens to offer owner
-        // We should transfer the tokens to the owner util we decide if the return it's ok or no!!!!
-        //token.transfer(offers[communityId][offerId].owner, offers[communityId][offerId].stakingRequirement);
-        //We also have to stake some
-
+        
+        // We change the offerStatus to 2, that is the "active" status, that means that an offer has been accepted, but yet not closed.
         offers[_communityId][_offerId].offerStatus = 2;
 
         // emit event
@@ -160,10 +174,12 @@ contract PeerLocal is Ownable {
         return ECDSA.recover(ECDSA.toEthSignedMessageHash(MESSAGE_TO_BE_SIGNED_BY_COMMUNIT_OWNER), signature);
     }
 
+    // The function endOffer is called when the borrower returns the tool, and we use a bool type, to determine if the 
+    // lending went ok or not. 
     function endOffer(uint256 _communityId, uint256 _offerId, bool _finalResult) public {
         require((offers[_communityId][_offerId]).offerStatus == 2, "Invalid offer");
-        //Error because there is no offer created in the community, but it enters anyway to the transaction!! should try to do it.
 
+        // If the lending went well, and it's true the token and reputation stake is returned        
         if (_finalResult == true){
             // Transfer staked tokens back
             if (offers[_communityId][_offerId].stakingRequirement > 0) {
@@ -175,8 +191,6 @@ contract PeerLocal is Ownable {
                 reputationToken.transfer(msg.sender, offers[_communityId][_offerId].reputationRequirement);
                 emit reputationTokenReturned(msg.sender, offers[_communityId][_offerId].reputationRequirement);
             }
-
-            //Return reputation lender and borrower
             //The lender and the borrower gets 1 Reputation Token
             mintTokens(msg.sender, 1);
             mintTokens(offers[_communityId][_offerId].owner, 1);
@@ -185,6 +199,7 @@ contract PeerLocal is Ownable {
             emit OfferClosed(_communityId, _offerId, msg.sender, true);
 
         }else {
+            // In case didn't went erll, the reputation token is burned, and the collateral is send to the lender
             (communities[_communityId].stakingToken).transfer(offers[_communityId][_offerId].owner, offers[_communityId][_offerId].stakingRequirement);
             if (offers[_communityId][_offerId].reputationRequirement > 0) {
                 burnTokens(offers[_communityId][_offerId].reputationRequirement); //the staked ones
@@ -203,10 +218,6 @@ contract PeerLocal is Ownable {
         reputationToken.burn(_amount);
         emit ReputationTokenBurn(_amount);
     }
-
-    // function changeILendingPoolAddress(address lendingPoolAddress) external {
-    //     lendingPool = (lendingPoolAddress);
-    // }
 
 
     // Needs the token address that we want to deposit in AAVE, and the amount, the lendingPool is
