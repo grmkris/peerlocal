@@ -12,7 +12,7 @@ function OfferCard(props: { ipfsHash: string; offerId: string }) {
   const cOffer = useOffer({ metadata: props.ipfsHash })
   const s = () => {
     switch (cOffer.data?.offerStatus) {
-      case "CREATE":
+      case "CREATED":
         return <div className="badge badge-secondary">ACTIVE</div>
       case "ACTIVE":
         return <div className="badge badge-primary">BORROWED</div>
